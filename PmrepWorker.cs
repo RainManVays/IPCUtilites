@@ -17,36 +17,8 @@ namespace IpcPmrep
 
     internal static class PmrepWorker
     {
-        private static string[] _ignoreLines = { "Informatica",
-        "Copyright",
-        "All Rights Reserved",
-        "This Software is protected",
-        "Invoked at",
-        "Completed at",
-        "completed successfully"};
 
-        internal static string PrepareCommand(string commandName,Dictionary<char,string> parameters,char[] accetableParameters, char[] flags)
-        {
-            string command = commandName;
-            foreach(var parameter in parameters)
-            {
-                if (accetableParameters.Contains<char>(parameter.Key))
-                {
-                    command += " -" + parameter.Key + " " + parameter.Value;
-                }
-                else if (flags.Contains<char>(parameter.Key))
-                {
-                    command += " -" + parameter.Key;
-                }
-                else
-                {
-                    throw new ApplicationException("key " + parameter.Key + " not found in accetable pmrep keys");
-                }
-            }
-            return command;
-        }
-
-        internal static PmrepOutput ExecuteCommand(string pmrep,string command)
+        internal static PmrepOutput ExecuteCommand(string pmrep, string command)
         {
             var pmrepProcess = new Process();
             pmrepProcess.StartInfo = new ProcessStartInfo(pmrep);
@@ -57,8 +29,9 @@ namespace IpcPmrep
             pmrepProcess.StartInfo.RedirectStandardOutput = true;
             pmrepProcess.StartInfo.RedirectStandardError = true;
             pmrepProcess.StartInfo.UseShellExecute = false;
+            LogWriter.Write(command);
             pmrepProcess.Start();
-
+            
             var result = new PmrepOutput();
 
             result.output = pmrepProcess.StandardOutput.ReadToEnd();
@@ -67,17 +40,49 @@ namespace IpcPmrep
             return result;
         }
 
+        private static string[] _ignoreLines = { "Invoked", "All Rights Reserved", "Informatica(r)", "Copyright (c)", "This Software","Completed at","completed successfully" };
+
+        private static bool CheckingRowIsNotGarbage(string row)
+        {
+            foreach(var ignoreItem in _ignoreLines)
+                if (row.ToLower().Contains(ignoreItem.ToLower()))
+                    return true;
+            return false;
+        }
+        internal static string[] FormattingResult(string result)
+        {
+            var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> resultCollection = new List<string>();
+            foreach (var resultRow in resultarray)
+            {
+                if (!CheckingRowIsNotGarbage(resultRow))
+                    resultCollection.Add(resultRow);
+            }
+            return resultCollection.ToArray();
+        }
+
         internal static string[] FormattingResult(string result, char separator)
         {
-            var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.None);
-
-            return resultarray;
+            var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> resultCollection = new List<string>();
+            foreach (var resultRow in resultarray)
+            {
+                if (!CheckingRowIsNotGarbage(resultRow))
+                    resultCollection.Add(resultRow);
+            }
+            return resultCollection.ToArray();
         }
         internal static string[] FormattingResult(string result,string separator)
         {
-            var resultarray = result.Trim().Split(new string[] {"\r","\n" }, StringSplitOptions.None);
+            var resultarray = result.Trim().Split(new string[] {"\r","\n" }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> resultCollection = new List<string>();
+            foreach (var resultRow in resultarray)
+            {
+                if (!CheckingRowIsNotGarbage(resultRow))
+                    resultCollection.Add(resultRow);
+            }
 
-            return resultarray;
+            return resultCollection.ToArray();
         }
       
     }

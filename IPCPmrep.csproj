@@ -7,7 +7,7 @@
     <ProjectGuid>{E3099CDA-71FE-4C4B-AD75-F7F78535F60E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IPCPmrep</RootNamespace>
+    <RootNamespace>IpcPmrep</RootNamespace>
     <AssemblyName>IPCPmrep</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PmrepConnection.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Pmrep.cs" />
     <Compile Include="PmrepWorker.cs" />

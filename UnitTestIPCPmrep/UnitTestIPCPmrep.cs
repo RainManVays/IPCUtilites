@@ -12,10 +12,7 @@ namespace UnitTestIPCPmrep
         [TestMethod]
         public void PmrepConnectionTest()
         {
-            var dictParam = new Dictionary<char, string>();
-            dictParam.Add('r', "test reponame");
-            dictParam.Add('h', "test host");
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat",dictParam);
+            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat",null);
 
             Assert.AreEqual(true, true);
         }
@@ -24,16 +21,13 @@ namespace UnitTestIPCPmrep
         "File not found!")]
         public void PmrepFailedIsFileNotFound()
         {
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.ba", null);
+           // Pmrep pmrep = new Pmrep(@"C:\pmrep.ba", null);
         }
 
         [TestMethod]
         public void PmrepLogFileIsHave()
         {
-            var dictParam = new Dictionary<char, string>();
-            dictParam.Add('r', "test reponame");
-            dictParam.Add('h', "test host");
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", dictParam,@"C:\pmrep.log");
+            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", null,@"C:\pmrep.log");
 
             Assert.IsTrue(File.Exists(@"C:\pmrep.log"));
         }
@@ -41,11 +35,15 @@ namespace UnitTestIPCPmrep
         [TestMethod]
         public void PmrepListConnectTest()
         {
-            var dictParam = new Dictionary<char, string>();
-            dictParam.Add('r', "test reponame");
-            dictParam.Add('h', "test host");
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", dictParam, @"C:\pmrep1.log");
+            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", null, @"C:\pmrep1.log");
             Assert.IsTrue(pmrep.ListConnections().Length > 0);
+        }
+        [TestMethod]
+        public void TestPmrepConnections()
+        {
+            var repo = new PmrepConnection { domain = "melchior", port = "6005" };
+            Assert.Equals(repo.domain, "-d melchior");
+            Assert.Equals(repo.hostName, "");
         }
     }
 }
