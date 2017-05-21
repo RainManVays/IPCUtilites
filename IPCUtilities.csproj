@@ -7,8 +7,8 @@
     <ProjectGuid>{E3099CDA-71FE-4C4B-AD75-F7F78535F60E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IpcPmrep</RootNamespace>
-    <AssemblyName>IPCPmrep</AssemblyName>
+    <RootNamespace>IPCUtilities</RootNamespace>
+    <AssemblyName>IPCUtilities</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,27 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandObjects\PmrepAbapProgram.cs" />
-    <Compile Include="CommandObjects\PmrepApplyLaber.cs" />
-    <Compile Include="CommandObjects\PmrepAssignPermission.cs" />
-    <Compile Include="CommandObjects\PmrepBackup.cs" />
-    <Compile Include="CommandObjects\PmrepChangeOwner.cs" />
-    <Compile Include="CommandObjects\PmrepCheckIn.cs" />
-    <Compile Include="CommandObjects\PmrepCheckout.cs" />
-    <Compile Include="CommandObjects\PmrepConnection.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepAbapProgram.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepApplyLaber.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepAssignPermission.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepBackup.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepChangeOwner.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepCheckIn.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepCheckout.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepConnection.cs" />
+    <Compile Include="Infacmd\Infacmd.cs" />
+    <Compile Include="Infasetup\Infasetup.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="Pmrep.cs" />
-    <Compile Include="CommandObjects\PmrepCreate.cs" />
-    <Compile Include="CommandObjects\PmrepCreateConnection.cs" />
-    <Compile Include="CommandObjects\PmrepDeployFolder.cs" />
-    <Compile Include="CommandObjects\PmrepDeploymentGroup.cs" />
-    <Compile Include="CommandObjects\PmrepNewDeploymentGroup.cs" />
-    <Compile Include="CommandObjects\PmrepNewFolder.cs" />
-    <Compile Include="CommandObjects\PmrepObject.cs" />
-    <Compile Include="CommandObjects\PmrepObjectDependencies.cs" />
-    <Compile Include="CommandObjects\PmrepQuery.cs" />
-    <Compile Include="CommandObjects\PmrepRunDeploymentGroup.cs" />
-    <Compile Include="PmrepWorker.cs" />
+    <Compile Include="Pmcmd\Pmcmd.cs" />
+    <Compile Include="Pmrep\Pmrep.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepCreate.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepCreateConnection.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepDeployFolder.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepDeploymentGroup.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepNewDeploymentGroup.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepNewFolder.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepObject.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepObjectDependencies.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepQuery.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepRunDeploymentGroup.cs" />
+    <Compile Include="Pmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

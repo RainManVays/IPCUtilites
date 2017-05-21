@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPCPmrep", "IPCPmrep.csproj", "{E3099CDA-71FE-4C4B-AD75-F7F78535F60E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPCUtilities", "IPCUtilities.csproj", "{E3099CDA-71FE-4C4B-AD75-F7F78535F60E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestIPCPmrep", "UnitTestIPCPmrep\UnitTestIPCPmrep.csproj", "{2FDD0382-AD85-4C9A-9577-0DF6E60D6045}"
 EndProject

@@ -54,9 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IPCPmrep.csproj">
+    <ProjectReference Include="..\IPCUtilities.csproj">
       <Project>{e3099cda-71fe-4c4b-ad75-f7f78535f60e}</Project>
-      <Name>IPCPmrep</Name>
+      <Name>IPCUtilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

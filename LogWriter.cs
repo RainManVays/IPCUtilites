@@ -1,25 +1,28 @@
 ﻿using System.IO;
 
-namespace IpcPmrep
+namespace IPCUtilities
 {
-    internal static class LogWriter
+    namespace IpcPmrep
     {
-        private static string logFile = "IPCPmrep.log";
+        internal static class LogWriter
+        {
+            private static string logFile = "IPCPmrep.log";
 
-        public static void SetLogFile(string logfile)
-        {
-           logFile = logfile;
-        }
-        public static  void Write(string text)
-        {
-            using (var streamWriter = File.AppendText(logFile))
+            public static void SetLogFile(string logfile)
             {
-                streamWriter.WriteLine(text);
+                logFile = logfile;
             }
+            public static void Write(string text)
+            {
+                using (var streamWriter = File.AppendText(logFile))
+                {
+                    streamWriter.WriteLine(text);
+                }
+            }
+
+
         }
 
 
     }
-
-
 }
