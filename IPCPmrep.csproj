@@ -46,9 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PmrepConnection.cs" />
+    <Compile Include="CommandObjects\PmrepAbapProgram.cs" />
+    <Compile Include="CommandObjects\PmrepApplyLaber.cs" />
+    <Compile Include="CommandObjects\PmrepAssignPermission.cs" />
+    <Compile Include="CommandObjects\PmrepBackup.cs" />
+    <Compile Include="CommandObjects\PmrepChangeOwner.cs" />
+    <Compile Include="CommandObjects\PmrepCheckIn.cs" />
+    <Compile Include="CommandObjects\PmrepCheckout.cs" />
+    <Compile Include="CommandObjects\PmrepConnection.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Pmrep.cs" />
+    <Compile Include="CommandObjects\PmrepCreate.cs" />
+    <Compile Include="CommandObjects\PmrepCreateConnection.cs" />
+    <Compile Include="CommandObjects\PmrepDeployFolder.cs" />
+    <Compile Include="CommandObjects\PmrepDeploymentGroup.cs" />
+    <Compile Include="CommandObjects\PmrepNewDeploymentGroup.cs" />
+    <Compile Include="CommandObjects\PmrepNewFolder.cs" />
+    <Compile Include="CommandObjects\PmrepObject.cs" />
+    <Compile Include="CommandObjects\PmrepObjectDependencies.cs" />
+    <Compile Include="CommandObjects\PmrepQuery.cs" />
+    <Compile Include="CommandObjects\PmrepRunDeploymentGroup.cs" />
     <Compile Include="PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

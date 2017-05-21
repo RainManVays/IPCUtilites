@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System;
+
+[assembly:CLSCompliant(true)]
 namespace IpcPmrep
 {
     /// <summary>
@@ -36,27 +38,43 @@ namespace IpcPmrep
 
 
         }
-        public string[] AddToDeploymentGroup()
+        /// <summary>
+        /// Adds objects to a deployment group. Use AddToDeploymentGroup to add source, target, transformation, mapping, 
+        /// session, worklet, workflow, scheduler, session configuration, and task objects
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public bool AddToDeploymentGroup(PmrepAddDeploymentGroup parameters)
+        {
+            var command = "addtodeploymentgroup " + parameters.dbdSeparator + parameters.dependencyTypes + parameters.deploymentGroupName + parameters.folderName + parameters.objectName + parameters.objectSubType + parameters.objectType + parameters.persistentImputFile + parameters.versionNumber;
+
+            var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+            if (result.errors.Length > 0)
+            {
+                LogWriter.Write(result.errors);
+                return false;
+            }
+            return true;
+
+        }
+        public string[] ApplyLabel(PmrepApplyLabel parameters)
         {
             return null;
         }
-        public string[] ApplyLabel()
+        public string[] AssignPermission(PmrepPermissions parameters)
         {
             return null;
         }
-        public string[] AssignPermission()
+        public string[] BackUp(PmrepBackup parameters)
         {
             return null;
         }
-        public string[] BackUp()
+        public string[] ChangeOwner(PmrepChangeOwner parameters)
         {
             return null;
         }
-        public string[] ChangeOwner()
-        {
-            return null;
-        }
-        public string[] CheckIn()
+        public string[] CheckIn(PmrepCheckIn parameters)
         {
             return null;
         }
@@ -64,31 +82,31 @@ namespace IpcPmrep
         {
             return null;
         }
-        public string[] ClearDeploymentGroup()
+        public string[] ClearDeploymentGroup(string deploymentGroupName)
         {
             return null;
         }
-        public string[] Create()
+        public string[] Create(PmrepCreate parameters)
         {
             return null;
         }
-        public string[] CreateConnection()
+        public string[] CreateConnection(PmrepCreateConnection parameters)
         {
             return null;
         }
-        public string[] CreateDeploymentGroup()
+        public string[] CreateDeploymentGroup(PmrepNewDeploymentGroup parameters)
         {
             return null;
         }
-        public string[] CreateFolder()
+        public string[] CreateFolder(PmrepNewFolder parameters)
         {
             return null;
         }
-        public string[] CreateLabel()
+        public string[] CreateLabel(string labelName, string comments=null)
         {
             return null;
         }
-        public string[] Delete()
+        public string[] Delete(string repositoryPassword)
         {
             return null;
         }
@@ -109,55 +127,67 @@ namespace IpcPmrep
             return true;
         }
 
-        public string[] DeleteDeploymentGroup()
+        public string[] DeleteDeploymentGroup(string groupName)
         {
             return null;
         }
-        public string[] DeleteFolder()
+        public string[] DeleteFolder(string folderName)
         {
             return null;
         }
-        public string[] DeleteLabel()
+        public string[] DeleteLabel(string labelName)
         {
             return null;
         }
-        public string[] DeleteObject()
+        public string[] DeleteObject(string folderName,string objectName, string objectType)
         {
             return null;
         }
-        public string[] DeployDeploymentGroup()
+        public string[] DeployDeploymentGroup(PmrepRunDeploymentGroup parameters)
         {
             return null;
         }
-        public string[] DeployFolder()
+        public string[] DeployFolder(PmrepDeployFolder parameters)
         {
             return null;
         }
-        public string[] ExecuteQuery()
+        public string[] ExecuteQuery(PmrepQuery parameters)
         {
             return null;
         }
-        public string[] Exit()
+        /// <summary>
+        /// Exits from the pmrep interactive mode.
+        /// </summary>
+        public void Exit()
+        {
+            var result = PmrepWorker.ExecuteCommand(_pmrepFile, "exit");
+            if (result.errors.Length > 0)
+                LogWriter.Write(result.errors);
+        }
+        public string[] FindCheckout(PmrepCheckout parameters)
         {
             return null;
         }
-        public string[] FindCheckout()
+        /// <summary>
+        /// Lists the properties and attributes of a connection object as name-value pairs.
+        /// </summary>
+        /// <param name="connectionName">Required. Name of the connection to list details for.</param>
+        /// <param name="connectionType">Required. Type of connection. A connection can be one of the following types:-
+        /// Application
+        /// FTP
+        /// Loader
+        /// Queue
+        /// Relational</param>
+        /// <returns></returns>
+        public string[] GetConnectionDetails(string connectionName,string connectionType)
         {
             return null;
         }
-        public string[] GetConnectionDetails()
+        public string[] GenerateAbapProgramToFile(PmrepAbapProgram parameters)
         {
             return null;
         }
-        public string[] GenerateAbapProgramToFile()
-        {
-            return null;
-        }
-        public string[] Help()
-        {
-            return null;
-        }
-        public string[] InstallAbapProgram()
+        public string[] InstallAbapProgram(PmrepAbapProgram parameters)
         {
             return null;
         }
@@ -199,15 +229,15 @@ namespace IpcPmrep
             LogWriter.Write(result.errors);
             return PmrepWorker.FormattingResult(result.output);
         }
-        public string[] ListObjectDependencies()
+        public string[] ListObjectDependencies(PmrepObjectDependencies parameters)
         {
             return null;
         }
-        public string[] ListObjects()
+        public string[] ListObjects(PmrepObject parameters)
         {
             return null;
         }
-        public string[] ListTablesBySess()
+        public string[] ListTablesBySess(string folderName, string sessionName, Enum sessionObjects)
         {
             return null;
         }
@@ -306,31 +336,22 @@ namespace IpcPmrep
         {
             return null;
         }
-        public string[] UpdateStatistics()
+        public void UpdateStatistics()
         {
-            return null;
         }
         public string[] UpdateTargPrefix()
         {
             return null;
         }
-        public string[] Upgrade()
+        public void Upgrade(string repositoryPassword)
         {
-            return null;
+            
         }
         public string[] UninstallAbapProgram()
         {
             return null;
         }
         public string[] Validate()
-        {
-            return null;
-        }
-        public string[] Version()
-        {
-            return null;
-        }
-        public string[] Using()
         {
             return null;
         }
