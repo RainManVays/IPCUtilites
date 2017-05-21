@@ -9,15 +9,17 @@ namespace IPCUtilities
     namespace IpcPmrep
     {
         /// <summary>
-        /// Class for interacting with Informatica PowerCenter repository using the pmrep binary.
-        /// You need Set envivorment variable Domain_info
+        /// Performs repository administration tasks. Use pmrep to list repository objects, create and edit groups, and 
+        /// restore and delete repositories.
         /// </summary>
         public class Pmrep
         {
             private string _pmrepFile;
 
             /// <summary>
-            /// Connects to a repository. The first time you use pmrep in either command line or interactive mode, you must use     the Connect command. All commands require a connection to the repository except for the following commands
+            /// Connects to a repository. The first time you use pmrep in either command line or interactive mode, you must 
+            /// use the Connect command. All commands require a connection to the repository except for the following 
+            /// commands
             /// </summary>
             /// <param name="pmrepfile"> full path to pmrep.exe</param>
             /// <param name="parameters">connection parameters</param>
