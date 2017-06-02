@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace IPCUtilities
 {
-    
     namespace IpcInfasetup
     {
         /// <summary>

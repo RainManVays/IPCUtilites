@@ -55,12 +55,7 @@ namespace IPCUtilities
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
-                if (result.errors.Length > 0)
-                {
-                    LogWriter.Write(result.errors);
-                    return false;
-                }
-                return true;
+                return PmrepWorker.CheckErrorInResult(result);
 
             }
             public string[] ApplyLabel(PmrepApplyLabel parameters)
@@ -103,9 +98,18 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public string[] CreateFolder(PmrepNewFolder parameters)
+            public bool CreateFolder(PmrepNewFolder parameters)
             {
-                return null;
+                string command = "createfolder " + parameters.folderName +
+                                                parameters.folderDescription +
+                                                parameters.folderStatus +
+                                                parameters.ownerName +
+                                                parameters.ownerSecurityDomain +
+                                                parameters.permissions +
+                                                parameters.sharedFolder;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] CreateLabel(string labelName, string comments = null)
             {
@@ -124,12 +128,7 @@ namespace IPCUtilities
                     command = "deleteconnection -f -n " + connectionName;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
-                if (result.errors.Length > 0)
-                {
-                    LogWriter.Write(result.errors);
-                    return false;
-                }
-                return true;
+                return PmrepWorker.CheckErrorInResult(result);
             }
 
             public string[] DeleteDeploymentGroup(string groupName)
@@ -216,12 +215,7 @@ namespace IPCUtilities
                 }
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
-                if (result.errors.Length > 0)
-                {
-                    LogWriter.Write(result.errors);
-                    return false;
-                }
-                return true;
+                return PmrepWorker.CheckErrorInResult(result);
 
             }
             /// <summary>
@@ -240,7 +234,17 @@ namespace IPCUtilities
             }
             public string[] ListObjects(PmrepObject parameters)
             {
-                return null;
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "listobjects "+parameters.columnSeparator
+                                                                                  +parameters.dbdSeparator
+                                                                                  +parameters.endOfListingIndicator+
+                                                                                  parameters.endOfRecordIndicator+
+                                                                                  parameters.folderName+
+                                                                                  parameters.objectSubtype+
+                                                                                  parameters.objectType+
+                                                                                  parameters.printDatabaseType+
+                                                                                  parameters.verbose);
+                LogWriter.Write(result.errors);
+                return PmrepWorker.FormattingResult(result.output);
             }
             public string[] ListTablesBySess(string folderName, string sessionName, Enum sessionObjects)
             {

@@ -87,6 +87,15 @@ namespace IPCUtilities
                 return resultCollection.ToArray();
             }
 
+            internal static bool CheckErrorInResult(PmrepOutput result)
+            {
+                if (result.errors.Length > 0)
+                {
+                    LogWriter.Write(result.errors);
+                    return false;
+                }
+                return true;
+            }
         }
     }
 }
