@@ -78,13 +78,19 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public string[] CleanUp()
+            public bool CleanUp()
             {
-                return null;
+                string command = "cleanup";
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] ClearDeploymentGroup(string deploymentGroupName)
+            public bool ClearDeploymentGroup(string deploymentGroupName)
             {
-                return null;
+                string command = "cleardeploymentgroup -f -p "+deploymentGroupName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] Create(PmrepCreate parameters)
             {
@@ -111,9 +117,12 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] CreateLabel(string labelName, string comments = null)
+            public bool CreateLabel(string labelName, string comments = null)
             {
-                return null;
+                string command = "createlabel -a " + labelName + " -c " + comments;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] Delete(string repositoryPassword)
             {
@@ -131,21 +140,33 @@ namespace IPCUtilities
                 return PmrepWorker.CheckErrorInResult(result);
             }
 
-            public string[] DeleteDeploymentGroup(string groupName)
+            public bool DeleteDeploymentGroup(string groupName)
             {
-                return null;
+                string command = "deletedeploymentgroup -f -p " + groupName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] DeleteFolder(string folderName)
+            public bool DeleteFolder(string folderName)
             {
-                return null;
+                string command = "deletefolder -n " + folderName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] DeleteLabel(string labelName)
+            public bool DeleteLabel(string labelName)
             {
-                return null;
+                string command = "deletelabel -f -a " + labelName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] DeleteObject(string folderName, string objectName, string objectType)
+            public bool DeleteObject(string folderName, string objectName, string objectType)
             {
-                return null;
+                string command = "deleteobject -f " + folderName + " -o " + objectName + " -n " + objectType;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] DeployDeploymentGroup(PmrepRunDeploymentGroup parameters)
             {
@@ -183,9 +204,12 @@ namespace IPCUtilities
             /// Queue
             /// Relational</param>
             /// <returns></returns>
-            public string[] GetConnectionDetails(string connectionName, string connectionType)
+            public bool GetConnectionDetails(string connectionName, string connectionType)
             {
-                return null;
+                string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] GenerateAbapProgramToFile(PmrepAbapProgram parameters)
             {
@@ -269,9 +293,12 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public string[] Notify()
+            public bool Notify(string message)
             {
-                return null;
+                string command = "notify -m " + message;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] ObjectExport()
             {
@@ -305,13 +332,16 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public string[] ShowConnectionInfo()
+            public string ShowConnectionInfo()
             {
                 return null;
             }
-            public string[] SwitchConnection()
+            public bool SwitchConnection(string oldConnectionName, string newConnectionName)
             {
-                return null;
+                string command = "switchconnection -o " + oldConnectionName + " -n " + newConnectionName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] TruncateLog()
             {

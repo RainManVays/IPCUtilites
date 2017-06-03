@@ -89,8 +89,10 @@ namespace IPCUtilities
 
             internal static bool CheckErrorInResult(PmrepOutput result)
             {
-                if (result.errors.Length > 0)
+                
+                if (result.errors.Length > 0 || result.output.Contains("Failed"))
                 {
+                    LogWriter.Write(result.output);
                     LogWriter.Write(result.errors);
                     return false;
                 }
