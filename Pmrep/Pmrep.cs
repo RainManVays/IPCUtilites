@@ -94,9 +94,28 @@ namespace IPCUtilities
 
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] BackUp(PmrepBackup parameters)
+            public bool BackUp(string outputFileName)
             {
-                return null;
+                var command = "backup -o " + outputFileName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool BackUp(string outputFileName,string description=null,bool overiteExistingFile=false,bool skipLog=false,bool skipDeployHistory=false,
+                                    bool skipMxData=false,bool skipTaskStatistic=false)
+            {
+                var command = "backup -o " + outputFileName;
+                var otherParams = string.IsNullOrEmpty(description) ? "" : " -d "+description;
+                otherParams += overiteExistingFile ? " -f " : "";
+                otherParams += skipLog ? " -b " : "";
+                otherParams += skipDeployHistory ? " -j " : "";
+                otherParams += skipMxData ? " -q " : "";
+                otherParams += skipTaskStatistic ? " -v " : "";
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public bool ChangeOwner(PmrepChangeOwner parameters)
             {
@@ -110,9 +129,18 @@ namespace IPCUtilities
 
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] CheckIn(PmrepCheckIn parameters)
+            public string CheckIn(PmrepCheckIn parameters)
             {
-                return null;
+                var command = "checkin " + parameters.objectName
+                                                    + parameters.objectType
+                                                    + parameters.objectSubType
+                                                    + parameters.folderName
+                                                    + parameters.dbdSeparator
+                                                    + parameters.comments;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return result.output;
             }
             public bool CleanUp()
             {
@@ -128,17 +156,89 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] Create(PmrepCreate parameters)
+            public string Create(PmrepCreate parameters,bool createGlobalRepo=false,bool enableVersioning=false)
             {
-                return null;
+                var otherParams = createGlobalRepo ? " -g " : "";
+                otherParams += enableVersioning ? " -v " : "";
+
+                var command = "create " + parameters.domainUserName
+                                                    + parameters.domainPassword
+                                                    + parameters.domainUserSecurity
+                                                    + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return result.output;
             }
-            public string[] CreateConnection(PmrepCreateConnection parameters)
+            public bool CreateConnection(string connectionType, string connectionName,string codePage)
             {
-                return null;
+                var command = "createconnection -s " +connectionType 
+                                                    + " -n "+connectionName
+                                                    + " -l "+codePage;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] CreateDeploymentGroup(PmrepNewDeploymentGroup parameters)
+            public bool CreateConnection(PmrepCreateConnection parameters, bool t=false,bool x=false)
             {
-                return null;
+                var otherParams = t ? " -t " : "";
+                otherParams += x ? " -x " : "";
+
+                var command = "createconnection " + parameters.codePage
+                                                    + parameters.conectionEnvironmentSQL
+                                                    + parameters.connectionAttributes
+                                                    + parameters.connectionName
+                                                    + parameters.connectionType
+                                                    + parameters.connectString
+                                                    + parameters.databaseName
+                                                    + parameters.dataSourceName
+                                                    + parameters.domainName
+                                                    + parameters.packetSize
+                                                    + parameters.password
+                                                    + parameters.rollbackSegment
+                                                    + parameters.serverName
+                                                    + parameters.transactionEnvironmentSQL
+                                                    + parameters.userName
+                                                    + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool CreateDeploymentGroup(string deploymentGroupName)
+            {
+                var command = "createdeploymentgroup -p " + deploymentGroupName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool CreateDeploymentGroup(PmrepNewDeploymentGroup parameters)
+            {
+                var command = "createdeploymentgroup " + parameters.deploymentGroupName
+                                                   + parameters.deploymentGroupType
+                                                   + parameters.queryName
+                                                   + parameters.queryType
+                                                   + parameters.comments;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool CreateFolder(string folderName)
+            {
+                string command = "createfolder -n " + folderName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool CreateFolder(string folderName,string permissions)
+            {
+                string command = "createfolder -n " + folderName+ " -p " + permissions;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public bool CreateFolder(PmrepNewFolder parameters)
             {
@@ -160,9 +260,12 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] Delete(string repositoryPassword)
+            public bool Delete(string repositoryPassword)
             {
-                return null;
+                string command = "delete -f  -x " + repositoryPassword;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public bool DeleteConnection(string connectionName, string connectionType = null)
             {
@@ -240,12 +343,12 @@ namespace IPCUtilities
             /// Queue
             /// Relational</param>
             /// <returns></returns>
-            public bool GetConnectionDetails(string connectionName, string connectionType)
+            public string GetConnectionDetails(string connectionName, string connectionType)
             {
                 string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
-                return PmrepWorker.CheckErrorInResult(result);
+                return result.output;
             }
             public string[] GenerateAbapProgramToFile(PmrepAbapProgram parameters)
             {
@@ -415,10 +518,6 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public string ShowConnectionInfo()
-            {
-                return null;
-            }
             public bool SwitchConnection(string oldConnectionName, string newConnectionName)
             {
                 string command = "switchconnection -o " + oldConnectionName + " -n " + newConnectionName;
@@ -426,9 +525,22 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] TruncateLog()
+            public bool TruncateLog(string logsTruncated)
             {
-                return null;
+                string command = "truncatelog -t " + logsTruncated;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public bool TruncateLog(string logsTruncated,string folderName, string workflowName)
+            {
+                string command = "truncatelog -t " + logsTruncated
+                                                   +" -f "+folderName
+                                                   +" -w "+workflowName;
+                                                                        
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] UndoCheckout()
             {
@@ -465,9 +577,12 @@ namespace IPCUtilities
             {
                 return null;
             }
-            public void Upgrade(string repositoryPassword)
+            public string Upgrade(string repositoryPassword)
             {
+                string command = "upgrade -x " + repositoryPassword;
 
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string[] UninstallAbapProgram()
             {

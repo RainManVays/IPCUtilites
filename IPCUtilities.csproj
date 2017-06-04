@@ -50,7 +50,6 @@
     <Compile Include="Pmrep\CommandObjects\PmrepAbapProgram.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepApplyLaber.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepAssignPermission.cs" />
-    <Compile Include="Pmrep\CommandObjects\PmrepBackup.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepChangeOwner.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepCheckIn.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepCheckout.cs" />
