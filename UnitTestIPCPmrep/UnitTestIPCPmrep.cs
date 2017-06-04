@@ -9,6 +9,17 @@ namespace UnitTestIPCPmrep
     [TestClass]
     public class UnitTestIPCPmrep
     {
+        //[TestProperty]
+            //Environment.SetEnvironmentVariable("INFA_DOMAINS_FILE", @"C:\Informatica\9.6.1\clients\PowerCenterClient\domain.infa");
+            PmrepConnection repo = new PmrepConnection
+            {
+                domain = "Domain_melchior",
+                repository = "infa_rep_melchior",
+                userName = "Administrator",
+                password = "k2kb2bdbgv"
+            };
+
+
         [TestMethod]
         public void PmrepConnectionTest()
         {
@@ -24,26 +35,6 @@ namespace UnitTestIPCPmrep
            // Pmrep pmrep = new Pmrep(@"C:\pmrep.ba", null);
         }
 
-        [TestMethod]
-        public void PmrepLogFileIsHave()
-        {
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", null,@"C:\pmrep.log");
-
-            Assert.IsTrue(File.Exists(@"C:\pmrep.log"));
-        }
-
-        [TestMethod]
-        public void PmrepListConnectTest()
-        {
-            Pmrep pmrep = new Pmrep(@"C:\pmrep.bat", null, @"C:\pmrep1.log");
-            Assert.IsTrue(pmrep.ListConnections().Length > 0);
-        }
-        [TestMethod]
-        public void TestPmrepConnections()
-        {
-            var repo = new PmrepConnection { domain = "melchior", port = "6005" };
-            Assert.Equals(repo.domain, "-d melchior");
-            Assert.Equals(repo.hostName, "");
-        }
+       
     }
 }
