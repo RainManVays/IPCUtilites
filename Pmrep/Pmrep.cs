@@ -340,47 +340,55 @@ namespace IPCUtilities
             {
                 var otherParams = retainPersistentValue ? " -p " : "";
                 string command = string.Empty;
-                if (!string.IsNullOrEmpty(parameters.importControlFile))
-                {
-                    command = "objectimport " + parameters.importXml +
-                                                parameters.importControlFile +
-                                                parameters.logFile+
-                                                otherParams;
-                }
-                else
-                {
-                    PmrepWorker.CreateControlImportFile(sourceFolder: parameters.sourceFolder,
+
+              PmrepWorker.CreateControlImportFile(sourceFolder: parameters.sourceFolder,
                                                         sourceRepo: parameters.sourceRepo,
                                                         targetFolder: parameters.targetFolder,
                                                         targetRepo: parameters.targetRepo,
-                                                        dtdFile: parameters.importDtdFile);
+                                                        dtdFile: parameters.importDtdFile,
+                                                        encoding: parameters.controlFileEncoding);
                     command = "objectimport " + parameters.importXml +
                                             " -c importXml.xml " +
                                             parameters.logFile +
                                             otherParams;
-
-                }
                 
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
                 return result.output;
             }
-            public bool ObjectExport(PmrepObjectExport parameters,bool m=true,bool s = true, bool b = true, bool r = true)
+            public string ObjectImport(string importXml,string importControlFile,string logFileName=null, bool retainPersistentValue = true)
+            {
+                var otherParams = retainPersistentValue ? " -p " : "";
+                otherParams += string.IsNullOrEmpty(logFileName) ? "" : " -l " + logFileName;
+
+                string command = "objectimport " + "- i " + importXml +
+                                                " -c "+importControlFile +
+                                                otherParams;
+  
+
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return result.output;
+            }
+
+            public bool ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
             {
                 var otherParams = m ? " -m " : "";
-                otherParams += s ? " -s " : "";
-                otherParams += b ? " -b " : "";
-                otherParams += r ? " -r " : "";
+                    otherParams += s ? " -s " : "";
+                    otherParams += b ? " -b " : "";
+                    otherParams += r ? " -r " : "";
                 var command = "objectexport " + parameters.folderName
                                                   + parameters.logFileName
                                                   + parameters.dbdSeparator
                                                   + parameters.persistentInputFile
                                                   + parameters.versionNumber
+                                                  +parameters.xnlOutputFileName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
-
+                Console.WriteLine(result.output);
                 return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] PurgeVersion()

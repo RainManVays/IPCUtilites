@@ -97,11 +97,11 @@ namespace IPCUtilities
                 return true;
             }
 
-            internal static void CreateControlImportFile(string sourceRepo,string sourceFolder,string targetFolder,string targetRepo,string dtdFile)
+            internal static void CreateControlImportFile(string sourceRepo,string sourceFolder,string targetFolder,string targetRepo,string dtdFile,string encoding)
             {
+                encoding = string.IsNullOrEmpty(encoding) ? "windows-1251" : encoding;
 
-
-                string controlFileTemplate = "<?xml version='1.0' encoding='windows-1251'?>" +
+                string controlFileTemplate = "<?xml version='1.0' encoding='"+encoding+"'?>" +
 
                 "<!DOCTYPE IMPORTPARAMS SYSTEM '"+ dtdFile + "'>\n"+
                 "<IMPORTPARAMS CHECKIN_AFTER_IMPORT='NO'>\n"+
