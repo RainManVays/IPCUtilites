@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace IPCUtilities
 {
@@ -97,6 +95,22 @@ namespace IPCUtilities
                     return false;
                 }
                 return true;
+            }
+
+            internal static void CreateControlImportFile(string sourceRepo,string sourceFolder,string targetFolder,string targetRepo,string dtdFile)
+            {
+
+
+                string controlFileTemplate = "<?xml version='1.0' encoding='windows-1251'?>" +
+
+                "<!DOCTYPE IMPORTPARAMS SYSTEM '"+ dtdFile + "'>\n"+
+                "<IMPORTPARAMS CHECKIN_AFTER_IMPORT='NO'>\n"+
+                "<FOLDERMAP SOURCEFOLDERNAME='"+sourceFolder+ "' SOURCEREPOSITORYNAME='" + sourceRepo + "' TARGETFOLDERNAME='" + targetFolder + "' TARGETREPOSITORYNAME='" + targetRepo + "' />\n"+
+                         "<RESOLVECONFLICT>\n"+
+                         "<TYPEOBJECT OBJECTTYPENAME='ALL' RESOLUTION='REPLACE'/>\n"+
+                          "</RESOLVECONFLICT >\n"+
+                          "</IMPORTPARAMS>\n";
+                File.WriteAllText("importXml.xml", controlFileTemplate);
             }
         }
     }

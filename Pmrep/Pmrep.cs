@@ -58,21 +58,57 @@ namespace IPCUtilities
                 return PmrepWorker.CheckErrorInResult(result);
 
             }
-            public string[] ApplyLabel(PmrepApplyLabel parameters)
+            public bool ApplyLabel(PmrepApplyLabel parameters,bool acrossRepositories=false, bool moveLabel=false, bool comments=false)
             {
-                return null;
+                //retest need
+                var otherParams = acrossRepositories ? " -g ":"";
+                otherParams += moveLabel ? " -m " : "";
+                otherParams += comments ? " -c " : "";
+                var command = "applylabel " + parameters.objectName
+                                                  + parameters.objectType
+                                                  + parameters.objectSubType
+                                                  + parameters.folderName
+                                                  + parameters.labelName
+                                                  + parameters.dbdSeparator
+                                                  + parameters.dependencyDirection
+                                                  + parameters.dependencyObjectTypes
+                                                  + parameters.persistentInputFile
+                                                  + parameters.versionNumber
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] AssignPermission(PmrepPermissions parameters)
+            public bool AssignPermission(PmrepPermissions parameters)
             {
-                return null;
+                var command = "AssignPermission " + parameters.objectName
+                                                  + parameters.objectType 
+                                                  + parameters.objectSubType
+                                                  + parameters.userName
+                                                  + parameters.groupName
+                                                  + parameters.permission
+                                                  + parameters.securityDomain;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] BackUp(PmrepBackup parameters)
             {
                 return null;
             }
-            public string[] ChangeOwner(PmrepChangeOwner parameters)
+            public bool ChangeOwner(PmrepChangeOwner parameters)
             {
-                return null;
+                var command = "ChangeOwner " + parameters.objectName
+                                                   + parameters.objectType
+                                                   + parameters.objectSubType
+                                                   + parameters.newOwnerName
+                                                   + parameters.securityDomain;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] CheckIn(PmrepCheckIn parameters)
             {
@@ -300,13 +336,52 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] ObjectExport()
+            public string ObjectImport(PmrepObjectImport parameters,bool retainPersistentValue=true)
             {
-                return null;
+                var otherParams = retainPersistentValue ? " -p " : "";
+                string command = string.Empty;
+                if (!string.IsNullOrEmpty(parameters.importControlFile))
+                {
+                    command = "objectimport " + parameters.importXml +
+                                                parameters.importControlFile +
+                                                parameters.logFile+
+                                                otherParams;
+                }
+                else
+                {
+                    PmrepWorker.CreateControlImportFile(sourceFolder: parameters.sourceFolder,
+                                                        sourceRepo: parameters.sourceRepo,
+                                                        targetFolder: parameters.targetFolder,
+                                                        targetRepo: parameters.targetRepo,
+                                                        dtdFile: parameters.importDtdFile);
+                    command = "objectimport " + parameters.importXml +
+                                            " -c importXml.xml " +
+                                            parameters.logFile +
+                                            otherParams;
+
+                }
+                
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return result.output;
             }
-            public string[] ObjectImport()
+            public bool ObjectExport(PmrepObjectExport parameters,bool m=true,bool s = true, bool b = true, bool r = true)
             {
-                return null;
+                var otherParams = m ? " -m " : "";
+                otherParams += s ? " -s " : "";
+                otherParams += b ? " -b " : "";
+                otherParams += r ? " -r " : "";
+                var command = "objectexport " + parameters.folderName
+                                                  + parameters.logFileName
+                                                  + parameters.dbdSeparator
+                                                  + parameters.persistentInputFile
+                                                  + parameters.versionNumber
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return PmrepWorker.CheckErrorInResult(result);
             }
             public string[] PurgeVersion()
             {

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pmrep\CommandObjects\AbstractRepoObject.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepAbapProgram.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepApplyLaber.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepAssignPermission.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Pmrep\CommandObjects\PmrepObjectDependencies.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepQuery.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepRunDeploymentGroup.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepObjectExport.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepObjectImport.cs" />
     <Compile Include="Pmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
