@@ -307,17 +307,78 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] DeployDeploymentGroup(PmrepRunDeploymentGroup parameters)
+            public string DeployDeploymentGroup(string deploymentGroupName,string controlFileName,string targetRepositoryName)
             {
-                return null;
+                string command = "deploydeploymentgroup -p " + deploymentGroupName + " -c " + controlFileName + " -r " + targetRepositoryName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] DeployFolder(PmrepDeployFolder parameters)
+            public string DeployDeploymentGroup(PmrepRunDeploymentGroup parameters)
             {
-                return null;
+                string command = "deploydeploymentgroup " + parameters.deploymentGroupName +
+                                                parameters.controlFileName +
+                                                parameters.targetRepositoryName +
+                                                parameters.targetRepositoryUser +
+                                                parameters.targetRepositoryUserSecurityDomain +
+                                                parameters.targetRepositoryPassword +
+                                                parameters.targetRepositoryPasswordEnvVar +
+                                                parameters.targetDomainName +
+                                                parameters.targetPortalHostName +
+                                                parameters.targetPortalPortNumber +
+                                                parameters.logFileName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] ExecuteQuery(PmrepQuery parameters)
+            public string DeployFolder(string folderName, string controlFileName, string targetRepositoryName)
             {
-                return null;
+                string command = "deployfolder -f " + folderName + " -c " + controlFileName + " -r " + targetRepositoryName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string DeployFolder(PmrepDeployFolder parameters)
+            {
+                string command = "deployfolder " + parameters.folderName +
+                                                parameters.controlFileName +
+                                                parameters.targetRepositoryName +
+                                                parameters.targetRepositoryUser +
+                                                parameters.targetRepositoryUserSecurityDomain +
+                                                parameters.targetRepositoryPassword +
+                                                parameters.targetRepositoryPasswordEnvVar +
+                                                parameters.targetDomainName +
+                                                parameters.targetPortalHostName +
+                                                parameters.targetPortalPortNumber +
+                                                parameters.logFileName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string ExecuteQuery(string queryName)
+            {
+                string command = "executequery -q " + queryName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string ExecuteQuery(PmrepQuery parameters, bool append,bool verbose, bool printDBtype,bool dontIncludeParentPath)
+            {
+                var otherParams = append ? " -a " : "";
+                otherParams += verbose ? " -b " : "";
+                otherParams += printDBtype ? " -y " : "";
+                otherParams += dontIncludeParentPath ? " -n " : "";
+                var command = "executequery " + parameters.queryName
+                                                  + parameters.queryType
+                                                  + parameters.outputPersistentFileName
+                                                  + parameters.columnSeparator
+                                                  + parameters.endOfRecordSeparator
+                                                  + parameters.endOfListingIndicator
+                                                  + parameters.dbdSeparator
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             /// <summary>
             /// Exits from the pmrep interactive mode.
@@ -325,8 +386,7 @@ namespace IPCUtilities
             public void Exit()
             {
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, "exit");
-                if (result.errors.Length > 0)
-                    LogWriter.Write(result.errors);
+                PmrepWorker.CheckErrorInResult(result);
             }
             public string[] FindCheckout(PmrepCheckout parameters)
             {
