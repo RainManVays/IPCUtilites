@@ -388,9 +388,22 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, "exit");
                 PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] FindCheckout(PmrepCheckout parameters)
+            public string FindCheckout(PmrepCheckout parameters, bool verbose, bool printDBtype, bool allUsers)
             {
-                return null;
+                var otherParams = allUsers ? " -u " : "";
+                otherParams += verbose ? " -b " : "";
+                otherParams += printDBtype ? " -y " : "";
+                var command = "findcheckout " + parameters.objectType
+                                                  + parameters.folderName
+                                                  + parameters.columnSeparator
+                                                  + parameters.endOfRecordSeparator
+                                                  + parameters.endOfRecordSeparator
+                                                  + parameters.endOfListingIndicator
+                                                  + parameters.dbdSeparator
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             /// <summary>
             /// Lists the properties and attributes of a connection object as name-value pairs.
@@ -501,8 +514,7 @@ namespace IPCUtilities
             }
             public string ObjectImport(PmrepObjectImport parameters,bool retainPersistentValue=true)
             {
-                var otherParams = retainPersistentValue ? " -p " : "";
-                string command = string.Empty;
+              var otherParams = retainPersistentValue ? " -p " : "";
 
               PmrepWorker.CreateControlImportFile(sourceFolder: parameters.sourceFolder,
                                                         sourceRepo: parameters.sourceRepo,
@@ -510,7 +522,7 @@ namespace IPCUtilities
                                                         targetRepo: parameters.targetRepo,
                                                         dtdFile: parameters.importDtdFile,
                                                         encoding: parameters.controlFileEncoding);
-                    command = "objectimport " + parameters.importXml +
+                string command = "objectimport " + parameters.importXml +
                                             " -c importXml.xml " +
                                             parameters.logFile +
                                             otherParams;
