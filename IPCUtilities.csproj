@@ -71,6 +71,14 @@
     <Compile Include="Pmrep\CommandObjects\PmrepRunDeploymentGroup.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepObjectExport.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepObjectImport.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepValidate.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepUnistallAbapProgram.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepTargPrefix.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepSrcPrefix.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepSequence.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepUpdateConnection.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepUregisterPlugin.cs" />
+    <Compile Include="Pmrep\PmrepUndoCheckout.cs" />
     <Compile Include="Pmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

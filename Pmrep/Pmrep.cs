@@ -362,7 +362,7 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string ExecuteQuery(PmrepQuery parameters, bool append,bool verbose, bool printDBtype,bool dontIncludeParentPath)
+            public string ExecuteQuery(PmrepQuery parameters, bool append=false,bool verbose = false, bool printDBtype = false, bool dontIncludeParentPath = false)
             {
                 var otherParams = append ? " -a " : "";
                 otherParams += verbose ? " -b " : "";
@@ -388,7 +388,7 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, "exit");
                 PmrepWorker.CheckErrorInResult(result);
             }
-            public string FindCheckout(PmrepCheckout parameters, bool verbose, bool printDBtype, bool allUsers)
+            public string FindCheckout(PmrepCheckout parameters, bool verbose = false, bool printDBtype = false, bool allUsers = false)
             {
                 var otherParams = allUsers ? " -u " : "";
                 otherParams += verbose ? " -b " : "";
@@ -482,9 +482,12 @@ namespace IPCUtilities
                 LogWriter.Write(result.errors);
                 return PmrepWorker.FormattingResult(result.output);
             }
-            public string[] ListTablesBySess(string folderName, string sessionName, Enum sessionObjects)
+            public string ListTablesBySess(string folderName, string sessionName, string objectType)
             {
-                return null;
+                string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + objectType;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
 
             /// <summary>
@@ -614,40 +617,129 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] UndoCheckout()
+            public string UndoCheckout(PmrepUndoCheckout parameters)
             {
-                return null;
+                var command = "undocheckout " + parameters.dbdSeparator
+                                                   + parameters.folderName
+                                                   + parameters.objectName
+                                                   + parameters.objectSubType
+                                                   + parameters.objectType;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string[] Unregister()
             {
                 return null;
             }
-            public string[] UnregisterPlugin()
+            public string UnregisterPlugin(string vendorId, string pluginId)
             {
-                return null;
+                string command = "unregisterplugin -v " + vendorId + " -l " + vendorId;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] UpdateConnection()
+            public string UnregisterPlugin(PmrepUregisterPlugin parameters,bool isSecurityModule=false,bool removeUserNameLogin=false)
             {
-                return null;
+
+                var otherParams = isSecurityModule ? " -s " : "";
+                otherParams += removeUserNameLogin ? " -g " : "";
+                var command = "unregisterplugin " + parameters.vendorId
+                                                  + parameters.pluginId
+                                                  + parameters.newPassword
+                                                  + parameters.newPasswordEnvVariable
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] UpdateEmailAddr()
+            public string UpdateConnection(PmrepUpdateConnection parameters)
             {
-                return null;
+                var command = "updateconnection " + parameters.connectionSubtype
+                                                   + parameters.connectionName
+                                                   + parameters.newUserName
+                                                   + parameters.newPassword
+                                                   + parameters.newPasswordEnvVariable
+                                                   + parameters.newConnectionString
+                                                   + parameters.attributeName
+                                                   + parameters.newAttributeValue
+                                                   + parameters.connectionType
+                                                   + parameters.codePage;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] UpdateSeqGenVals()
+            public string UpdateEmailAddr(string folderName, string sessionName, string succesEmailAddres, string failureEmailAddress)
             {
-                return null;
+                string command = "updateemailaddr -d " + folderName + " -s " + sessionName + " -u " + succesEmailAddres + " -f " + failureEmailAddress;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] UpdateSrcPrefix()
+            public string UpdateSeqGenVals(string folderName, string sequenceName)
             {
-                return null;
+                string command = "updateseqgenvals -f " + folderName + " -t " + sequenceName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public void UpdateStatistics()
+            public string UpdateSeqGenVals(PmrepSequence parameters)
             {
+                var command = "updateseqgenvals " + parameters.folderName
+                                                   + parameters.mappingName
+                                                   + parameters.sequenceGeneratorName
+                                                   + parameters.startValue
+                                                   + parameters.endValue
+                                                   + parameters.incrementBy
+                                                   + parameters.currentValue;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] UpdateTargPrefix()
+            public string UpdateSrcPrefix(string folderName,string prefixName,string sessionName)
             {
-                return null;
+                string command = "updatesrcprefix -f " + folderName + " -p " + prefixName + " -s " + sessionName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string UpdateSrcPrefix(PmrepSrcPrefix parameters, bool useTargetInstanceName = false)
+            {
+                var otherParams = useTargetInstanceName ? " -n " : "";
+                var command = "updatetargprefix " + parameters.folderName
+                                                  + parameters.sessionName
+                                                  + parameters.sourceName
+                                                  + parameters.prefixName
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public bool UpdateStatistics()
+            {
+                string command = "updatestatistics";
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            public string UpdateTargPrefix(string folderName,string prefixName,string sessionName)
+            {
+                string command = "updatetargprefix -f " + folderName+" -p "+prefixName+" -s "+sessionName;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string UpdateTargPrefix(PmrepTargPrefix parameters,bool useTargetInstanceName=false)
+            {
+                var otherParams = useTargetInstanceName ? " -n " : "";
+                var command = "updatetargprefix " + parameters.folderName
+                                                  + parameters.sessionName
+                                                  + parameters.targetName
+                                                  + parameters.prefixName
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string Upgrade(string repositoryPassword)
             {
@@ -656,13 +748,43 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string[] UninstallAbapProgram()
+            public string UninstallAbapProgram(PmrepUnistallAbapProgram parameters)
             {
-                return null;
+
+                var command = "uninstallabapprogram " + parameters.folderName
+                                                  + parameters.mappingName
+                                                  + parameters.versionNumber
+                                                  + parameters.logFilename
+                                                  + parameters.userName
+                                                  + parameters.password
+                                                  + parameters.connectString
+                                                  + parameters.client
+                                                  + parameters.language
+                                                  + parameters.programMode;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] Validate()
+            public string Validate(PmrepValidate parameters, bool saveUponValid = false, bool checkUponValid = false, bool checkInComment = false, bool append = false, bool verbose = false, bool printDBType = false)
             {
-                return null;
+                var otherParams = saveUponValid ? " -s " : "";
+                otherParams += checkUponValid ? " -k " : "";
+                otherParams += checkInComment ? " -m " : "";
+                otherParams += append ? " -a " : "";
+                otherParams += verbose ? " -b " : "";
+                otherParams += printDBType ? " -y " : "";
+                var command = "validate " + parameters.objectName
+                                                  + parameters.objectType
+                                                  + parameters.versionNumber
+                                                  + parameters.folderName
+                                                  + parameters.outputOptionTypes
+                                                  + parameters.persistentOutputFileName
+                                                  + parameters.endOfRecordSeparator
+                                                  + parameters.endOfListingIndicator
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
         }
     }
