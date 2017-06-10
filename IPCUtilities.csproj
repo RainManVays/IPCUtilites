@@ -31,6 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>LDFCorp.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
@@ -46,8 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="Pmrep\CommandObjects\AbstractRepoObject.cs" />
-    <Compile Include="Pmrep\CommandObjects\PmrepAbapProgram.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepInstallAbapProgram.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepApplyLaber.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepAssignPermission.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepChangeOwner.cs" />
@@ -78,11 +85,15 @@
     <Compile Include="Pmrep\CommandObjects\PmrepSequence.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepUpdateConnection.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepUregisterPlugin.cs" />
-    <Compile Include="Pmrep\PmrepUndoCheckout.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepGenerateAbapProgramm.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepUndoCheckout.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepRepoRegister.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepRegisterPlugin.cs" />
     <Compile Include="Pmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LDFCorp.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

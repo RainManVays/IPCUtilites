@@ -17,6 +17,7 @@
         public string versionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
         public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
         public string outputOptionTypes { get { return _outputOptionTypes; } set { _outputOptionTypes = " -p " + value; } }
+        public string persistentInputFile { get { return _persistentInputFile; } set { _persistentInputFile = " -i " + value; } }
         public string persistentOutputFileName { get { return _persistentOutputFileName; } set { _persistentOutputFileName = " -u " + value; } }
         public string endOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
         public string endOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
