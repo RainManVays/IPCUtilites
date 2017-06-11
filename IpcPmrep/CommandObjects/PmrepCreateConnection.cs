@@ -5,7 +5,6 @@ namespace IPCUtilities
     {
         public class PmrepCreateConnection
         {
-            private string _connectionType;
             private string _connectionName;
             private string _userName;
             private string _password;
@@ -21,7 +20,7 @@ namespace IPCUtilities
             private string _dataSourceName;
             private string _connectionAttributes;
 
-            public string connectionType { get { return _connectionType; } set { _connectionType = " -s " + value; } }
+            public DBType connectionType { get; set; }
             public string connectionName { get { return _connectionName; } set { _connectionName = " -n " + value; } }
             public string userName { get { return _userName; } set { _userName = " -u " + value; } }
             public string password { get { return _password; } set { _password = " -p " + value; } }

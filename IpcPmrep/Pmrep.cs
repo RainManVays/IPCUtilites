@@ -58,7 +58,15 @@ namespace IPCUtilities
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
 
-                var command = "addtodeploymentgroup " + parameters.dbdSeparator + parameters.dependencyTypes + parameters.deploymentGroupName + parameters.folderName + parameters.objectName + parameters.objectSubType + parameters.objectType + parameters.persistentImputFile + parameters.versionNumber;
+                var command = "addtodeploymentgroup " + parameters.dbdSeparator 
+                                                        + parameters.dependencyTypes 
+                                                        + parameters.deploymentGroupName 
+                                                        + parameters.folderName 
+                                                        + parameters.objectName 
+                                                        + parameters.objectSubType 
+                                                        + parameters.objectType 
+                                                        + parameters.persistentImputFile 
+                                                        + parameters.versionNumber;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -185,7 +193,7 @@ namespace IPCUtilities
 
                 return result.output;
             }
-            public bool CreateConnection(string connectionType, string connectionName,string codePage)
+            public string CreateConnection(string connectionType, string connectionName,string codePage)
             {
                 var command = "createconnection -s " +connectionType 
                                                     + " -n "+connectionName
@@ -193,9 +201,20 @@ namespace IPCUtilities
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
-                return PmrepWorker.CheckErrorInResult(result);
+                return result.output;
             }
-            public bool CreateConnection(PmrepCreateConnection parameters, bool t=false,bool x=false)
+            public string CreateConnection(string connectionType, string connectionName, string codePage, string connectionString)
+            {
+                var command = "createconnection -s " + connectionType
+                                                    + " -n " + connectionName
+                                                    + " -l " + codePage
+                                                    + " -c " + connectionString;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+
+                return result.output;
+            }
+            public string CreateConnection(PmrepCreateConnection parameters, bool t=false,bool x=false)
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
@@ -206,7 +225,7 @@ namespace IPCUtilities
                                                     + parameters.conectionEnvironmentSQL
                                                     + parameters.connectionAttributes
                                                     + parameters.connectionName
-                                                    + parameters.connectionType
+                                                    +" -s "+ parameters.connectionType.Value
                                                     + parameters.connectString
                                                     + parameters.databaseName
                                                     + parameters.dataSourceName
@@ -221,7 +240,7 @@ namespace IPCUtilities
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
-                return PmrepWorker.CheckErrorInResult(result);
+                return PmrepWorker.RemoveResultHeader(result.output);
             }
             public bool CreateDeploymentGroup(string deploymentGroupName)
             {
@@ -288,18 +307,35 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public bool DeleteConnection(string connectionName, string connectionType = null)
+
+
+            /// <summary>
+            /// Delete connection from the repository.
+            /// </summary>
+            /// <param name="connectionName">Name of the connection to delete</param>
+            /// <returns>True or False</returns>
+            public bool DeleteConnection(string connectionName)
             {
-                string command = string.Empty;
-                if (connectionType != null)
-                    command = "deleteconnection -f -n " + connectionName + " -s " + connectionType;
-                else
-                    command = "deleteconnection -f -n " + connectionName;
+                
+                string  command = "deleteconnection -f -n " + connectionName;
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return PmrepWorker.CheckErrorInResult(result);
+            }
+            /// <summary>
+            /// Delete connection from the repository.
+            /// </summary>
+            /// <param name="connectionName">Name of the connection to delete</param>
+            /// <param name="connectionType">Type of connection</param>
+            /// <returns>True or False</returns>
+            public bool DeleteConnection(string connectionName, ConnectionType connectionType )
+            {
+
+                string command = "deleteconnection -f -n " + connectionName + " -s " + connectionType.Value;
+
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-
             public bool DeleteDeploymentGroup(string groupName)
             {
                 string command = "deletedeploymentgroup -f -p " + groupName;
@@ -307,6 +343,11 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
+            /// <summary>
+            /// Delete a folder from the repository.
+            /// </summary>
+            /// <param name="folderName">Name of the folder</param>
+            /// <returns>True or False</returns>
             public bool DeleteFolder(string folderName)
             {
                 string command = "deletefolder -n " + folderName;
@@ -314,6 +355,11 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
+            /// <summary>
+            /// Delete a label from the repository.
+            /// </summary>
+            /// <param name="labelName">Name of the label</param>
+            /// <returns>True or False<</returns>
             public bool DeleteLabel(string labelName)
             {
                 string command = "deletelabel -f -a " + labelName;
@@ -321,6 +367,15 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
             }
+
+            /// <summary>
+            /// Delete object. Use DeleteObject to delete a  target, source, user-def function,  mapping, mapplet, session, worklet or workflow.
+            /// Don`t works in a versioned repository
+            /// </summary>
+            /// <param name="folderName">Name of the folder that contains the object</param>
+            /// <param name="objectName">Name of the object you are deleting</param>
+            /// <param name="objectType">Type of the object you are deleting: source, target, mapplet, session, mapping, user def func, worklet, workflow</param>
+            /// <returns>True or False<</returns>
             public bool DeleteObject(string folderName, string objectName, string objectType)
             {
                 string command = "deleteobject -f " + folderName + " -o " + objectName + " -n " + objectType;
@@ -445,12 +500,12 @@ namespace IPCUtilities
             /// Queue
             /// Relational</param>
             /// <returns></returns>
-            public string GetConnectionDetails(string connectionName, string connectionType)
+            public string GetConnectionDetails(string connectionName, ConnectionType connectionType)
             {
-                string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType;
+                string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType.Value;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
-                return result.output;
+                return PmrepWorker.RemoveResultHeader(result.output);
             }
             public string GenerateAbapProgramToFile(PmrepGenerateAbapProgramm parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
             {

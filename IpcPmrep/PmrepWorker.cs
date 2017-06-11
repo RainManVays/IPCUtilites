@@ -49,6 +49,19 @@ namespace IPCUtilities
                         return true;
                 return false;
             }
+
+            internal static string RemoveResultHeader(string result)
+            {
+                string outResult = string.Empty;
+                var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var resultRow in resultarray)
+                {
+                    if (!CheckingRowIsNotGarbage(resultRow))
+                        outResult += resultRow+"\r\n";
+                }
+                return outResult;
+            }
+
             internal static string[] FormattingResult(string result)
             {
                 var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
