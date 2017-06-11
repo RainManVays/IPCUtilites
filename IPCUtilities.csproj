@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="Pmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="Pmrep\CommandObjects\AbstractRepoObject.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepInstallAbapProgram.cs" />
@@ -87,8 +88,12 @@
     <Compile Include="Pmrep\CommandObjects\PmrepUregisterPlugin.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepGenerateAbapProgramm.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepUndoCheckout.cs" />
-    <Compile Include="Pmrep\CommandObjects\PmrepRepoRegister.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepRepoObject.cs" />
     <Compile Include="Pmrep\CommandObjects\PmrepRegisterPlugin.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepMassUpdate.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepModifyFolder.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepRestore.cs" />
+    <Compile Include="Pmrep\CommandObjects\PmrepPurgeVersion.cs" />
     <Compile Include="Pmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -538,9 +538,30 @@ namespace IPCUtilities
                 LogWriter.Write(result.errors);
                 return PmrepWorker.FormattingResult(result.output);
             }
-            public string[] ListObjectDependencies(PmrepObjectDependencies parameters)
+            public string ListObjectDependencies(PmrepObjectDependencies parameters)
             {
-                return null;
+                var otherParams = parameters.append ? " -a " : "";
+                otherParams += parameters.verbose ? " -b " : "";
+                otherParams += parameters.printDBtype ? " -y " : "";
+                otherParams += parameters.acrossRepositories ? " -g " : "";
+                otherParams += parameters.includeFkPkDependency ? " -s " : "";
+                var command = "listobjectdependencies " + parameters.objectName
+                                                  + parameters.objectType
+                                                  + parameters.objectSubType
+                                                  + parameters.folderName
+                                                  + parameters.versionNumber
+                                                  + parameters.persistentInputFile
+                                                  + parameters.dependencyObjectTypes
+                                                  + parameters.dependencyDirection
+                                                  + parameters.persistentOutputFileName
+                                                  + parameters.columnSeparator
+                                                  + parameters.dbdSeparator
+                                                  + parameters.endOfRecordSeparator
+                                                  + parameters.endOfListingIndicator
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string[] ListObjects(PmrepObject parameters)
             {
@@ -576,13 +597,37 @@ namespace IPCUtilities
                 LogWriter.Write(result.errors);
                 return PmrepWorker.FormattingResult(result.output);
             }
-            public string[] MassUpdate()
+            public string MassUpdate(PmrepMassUpdate parameters)
             {
-                return null;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "massupdate " + parameters.sessionPropertyType
+                                                                                  + parameters.sessionPropertyName
+                                                                                  + parameters.sessionPropertyValue +
+                                                                                  parameters.transformationType +
+                                                                                  parameters.folderName +
+                                                                                  parameters.persistentInputFile +
+                                                                                  parameters.conditionOperator +
+                                                                                  parameters.conditionValue +
+                                                                                  parameters.updateSessionInstanceFlag+
+                                                                                  parameters.testMode +
+                                                                                  parameters.outputLogFileName);
+                return result.output;
             }
-            public string[] ModifyFolder()
+            public string ModifyFolder(PmrepModifyFolder parameters)
             {
-                return null;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "modifyFolder " + parameters.folderDescription
+                                                                                  + parameters.folderName
+                                                                                  + parameters.folderStatus +
+                                                                                  parameters.newFolderName +
+                                                                                  parameters.osProfile +
+                                                                                  parameters.ownerName +
+                                                                                  parameters.ownerSecurityDomain +
+                                                                                  parameters.permissions +
+                                                                                  parameters.sharedFolder);
+                return result.output;
             }
             public bool Notify(string message)
             {
@@ -645,9 +690,24 @@ namespace IPCUtilities
                 Console.WriteLine(result.output);
                 return PmrepWorker.CheckErrorInResult(result);
             }
-            public string[] PurgeVersion()
+            public string PurgeVersion(PmrepPurgeVersion parameters)
             {
-                return null;
+                var otherParams = parameters.prewPurgedObjOnly ? " -p " : "";
+                otherParams += parameters.verbose ? " -b " : "";
+                otherParams += parameters.checkDeplGroupReference ? " -c " : "";
+                otherParams += parameters.logObjNotPurged ? " -k " : "";
+
+                var command = "purgeversion " + parameters.version
+                                                  + parameters.lastNVersionsToKeep
+                                                  + parameters.timeDate
+                                                  + parameters.folderName
+                                                  + parameters.queryName
+                                                  + parameters.outputFileName
+                                                  + parameters.dbdSeparator
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string Register(string localRepoName, string localRepoUser, string localRepoPassw)
             {
@@ -656,7 +716,7 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string Register(PmrepRepoRegister parameters)
+            public string Register(PmrepRepoObject parameters)
             {
                 var command = "register " + parameters.localRepoName
                                                   + parameters.localRepoUser
@@ -691,13 +751,43 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string[] Restore()
+            public string Restore(PmrepRestore parameters)
             {
-                return null;
+                var otherParams = parameters.createGlobalRepository ? " -g " : "";
+                otherParams += parameters.enableObjVersioning ? " -y " : "";
+                otherParams += parameters.skipLogs ? " -b " : "";
+                otherParams += parameters.skipDeployHistory ? " -j " : "";
+                otherParams += parameters.skipMxData ? " -q " : "";
+                otherParams += parameters.skipTaskStatistic ? " -t " : "";
+                otherParams += parameters.asNewRepository ? " -a " : "";
+                otherParams += parameters.exitIfDomainDiffCurr ? " -e " : "";
+
+                var command = "restore " + parameters.domainUserName
+                                                  + parameters.domainUserSecurity
+                                                  + parameters.domainPassword
+                                                  + parameters.domainPasswordEnviVar
+                                                  + parameters.inputFileName
+                                                  + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
-            public string[] RollbackDeployment()
+            public string RollbackDeployment(string deployGroupName, string latestDeployRun)
             {
-                return null;
+                string command = "rollbackdeployment -p " + deployGroupName + " -t " + latestDeployRun;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
+            }
+            public string RollbackDeployment(string deployGroupName, string latestDeployRun,string repoName, string latestVersionDeployGroup)
+            {
+                var otherParams = !string.IsNullOrEmpty(repoName) ? " -r " : "";
+                otherParams += !string.IsNullOrEmpty(latestVersionDeployGroup) ? " -v " : "";
+
+                string command = "rollbackdeployment -p " + deployGroupName + " -t " + latestDeployRun + otherParams;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string Run(string scriptFileName)
             {
@@ -751,9 +841,19 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string[] Unregister()
+            public string Unregister(PmrepRepoObject parameters)
             {
-                return null;
+                var command = "unregister " + parameters.localRepoName
+                                                  + parameters.localRepoUser
+                                                  + parameters.localRepoUserSecurityDomain
+                                                  + parameters.localRepoPassword
+                                                  + parameters.localRepoPasswordEnvVar
+                                                  + parameters.localRepoDomainName
+                                                  + parameters.localRepoPortalHostName
+                                                  + parameters.localRepoPortalPort;
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
+                return result.output;
             }
             public string UnregisterPlugin(string vendorId, string pluginId)
             {

@@ -1,6 +1,6 @@
 ﻿namespace IPCUtilities.IpcPmrep
 {
-    public class AbstractAbapProgram
+    public abstract class AbstractAbapProgram
     {
         private string _folderName;
         private string _mappingName;
@@ -13,7 +13,6 @@
         private string _language;
         private string _programMode;
         private string _overrideName;
-        private string _developmentClassName;
 
         public virtual string folderName { get { return _folderName; } set { _folderName = " -s " + value; } }
         public virtual string mappingName { get { return _mappingName; } set { _mappingName = " -m " + value; } }

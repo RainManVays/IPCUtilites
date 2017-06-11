@@ -1,6 +1,6 @@
 ﻿namespace IPCUtilities.IpcPmrep
 {
-    public class PmrepRepoRegister
+    public class PmrepRepoObject
     {
         private string _localRepoName;
         private string _localRepoUser;
