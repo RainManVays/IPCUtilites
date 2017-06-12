@@ -4,6 +4,6 @@
     {
         private string _outputFileLocation;
 
-        public string outputFileLocation { get { return _outputFileLocation; } set { _outputFileLocation = " -f " + value; } }
+        public string OutputFileLocation { get { return _outputFileLocation; } set { _outputFileLocation = " -f " + value; } }
     }
 }

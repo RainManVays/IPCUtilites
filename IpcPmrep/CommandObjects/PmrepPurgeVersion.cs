@@ -10,16 +10,16 @@
         private string _outputFileName;
         private string _dbdSeparator;
 
-        public string version { get { return _version; } set { _version = " -d " + value; } }
-        public string lastNVersionsToKeep { get { return _lastNVersionsToKeep; } set { _lastNVersionsToKeep = " -n " + value; } }
-        public string timeDate { get { return _timeDate; } set { _timeDate = " -t " + value; } }
-        public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-        public string queryName { get { return _queryName; } set { _queryName = " -q " + value; } }
-        public string outputFileName { get { return _outputFileName; } set { _outputFileName = " -o " + value; } }
-        public string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
-        public bool prewPurgedObjOnly { get; set; }
-        public bool verbose { get; set; }
-        public bool checkDeplGroupReference { get; set; }
-        public bool logObjNotPurged { get; set; }
+        public string Version { get { return _version; } set { _version = " -d " + value; } }
+        public string LastNVersionsToKeep { get { return _lastNVersionsToKeep; } set { _lastNVersionsToKeep = " -n " + value; } }
+        public string TimeDate { get { return _timeDate; } set { _timeDate = " -t " + value; } }
+        public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+        public string QueryName { get { return _queryName; } set { _queryName = " -q " + value; } }
+        public string OutputFileName { get { return _outputFileName; } set { _outputFileName = " -o " + value; } }
+        public string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
+        public bool PrewPurgedObjOnly { get; set; }
+        public bool Verbose { get; set; }
+        public bool CheckDeplGroupReference { get; set; }
+        public bool LogObjNotPurged { get; set; }
     }
 }

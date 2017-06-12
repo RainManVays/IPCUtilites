@@ -37,7 +37,7 @@ namespace IPCUtilities
                 
 
 
-                var command = "connect " + parameters.domain + parameters.hostName + parameters.password + parameters.port + parameters.repository + parameters.userName + parameters.timeout;
+                var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
                     var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                     LogWriter.Write(result.output);
                     LogWriter.Write(result.errors);
@@ -58,15 +58,15 @@ namespace IPCUtilities
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
 
-                var command = "addtodeploymentgroup " + parameters.dbdSeparator 
-                                                        + parameters.dependencyTypes 
-                                                        + parameters.deploymentGroupName 
-                                                        + parameters.folderName 
-                                                        + parameters.objectName 
-                                                        + parameters.objectSubType 
-                                                        + parameters.objectType 
-                                                        + parameters.persistentImputFile 
-                                                        + parameters.versionNumber;
+                var command = "addtodeploymentgroup " + parameters.DbdSeparator 
+                                                        + parameters.DependencyTypes 
+                                                        + parameters.DeploymentGroupName 
+                                                        + parameters.FolderName 
+                                                        + parameters.ObjectName 
+                                                        + parameters.ObjectSubType 
+                                                        + parameters.ObjectType 
+                                                        + parameters.PersistentImputFile 
+                                                        + parameters.VersionNumber;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -81,16 +81,16 @@ namespace IPCUtilities
                 var otherParams = acrossRepositories ? " -g ":"";
                 otherParams += moveLabel ? " -m " : "";
                 otherParams += comments ? " -c " : "";
-                var command = "applylabel " + parameters.objectName
-                                                  + parameters.objectType
-                                                  + parameters.objectSubType
-                                                  + parameters.folderName
-                                                  + parameters.labelName
-                                                  + parameters.dbdSeparator
-                                                  + parameters.dependencyDirection
-                                                  + parameters.dependencyObjectTypes
-                                                  + parameters.persistentInputFile
-                                                  + parameters.versionNumber
+                var command = "applylabel " + parameters.ObjectName
+                                                  + parameters.ObjectType
+                                                  + parameters.ObjectSubType
+                                                  + parameters.FolderName
+                                                  + parameters.LabelName
+                                                  + parameters.DbdSeparator
+                                                  + parameters.DependencyDirection
+                                                  + parameters.DependencyObjectTypes
+                                                  + parameters.PersistentInputFile
+                                                  + parameters.VersionNumber
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -101,13 +101,13 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var command = "AssignPermission " + parameters.objectName
-                                                  + parameters.objectType 
-                                                  + parameters.objectSubType
-                                                  + parameters.userName
-                                                  + parameters.groupName
-                                                  + parameters.permission
-                                                  + parameters.securityDomain;
+                var command = "AssignPermission " + parameters.ObjectName
+                                                  + parameters.ObjectType 
+                                                  + parameters.ObjectSubType
+                                                  + parameters.UserName
+                                                  + parameters.GroupName
+                                                  + parameters.Permission
+                                                  + parameters.SecurityDomain;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -140,11 +140,11 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var command = "ChangeOwner " + parameters.objectName
-                                                   + parameters.objectType
-                                                   + parameters.objectSubType
-                                                   + parameters.newOwnerName
-                                                   + parameters.securityDomain;
+                var command = "ChangeOwner " + parameters.ObjectName
+                                                   + parameters.ObjectType
+                                                   + parameters.ObjectSubType
+                                                   + parameters.NewOwnerName
+                                                   + parameters.SecurityDomain;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -152,12 +152,12 @@ namespace IPCUtilities
             }
             public string CheckIn(PmrepCheckIn parameters)
             {
-                var command = "checkin " + parameters.objectName
-                                                    + parameters.objectType
-                                                    + parameters.objectSubType
-                                                    + parameters.folderName
-                                                    + parameters.dbdSeparator
-                                                    + parameters.comments;
+                var command = "checkin " + parameters.ObjectName
+                                                    + parameters.ObjectType
+                                                    + parameters.ObjectSubType
+                                                    + parameters.FolderName
+                                                    + parameters.DbdSeparator
+                                                    + parameters.Comments;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -184,9 +184,9 @@ namespace IPCUtilities
                 var otherParams = createGlobalRepo ? " -g " : "";
                 otherParams += enableVersioning ? " -v " : "";
 
-                var command = "create " + parameters.domainUserName
-                                                    + parameters.domainPassword
-                                                    + parameters.domainUserSecurity
+                var command = "create " + parameters.DomainUserName
+                                                    + parameters.DomainPassword
+                                                    + parameters.DomainUserSecurity
                                                     + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -221,21 +221,21 @@ namespace IPCUtilities
                 var otherParams = t ? " -t " : "";
                 otherParams += x ? " -x " : "";
 
-                var command = "createconnection " + parameters.codePage
-                                                    + parameters.conectionEnvironmentSQL
-                                                    + parameters.connectionAttributes
-                                                    + parameters.connectionName
-                                                    +" -s "+ parameters.connectionType.Value
-                                                    + parameters.connectString
-                                                    + parameters.databaseName
-                                                    + parameters.dataSourceName
-                                                    + parameters.domainName
-                                                    + parameters.packetSize
-                                                    + parameters.password
-                                                    + parameters.rollbackSegment
-                                                    + parameters.serverName
-                                                    + parameters.transactionEnvironmentSQL
-                                                    + parameters.userName
+                var command = "createconnection " + parameters.CodePage
+                                                    + parameters.ConectionEnvironmentSQL
+                                                    + parameters.ConnectionAttributes
+                                                    + parameters.ConnectionName
+                                                    +" -s "+ parameters.ConnectionType.Value
+                                                    + parameters.ConnectString
+                                                    + parameters.DatabaseName
+                                                    + parameters.DataSourceName
+                                                    + parameters.DomainName
+                                                    + parameters.PacketSize
+                                                    + parameters.Password
+                                                    + parameters.RollbackSegment
+                                                    + parameters.ServerName
+                                                    + parameters.TransactionEnvironmentSQL
+                                                    + parameters.UserName
                                                     + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -254,11 +254,11 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var command = "createdeploymentgroup " + parameters.deploymentGroupName
-                                                   + parameters.deploymentGroupType
-                                                   + parameters.queryName
-                                                   + parameters.queryType
-                                                   + parameters.comments;
+                var command = "createdeploymentgroup " + parameters.DeploymentGroupName
+                                                   + parameters.DeploymentGroupType
+                                                   + parameters.QueryName
+                                                   + parameters.QueryType
+                                                   + parameters.Comments;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
 
@@ -282,13 +282,13 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                string command = "createfolder " + parameters.folderName +
-                                                parameters.folderDescription +
-                                                parameters.folderStatus +
-                                                parameters.ownerName +
-                                                parameters.ownerSecurityDomain +
-                                                parameters.permissions +
-                                                parameters.sharedFolder;
+                string command = "createfolder " + parameters.FolderName +
+                                                parameters.FolderDescription +
+                                                parameters.FolderStatus +
+                                                parameters.OwnerName +
+                                                parameters.OwnerSecurityDomain +
+                                                parameters.Permissions +
+                                                parameters.SharedFolder;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return PmrepWorker.CheckErrorInResult(result);
@@ -394,17 +394,17 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                string command = "deploydeploymentgroup " + parameters.deploymentGroupName +
-                                                parameters.controlFileName +
-                                                parameters.targetRepositoryName +
-                                                parameters.targetRepositoryUser +
-                                                parameters.targetRepositoryUserSecurityDomain +
-                                                parameters.targetRepositoryPassword +
-                                                parameters.targetRepositoryPasswordEnvVar +
-                                                parameters.targetDomainName +
-                                                parameters.targetPortalHostName +
-                                                parameters.targetPortalPortNumber +
-                                                parameters.logFileName;
+                string command = "deploydeploymentgroup " + parameters.DeploymentGroupName +
+                                                parameters.ControlFileName +
+                                                parameters.TargetRepositoryName +
+                                                parameters.TargetRepositoryUser +
+                                                parameters.TargetRepositoryUserSecurityDomain +
+                                                parameters.TargetRepositoryPassword +
+                                                parameters.TargetRepositoryPasswordEnvVar +
+                                                parameters.TargetDomainName +
+                                                parameters.TargetPortalHostName +
+                                                parameters.TargetPortalPortNumber +
+                                                parameters.LogFileName;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -420,17 +420,17 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                string command = "deployfolder " + parameters.folderName +
-                                                parameters.controlFileName +
-                                                parameters.targetRepositoryName +
-                                                parameters.targetRepositoryUser +
-                                                parameters.targetRepositoryUserSecurityDomain +
-                                                parameters.targetRepositoryPassword +
-                                                parameters.targetRepositoryPasswordEnvVar +
-                                                parameters.targetDomainName +
-                                                parameters.targetPortalHostName +
-                                                parameters.targetPortalPortNumber +
-                                                parameters.logFileName;
+                string command = "deployfolder " + parameters.FolderName +
+                                                parameters.ControlFileName +
+                                                parameters.TargetRepositoryName +
+                                                parameters.TargetRepositoryUser +
+                                                parameters.TargetRepositoryUserSecurityDomain +
+                                                parameters.TargetRepositoryPassword +
+                                                parameters.TargetRepositoryPasswordEnvVar +
+                                                parameters.TargetDomainName +
+                                                parameters.TargetPortalHostName +
+                                                parameters.TargetPortalPortNumber +
+                                                parameters.LogFileName;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -450,13 +450,13 @@ namespace IPCUtilities
                 otherParams += verbose ? " -b " : "";
                 otherParams += printDBtype ? " -y " : "";
                 otherParams += dontIncludeParentPath ? " -n " : "";
-                var command = "executequery " + parameters.queryName
-                                                  + parameters.queryType
-                                                  + parameters.outputPersistentFileName
-                                                  + parameters.columnSeparator
-                                                  + parameters.endOfRecordSeparator
-                                                  + parameters.endOfListingIndicator
-                                                  + parameters.dbdSeparator
+                var command = "executequery " + parameters.QueryName
+                                                  + parameters.QueryType
+                                                  + parameters.OutputPersistentFileName
+                                                  + parameters.ColumnSeparator
+                                                  + parameters.EndOfRecordSeparator
+                                                  + parameters.EndOfListingIndicator
+                                                  + parameters.DbdSeparator
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -477,13 +477,13 @@ namespace IPCUtilities
                 var otherParams = allUsers ? " -u " : "";
                 otherParams += verbose ? " -b " : "";
                 otherParams += printDBtype ? " -y " : "";
-                var command = "findcheckout " + parameters.objectType
-                                                  + parameters.folderName
-                                                  + parameters.columnSeparator
-                                                  + parameters.endOfRecordSeparator
-                                                  + parameters.endOfRecordSeparator
-                                                  + parameters.endOfListingIndicator
-                                                  + parameters.dbdSeparator
+                var command = "findcheckout " + parameters.ObjectType
+                                                  + parameters.FolderName
+                                                  + parameters.ColumnSeparator
+                                                  + parameters.EndOfRecordSeparator
+                                                  + parameters.EndOfRecordSeparator
+                                                  + parameters.EndOfListingIndicator
+                                                  + parameters.DbdSeparator
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -516,18 +516,18 @@ namespace IPCUtilities
                 otherParams += authorityCheck ? " -a " : "";
                 otherParams += useNamespace ? " -n " : "";
 
-                var command = "generateabapprogramtofile " + parameters.folderName
-                                                  + parameters.mappingName
-                                                  + parameters.versionNumber
-                                                  + parameters.logFilename
-                                                  + parameters.userName
-                                                  + parameters.password
-                                                  + parameters.connectString
-                                                  + parameters.client
-                                                  + parameters.language
-                                                  + parameters.outputFileLocation
-                                                  + parameters.programMode
-                                                  + parameters.overrideName
+                var command = "generateabapprogramtofile " + parameters.FolderName
+                                                  + parameters.MappingName
+                                                  + parameters.VersionNumber
+                                                  + parameters.LogFileName
+                                                  + parameters.UserName
+                                                  + parameters.Password
+                                                  + parameters.ConnectString
+                                                  + parameters.Client
+                                                  + parameters.Language
+                                                  + parameters.OutputFileLocation
+                                                  + parameters.ProgramMode
+                                                  + parameters.OverrideName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -542,19 +542,19 @@ namespace IPCUtilities
                 otherParams += authorityCheck ? " -a " : "";
                 otherParams += useNamespace ? " -n " : "";
 
-                var command = "installabapprogram " + parameters.folderName
-                                                  + parameters.mappingName
-                                                  + parameters.versionNumber
-                                                  + parameters.logFilename
-                                                  + parameters.userName
-                                                  + parameters.password
-                                                  + parameters.connectString
-                                                  + parameters.client
-                                                  + parameters.language
-                                                  + parameters.inputFileName
-                                                  + parameters.programMode
-                                                  + parameters.overrideName
-                                                  + parameters.developmentClassName
+                var command = "installabapprogram " + parameters.FolderName
+                                                  + parameters.MappingName
+                                                  + parameters.VersionNumber
+                                                  + parameters.LogFileName
+                                                  + parameters.UserName
+                                                  + parameters.Password
+                                                  + parameters.ConnectString
+                                                  + parameters.Client
+                                                  + parameters.Language
+                                                  + parameters.InputFileName
+                                                  + parameters.ProgramMode
+                                                  + parameters.OverrideName
+                                                  + parameters.DevelopmentClassName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -595,24 +595,27 @@ namespace IPCUtilities
             }
             public string ListObjectDependencies(PmrepObjectDependencies parameters)
             {
-                var otherParams = parameters.append ? " -a " : "";
-                otherParams += parameters.verbose ? " -b " : "";
-                otherParams += parameters.printDBtype ? " -y " : "";
-                otherParams += parameters.acrossRepositories ? " -g " : "";
-                otherParams += parameters.includeFkPkDependency ? " -s " : "";
-                var command = "listobjectdependencies " + parameters.objectName
-                                                  + parameters.objectType
-                                                  + parameters.objectSubType
-                                                  + parameters.folderName
-                                                  + parameters.versionNumber
-                                                  + parameters.persistentInputFile
-                                                  + parameters.dependencyObjectTypes
-                                                  + parameters.dependencyDirection
-                                                  + parameters.persistentOutputFileName
-                                                  + parameters.columnSeparator
-                                                  + parameters.dbdSeparator
-                                                  + parameters.endOfRecordSeparator
-                                                  + parameters.endOfListingIndicator
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
+                var otherParams = parameters.Append ? " -a " : "";
+                otherParams += parameters.Verbose ? " -b " : "";
+                otherParams += parameters.PrintDBtype ? " -y " : "";
+                otherParams += parameters.AcrossRepositories ? " -g " : "";
+                otherParams += parameters.IncludeFkPkDependency ? " -s " : "";
+                var command = "listobjectdependencies " + parameters.ObjectName
+                                                  + parameters.ObjectType
+                                                  + parameters.ObjectSubType
+                                                  + parameters.FolderName
+                                                  + parameters.VersionNumber
+                                                  + parameters.PersistentInputFile
+                                                  + parameters.DependencyObjectTypes
+                                                  + parameters.DependencyDirection
+                                                  + parameters.PersistentOutputFileName
+                                                  + parameters.ColumnSeparator
+                                                  + parameters.DbdSeparator
+                                                  + parameters.EndOfRecordSeparator
+                                                  + parameters.EndOfListingIndicator
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -622,15 +625,16 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "listobjects "+parameters.columnSeparator
-                                                                                  +parameters.dbdSeparator
-                                                                                  +parameters.endOfListingIndicator+
-                                                                                  parameters.endOfRecordIndicator+
-                                                                                  parameters.folderName+
-                                                                                  parameters.objectSubtype+
-                                                                                  parameters.objectType+
-                                                                                  parameters.printDatabaseType+
-                                                                                  parameters.verbose);
+
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "listobjects "+parameters.ColumnSeparator
+                                                                                  +parameters.DbdSeparator
+                                                                                  +parameters.EndOfListingIndicator+
+                                                                                  parameters.EndOfRecordIndicator+
+                                                                                  parameters.FolderName+
+                                                                                  parameters.ObjectSubtype+
+                                                                                  parameters.ObjectType+
+                                                                                  parameters.PrintDatabaseType+
+                                                                                  parameters.Verbose);
                 LogWriter.Write(result.errors);
                 return PmrepWorker.FormattingResult(result.output);
             }
@@ -656,32 +660,32 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "massupdate " + parameters.sessionPropertyType
-                                                                                  + parameters.sessionPropertyName
-                                                                                  + parameters.sessionPropertyValue +
-                                                                                  parameters.transformationType +
-                                                                                  parameters.folderName +
-                                                                                  parameters.persistentInputFile +
-                                                                                  parameters.conditionOperator +
-                                                                                  parameters.conditionValue +
-                                                                                  parameters.updateSessionInstanceFlag+
-                                                                                  parameters.testMode +
-                                                                                  parameters.outputLogFileName);
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "massupdate " + parameters.SessionPropertyType
+                                                                                  + parameters.SessionPropertyName
+                                                                                  + parameters.SessionPropertyValue +
+                                                                                  parameters.TransformationType +
+                                                                                  parameters.FolderName +
+                                                                                  parameters.PersistentInputFile +
+                                                                                  parameters.ConditionOperator +
+                                                                                  parameters.ConditionValue +
+                                                                                  parameters.UpdateSessionInstance+
+                                                                                  parameters.TestMode +
+                                                                                  parameters.OutputLogFileName);
                 return result.output;
             }
             public string ModifyFolder(PmrepModifyFolder parameters)
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
-                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "modifyFolder " + parameters.folderDescription
-                                                                                  + parameters.folderName
-                                                                                  + parameters.folderStatus +
-                                                                                  parameters.newFolderName +
-                                                                                  parameters.osProfile +
-                                                                                  parameters.ownerName +
-                                                                                  parameters.ownerSecurityDomain +
-                                                                                  parameters.permissions +
-                                                                                  parameters.sharedFolder);
+                var result = PmrepWorker.ExecuteCommand(_pmrepFile, "modifyFolder " + parameters.FolderDescription
+                                                                                  + parameters.FolderName
+                                                                                  + parameters.FolderStatus +
+                                                                                  parameters.NewFolderName +
+                                                                                  parameters.OsProfile +
+                                                                                  parameters.OwnerName +
+                                                                                  parameters.OwnerSecurityDomain +
+                                                                                  parameters.Permissions +
+                                                                                  parameters.SharedFolder);
                 return result.output;
             }
             public bool Notify(string message)
@@ -693,17 +697,20 @@ namespace IPCUtilities
             }
             public string ObjectImport(PmrepObjectImport parameters,bool retainPersistentValue=true)
             {
-              var otherParams = retainPersistentValue ? " -p " : "";
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
 
-              PmrepWorker.CreateControlImportFile(sourceFolder: parameters.sourceFolder,
-                                                        sourceRepo: parameters.sourceRepo,
-                                                        targetFolder: parameters.targetFolder,
-                                                        targetRepo: parameters.targetRepo,
-                                                        dtdFile: parameters.importDtdFile,
-                                                        encoding: parameters.controlFileEncoding);
-                string command = "objectimport " + parameters.importXml +
+                var otherParams = retainPersistentValue ? " -p " : "";
+
+              PmrepWorker.CreateControlImportFile(sourceFolder: parameters.SourceFolder,
+                                                        sourceRepo: parameters.SourceRepo,
+                                                        targetFolder: parameters.TargetFolder,
+                                                        targetRepo: parameters.TargetRepo,
+                                                        dtdFile: parameters.ImportDtdFile,
+                                                        encoding: parameters.ControlFileEncoding);
+                string command = "objectimport " + parameters.ImportXml +
                                             " -c importXml.xml " +
-                                            parameters.logFile +
+                                            parameters.LogFile +
                                             otherParams;
                 
 
@@ -729,16 +736,19 @@ namespace IPCUtilities
 
             public bool ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
                 var otherParams = m ? " -m " : "";
                     otherParams += s ? " -s " : "";
                     otherParams += b ? " -b " : "";
                     otherParams += r ? " -r " : "";
-                var command = "objectexport " + parameters.folderName
-                                                  + parameters.logFileName
-                                                  + parameters.dbdSeparator
-                                                  + parameters.persistentInputFile
-                                                  + parameters.versionNumber
-                                                  +parameters.xnlOutputFileName
+                var command = "objectexport " + parameters.FolderName
+                                                  + parameters.LogFileName
+                                                  + parameters.DbdSeparator
+                                                  + parameters.PersistentInputFile
+                                                  + parameters.VersionNumber
+                                                  +parameters.XnlOutputFileName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -747,18 +757,21 @@ namespace IPCUtilities
             }
             public string PurgeVersion(PmrepPurgeVersion parameters)
             {
-                var otherParams = parameters.prewPurgedObjOnly ? " -p " : "";
-                otherParams += parameters.verbose ? " -b " : "";
-                otherParams += parameters.checkDeplGroupReference ? " -c " : "";
-                otherParams += parameters.logObjNotPurged ? " -k " : "";
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
 
-                var command = "purgeversion " + parameters.version
-                                                  + parameters.lastNVersionsToKeep
-                                                  + parameters.timeDate
-                                                  + parameters.folderName
-                                                  + parameters.queryName
-                                                  + parameters.outputFileName
-                                                  + parameters.dbdSeparator
+                var otherParams = parameters.PrewPurgedObjOnly ? " -p " : "";
+                otherParams += parameters.Verbose ? " -b " : "";
+                otherParams += parameters.CheckDeplGroupReference ? " -c " : "";
+                otherParams += parameters.LogObjNotPurged ? " -k " : "";
+
+                var command = "purgeversion " + parameters.Version
+                                                  + parameters.LastNVersionsToKeep
+                                                  + parameters.TimeDate
+                                                  + parameters.FolderName
+                                                  + parameters.QueryName
+                                                  + parameters.OutputFileName
+                                                  + parameters.DbdSeparator
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -773,14 +786,17 @@ namespace IPCUtilities
             }
             public string Register(PmrepRepoObject parameters)
             {
-                var command = "register " + parameters.localRepoName
-                                                  + parameters.localRepoUser
-                                                  + parameters.localRepoUserSecurityDomain
-                                                  + parameters.localRepoPassword
-                                                  + parameters.localRepoPasswordEnvVar
-                                                  + parameters.localRepoDomainName
-                                                  + parameters.localRepoPortalHostName
-                                                  + parameters.localRepoPortalPort;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
+                var command = "register " + parameters.LocalRepoName
+                                                  + parameters.LocalRepoUser
+                                                  + parameters.LocalRepoUserSecurityDomain
+                                                  + parameters.LocalRepoPassword
+                                                  + parameters.LocalRepoPasswordEnvVar
+                                                  + parameters.LocalRepoDomainName
+                                                  + parameters.LocalRepoPortalHostName
+                                                  + parameters.LocalRepoPortalPort;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -794,10 +810,13 @@ namespace IPCUtilities
             }
             public string RegisterPlugin(PmrepRegisterPlugin parameters,bool updatePlugin=false,bool checkSecurLib = false,bool isNativePlugin=false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
                 var otherParams = updatePlugin ? " -e " : "";
                 otherParams += checkSecurLib ? " -k " : "";
                 otherParams += isNativePlugin ? " -N " : "";
-                var command = "registerplugin " + parameters.inputRegistrationFile
+                var command = "registerplugin " + parameters.InputRegistrationFile
                                                   + parameters.NISLogin
                                                   + parameters.NISPassword
                                                   + parameters.NISPasswordEnviVar
@@ -808,20 +827,23 @@ namespace IPCUtilities
             }
             public string Restore(PmrepRestore parameters)
             {
-                var otherParams = parameters.createGlobalRepository ? " -g " : "";
-                otherParams += parameters.enableObjVersioning ? " -y " : "";
-                otherParams += parameters.skipLogs ? " -b " : "";
-                otherParams += parameters.skipDeployHistory ? " -j " : "";
-                otherParams += parameters.skipMxData ? " -q " : "";
-                otherParams += parameters.skipTaskStatistic ? " -t " : "";
-                otherParams += parameters.asNewRepository ? " -a " : "";
-                otherParams += parameters.exitIfDomainDiffCurr ? " -e " : "";
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
 
-                var command = "restore " + parameters.domainUserName
-                                                  + parameters.domainUserSecurity
-                                                  + parameters.domainPassword
-                                                  + parameters.domainPasswordEnviVar
-                                                  + parameters.inputFileName
+                var otherParams = parameters.CreateGlobalRepository ? " -g " : "";
+                otherParams += parameters.EnableObjVersioning ? " -y " : "";
+                otherParams += parameters.SkipLogs ? " -b " : "";
+                otherParams += parameters.SkipDeployHistory ? " -j " : "";
+                otherParams += parameters.SkipMxData ? " -q " : "";
+                otherParams += parameters.SkipTaskStatistic ? " -t " : "";
+                otherParams += parameters.AsNewRepository ? " -a " : "";
+                otherParams += parameters.ExitIfDomainDiffCurr ? " -e " : "";
+
+                var command = "restore " + parameters.DomainUserName
+                                                  + parameters.DomainUserSecurity
+                                                  + parameters.DomainPassword
+                                                  + parameters.DomainPasswordEnviVar
+                                                  + parameters.InputFileName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -887,25 +909,31 @@ namespace IPCUtilities
             }
             public string UndoCheckout(PmrepUndoCheckout parameters)
             {
-                var command = "undocheckout " + parameters.dbdSeparator
-                                                   + parameters.folderName
-                                                   + parameters.objectName
-                                                   + parameters.objectSubType
-                                                   + parameters.objectType;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
+                var command = "undocheckout " + parameters.DbdSeparator
+                                                   + parameters.FolderName
+                                                   + parameters.ObjectName
+                                                   + parameters.ObjectSubType
+                                                   + parameters.ObjectType;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
             public string Unregister(PmrepRepoObject parameters)
             {
-                var command = "unregister " + parameters.localRepoName
-                                                  + parameters.localRepoUser
-                                                  + parameters.localRepoUserSecurityDomain
-                                                  + parameters.localRepoPassword
-                                                  + parameters.localRepoPasswordEnvVar
-                                                  + parameters.localRepoDomainName
-                                                  + parameters.localRepoPortalHostName
-                                                  + parameters.localRepoPortalPort;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
+                var command = "unregister " + parameters.LocalRepoName
+                                                  + parameters.LocalRepoUser
+                                                  + parameters.LocalRepoUserSecurityDomain
+                                                  + parameters.LocalRepoPassword
+                                                  + parameters.LocalRepoPasswordEnvVar
+                                                  + parameters.LocalRepoDomainName
+                                                  + parameters.LocalRepoPortalHostName
+                                                  + parameters.LocalRepoPortalPort;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -919,13 +947,15 @@ namespace IPCUtilities
             }
             public string UnregisterPlugin(PmrepUregisterPlugin parameters,bool isSecurityModule=false,bool removeUserNameLogin=false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
 
                 var otherParams = isSecurityModule ? " -s " : "";
                 otherParams += removeUserNameLogin ? " -g " : "";
-                var command = "unregisterplugin " + parameters.vendorId
-                                                  + parameters.pluginId
-                                                  + parameters.newPassword
-                                                  + parameters.newPasswordEnvVariable
+                var command = "unregisterplugin " + parameters.VendorId
+                                                  + parameters.PluginId
+                                                  + parameters.NewPassword
+                                                  + parameters.NewPasswordEnvVariable
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -933,16 +963,19 @@ namespace IPCUtilities
             }
             public string UpdateConnection(PmrepUpdateConnection parameters)
             {
-                var command = "updateconnection " + parameters.connectionSubtype
-                                                   + parameters.connectionName
-                                                   + parameters.newUserName
-                                                   + parameters.newPassword
-                                                   + parameters.newPasswordEnvVariable
-                                                   + parameters.newConnectionString
-                                                   + parameters.attributeName
-                                                   + parameters.newAttributeValue
-                                                   + parameters.connectionType
-                                                   + parameters.codePage;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+
+                var command = "updateconnection " + parameters.ConnectionSubtype
+                                                   + parameters.ConnectionName
+                                                   + parameters.NewUserName
+                                                   + parameters.NewPassword
+                                                   + parameters.NewPasswordEnvVariable
+                                                   + parameters.NewConnectionString
+                                                   + parameters.AttributeName
+                                                   + parameters.NewAttributeValue
+                                                   + parameters.ConnectionType
+                                                   + parameters.CodePage;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -963,13 +996,15 @@ namespace IPCUtilities
             }
             public string UpdateSeqGenVals(PmrepSequence parameters)
             {
-                var command = "updateseqgenvals " + parameters.folderName
-                                                   + parameters.mappingName
-                                                   + parameters.sequenceGeneratorName
-                                                   + parameters.startValue
-                                                   + parameters.endValue
-                                                   + parameters.incrementBy
-                                                   + parameters.currentValue;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+                var command = "updateseqgenvals " + parameters.FolderName
+                                                   + parameters.MappingName
+                                                   + parameters.SequenceGeneratorName
+                                                   + parameters.StartValue
+                                                   + parameters.EndValue
+                                                   + parameters.IncrementBy
+                                                   + parameters.CurrentValue;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
@@ -981,13 +1016,15 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string UpdateSrcPrefix(PmrepSrcPrefix parameters, bool useTargetInstanceName = false)
+            public string UpdateSrcPrefix(PmrepSrcTargetPrefix parameters, bool useTargetInstanceName = false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
                 var otherParams = useTargetInstanceName ? " -n " : "";
-                var command = "updatetargprefix " + parameters.folderName
-                                                  + parameters.sessionName
-                                                  + parameters.sourceName
-                                                  + parameters.prefixName
+                var command = "updatetargprefix " + parameters.FolderName
+                                                  + parameters.SessionName
+                                                  + parameters.SrcTrgName
+                                                  + parameters.PrefixName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -1007,13 +1044,15 @@ namespace IPCUtilities
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
-            public string UpdateTargPrefix(PmrepTargPrefix parameters,bool useTargetInstanceName=false)
+            public string UpdateTargPrefix(PmrepSrcTargetPrefix parameters,bool useTargetInstanceName=false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
                 var otherParams = useTargetInstanceName ? " -n " : "";
-                var command = "updatetargprefix " + parameters.folderName
-                                                  + parameters.sessionName
-                                                  + parameters.targetName
-                                                  + parameters.prefixName
+                var command = "updatetargprefix " + parameters.FolderName
+                                                  + parameters.SessionName
+                                                  + parameters.SrcTrgName
+                                                  + parameters.PrefixName
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -1021,6 +1060,7 @@ namespace IPCUtilities
             }
             public string Upgrade(string repositoryPassword)
             {
+
                 string command = "upgrade -x " + repositoryPassword;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
@@ -1028,38 +1068,41 @@ namespace IPCUtilities
             }
             public string UninstallAbapProgram(PmrepUnistallAbapProgram parameters)
             {
-
-                var command = "uninstallabapprogram " + parameters.folderName
-                                                  + parameters.mappingName
-                                                  + parameters.versionNumber
-                                                  + parameters.logFilename
-                                                  + parameters.userName
-                                                  + parameters.password
-                                                  + parameters.connectString
-                                                  + parameters.client
-                                                  + parameters.language
-                                                  + parameters.programMode;
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
+                var command = "uninstallabapprogram " + parameters.FolderName
+                                                  + parameters.MappingName
+                                                  + parameters.VersionNumber
+                                                  + parameters.LogFilename
+                                                  + parameters.UserName
+                                                  + parameters.Password
+                                                  + parameters.ConnectString
+                                                  + parameters.Client
+                                                  + parameters.Language
+                                                  + parameters.ProgramMode;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);
                 return result.output;
             }
             public string Validate(PmrepValidate parameters, bool saveUponValid = false, bool checkUponValid = false, bool checkInComment = false, bool append = false, bool verbose = false, bool printDBType = false)
             {
+                if (parameters == null)
+                    throw new ArgumentNullException("parameters", "parameters is null");
                 var otherParams = saveUponValid ? " -s " : "";
                 otherParams += checkUponValid ? " -k " : "";
                 otherParams += checkInComment ? " -m " : "";
                 otherParams += append ? " -a " : "";
                 otherParams += verbose ? " -b " : "";
                 otherParams += printDBType ? " -y " : "";
-                var command = "validate " + parameters.objectName
-                                                  + parameters.objectType
-                                                  + parameters.versionNumber
-                                                  + parameters.folderName
-                                                  + parameters.outputOptionTypes
-                                                  + parameters.persistentInputFile
-                                                  + parameters.persistentOutputFileName
-                                                  + parameters.endOfRecordSeparator
-                                                  + parameters.endOfListingIndicator
+                var command = "validate " + parameters.ObjectName
+                                                  + parameters.ObjectType
+                                                  + parameters.VersionNumber
+                                                  + parameters.FolderName
+                                                  + parameters.OutputOptionTypes
+                                                  + parameters.PersistentInputFile
+                                                  + parameters.PersistentOutputFileName
+                                                  + parameters.EndOfRecordSeparator
+                                                  + parameters.EndOfListingIndicator
                                                   + otherParams;
 
                 var result = PmrepWorker.ExecuteCommand(_pmrepFile, command);

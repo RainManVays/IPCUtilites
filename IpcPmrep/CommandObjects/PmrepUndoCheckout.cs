@@ -6,8 +6,8 @@
         private string _folderName;
         private string _dbdSeparator;
 
-        public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-        public string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
+        public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+        public string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
 
     }
 }

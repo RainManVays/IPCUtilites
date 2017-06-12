@@ -7,8 +7,8 @@ namespace IPCUtilities.IpcPmrep
             private string _domainPassword;
             private string _domainUserSecurity;
 
-            public string domainUserName { get { return _domainUserName; } set { _domainUserName = " -u " + value; } }
-            public string domainPassword { get { return _domainPassword; } set { _domainPassword = " -p " + value; } }
-            public string domainUserSecurity { get { return _domainUserSecurity; } set { _domainUserSecurity = " -s " + value; } }
+            public string DomainUserName { get { return _domainUserName; } set { _domainUserName = " -u " + value; } }
+            public string DomainPassword { get { return _domainPassword; } set { _domainPassword = " -p " + value; } }
+            public string DomainUserSecurity { get { return _domainUserSecurity; } set { _domainUserSecurity = " -s " + value; } }
         }
 }

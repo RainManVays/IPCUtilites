@@ -9,13 +9,13 @@
             private string _dependencyObjectTypes;
             private string _dependencyDirection;
             private string _dbdSeparator;
-            public string labelName { get { return _labelName; } set { _labelName = " -a " + value; } }
-            public string versionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
-            public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-            public string persistentInputFile { get { return _persistentInputFile; } set { _persistentInputFile = " -i " + value; } }
-            public string dependencyObjectTypes { get { return _dependencyObjectTypes; } set { _dependencyObjectTypes = " -d " + value; } }
-            public string dependencyDirection { get { return _dependencyDirection; } set { _dependencyDirection = " -p " + value; } }
-            public string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -e " + value; } }
+            public string LabelName { get { return _labelName; } set { _labelName = " -a " + value; } }
+            public string VersionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
+            public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+            public string PersistentInputFile { get { return _persistentInputFile; } set { _persistentInputFile = " -i " + value; } }
+            public string DependencyObjectTypes { get { return _dependencyObjectTypes; } set { _dependencyObjectTypes = " -d " + value; } }
+            public string DependencyDirection { get { return _dependencyDirection; } set { _dependencyDirection = " -p " + value; } }
+            public string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -e " + value; } }
 
     }
 }

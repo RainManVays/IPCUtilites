@@ -11,11 +11,11 @@ namespace IPCUtilities.IpcPmrep
             private string _dbdSeparator;
 
 
-            public  string objectType { get { return _objectType; } set { _objectType = " -o " + value; } }
-            public  string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-            public  string columnSeparator { get { return _columnSeparator; } set { _columnSeparator = " -c " + value; } }
-            public  string endOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
-            public  string endOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
-            public  string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
+            public  string ObjectType { get { return _objectType; } set { _objectType = " -o " + value; } }
+            public  string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+            public  string ColumnSeparator { get { return _columnSeparator; } set { _columnSeparator = " -c " + value; } }
+            public  string EndOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
+            public  string EndOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
+            public  string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
         }
 }

@@ -7,8 +7,8 @@ namespace IPCUtilities.IpcPmrep
             private string _inputFileName;
             private string _developmentClassName;
 
-            public string inputFileName { get { return _inputFileName; } set { _inputFileName = " -f " + value; } }
-            public string developmentClassName { get { return _developmentClassName; } set { _developmentClassName = " -d " + value; } }
+            public string InputFileName { get { return _inputFileName; } set { _inputFileName = " -f " + value; } }
+            public string DevelopmentClassName { get { return _developmentClassName; } set { _developmentClassName = " -d " + value; } }
 
         }
 }

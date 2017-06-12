@@ -7,9 +7,9 @@
         private string _newPassword;
         private string _newPasswordEnvVariable;
 
-        public string vendorId { get { return _vendorId; } set { _vendorId = " -v " + value; } }
-        public string pluginId { get { return _pluginId; } set { _pluginId = " -l " + value; } }
-        public string newPassword { get { return _newPassword; } set { _newPassword = " -w " + value; } }
-        public string newPasswordEnvVariable { get { return _newPasswordEnvVariable; } set { _newPasswordEnvVariable = " -W " + value; } }
+        public string VendorId { get { return _vendorId; } set { _vendorId = " -v " + value; } }
+        public string PluginId { get { return _pluginId; } set { _pluginId = " -l " + value; } }
+        public string NewPassword { get { return _newPassword; } set { _newPassword = " -w " + value; } }
+        public string NewPasswordEnvVariable { get { return _newPasswordEnvVariable; } set { _newPasswordEnvVariable = " -W " + value; } }
     }
 }

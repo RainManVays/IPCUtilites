@@ -11,13 +11,13 @@
         private string _controlFileEncoding;
         private string _logFile;
 
-        public string importXml { get { return _importXml; } set { _importXml = " -i " + value; } }
-        public string sourceFolder { get { return _sourceFolder; } set { _sourceFolder =  value; } }
-        public string sourceRepo { get { return _sourceRepo; } set { _sourceRepo = value; } }
-        public string targetFolder { get { return _targetFolder; } set { _targetFolder = value; } }
-        public string targetRepo { get { return _targetRepo; } set { _targetRepo =  value; } }
-        public string controlFileEncoding { get { return _controlFileEncoding; } set { _controlFileEncoding = value; } }
-        public string importDtdFile { get { return _importDtdFile; } set { _importDtdFile = value; } }
-        public string logFile { get { return _logFile; } set { _logFile = " -l " + value; } }
+        public string ImportXml { get { return _importXml; } set { _importXml = " -i " + value; } }
+        public string SourceFolder { get { return _sourceFolder; } set { _sourceFolder =  value; } }
+        public string SourceRepo { get { return _sourceRepo; } set { _sourceRepo = value; } }
+        public string TargetFolder { get { return _targetFolder; } set { _targetFolder = value; } }
+        public string TargetRepo { get { return _targetRepo; } set { _targetRepo =  value; } }
+        public string ControlFileEncoding { get { return _controlFileEncoding; } set { _controlFileEncoding = value; } }
+        public string ImportDtdFile { get { return _importDtdFile; } set { _importDtdFile = value; } }
+        public string LogFile { get { return _logFile; } set { _logFile = " -l " + value; } }
     }
 }

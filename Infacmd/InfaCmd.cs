@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace IPCUtilities
 {
     
-    namespace IpcInfacmd
+    namespace IPCInfacmd
     {
         /// <summary>
         /// Administer the Informatica domain and application services and processes, including the repository and integration

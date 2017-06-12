@@ -11,12 +11,12 @@ namespace IPCUtilities.IpcPmrep
             private string _endOfListingIndicator;
             private string _dbdSeparator;
 
-            public virtual string queryName { get { return _queryName; } set { _queryName = " -q " + value; } }
-            public virtual string queryType { get { return _queryType; } set { _queryType = " -t " + value; } }
-            public virtual string outputPersistentFileName { get { return _outputPersistentFileName; } set { _outputPersistentFileName = " -u " + value; } }
-            public virtual string columnSeparator { get { return _columnSeparator; } set { _columnSeparator = " -c " + value; } }
-            public virtual string endOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
-            public virtual string endOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
-            public virtual string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
+            public virtual string QueryName { get { return _queryName; } set { _queryName = " -q " + value; } }
+            public virtual string QueryType { get { return _queryType; } set { _queryType = " -t " + value; } }
+            public virtual string OutputPersistentFileName { get { return _outputPersistentFileName; } set { _outputPersistentFileName = " -u " + value; } }
+            public virtual string ColumnSeparator { get { return _columnSeparator; } set { _columnSeparator = " -c " + value; } }
+            public virtual string EndOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
+            public virtual string EndOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
+            public virtual string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
         }
 }

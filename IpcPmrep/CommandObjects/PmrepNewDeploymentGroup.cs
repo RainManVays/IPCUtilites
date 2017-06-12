@@ -11,11 +11,11 @@ namespace IPCUtilities
             private string _queryType;
             private string _comments;
 
-            public string deploymentGroupName { get { return _deploymentGroupName; } set { _deploymentGroupName = " -p " + value; } }
-            public string deploymentGroupType { get { return _deploymentGroupType; } set { _deploymentGroupType = " -t " + value; } }
-            public string queryName { get { return _queryName; } set { _queryName = " -q " + value; } }
-            public string queryType { get { return _queryType; } set { _queryType = " -u " + value; } }
-            public string comments { get { return _comments; } set { _comments = " -c " + value; } }
+            public string DeploymentGroupName { get { return _deploymentGroupName; } set { _deploymentGroupName = " -p " + value; } }
+            public string DeploymentGroupType { get { return _deploymentGroupType; } set { _deploymentGroupType = " -t " + value; } }
+            public string QueryName { get { return _queryName; } set { _queryName = " -q " + value; } }
+            public string QueryType { get { return _queryType; } set { _queryType = " -u " + value; } }
+            public string Comments { get { return _comments; } set { _comments = " -c " + value; } }
         }
     }
 }

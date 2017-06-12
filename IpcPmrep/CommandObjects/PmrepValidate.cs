@@ -12,14 +12,14 @@
         private string _endOfRecordSeparator;
         private string _endOfListingIndicator;
 
-        public string objectName { get { return _objectName; } set { _objectName = " -n " + value; } }
-        public string objectType { get { return _objectType; } set { _objectType = " -o " + value; } }
-        public string versionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
-        public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-        public string outputOptionTypes { get { return _outputOptionTypes; } set { _outputOptionTypes = " -p " + value; } }
-        public string persistentInputFile { get { return _persistentInputFile; } set { _persistentInputFile = " -i " + value; } }
-        public string persistentOutputFileName { get { return _persistentOutputFileName; } set { _persistentOutputFileName = " -u " + value; } }
-        public string endOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
-        public string endOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
+        public string ObjectName { get { return _objectName; } set { _objectName = " -n " + value; } }
+        public string ObjectType { get { return _objectType; } set { _objectType = " -o " + value; } }
+        public string VersionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
+        public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+        public string OutputOptionTypes { get { return _outputOptionTypes; } set { _outputOptionTypes = " -p " + value; } }
+        public string PersistentInputFile { get { return _persistentInputFile; } set { _persistentInputFile = " -i " + value; } }
+        public string PersistentOutputFileName { get { return _persistentOutputFileName; } set { _persistentOutputFileName = " -u " + value; } }
+        public string EndOfRecordSeparator { get { return _endOfRecordSeparator; } set { _endOfRecordSeparator = " -r " + value; } }
+        public string EndOfListingIndicator { get { return _endOfListingIndicator; } set { _endOfListingIndicator = " -l " + value; } }
     }
 }

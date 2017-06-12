@@ -14,16 +14,16 @@
         private string _codePage;
 
 
-        public string connectionSubtype { get { return _connectionSubtype; } set { _connectionSubtype = " -t " + value; } }
-        public string connectionName { get { return _connectionName; } set { _connectionName = " -d " + value; } }
-        public string newUserName { get { return _newUserName; } set { _newUserName = " -u " + value; } }
-        public string newPassword { get { return _newPassword; } set { _newPassword = " -p " + value; } }
-        public string newPasswordEnvVariable { get { return _newPasswordEnvVariable; } set { _newPasswordEnvVariable = " -P " + value; } }
-        public string newConnectionString { get { return _newConnectionString; } set { _newConnectionString = " -c " + value; } }
-        public string attributeName { get { return _attributeName; } set { _attributeName = " -a " + value; } }
-        public string newAttributeValue { get { return _newAttributeValue; } set { _newAttributeValue = " -v " + value; } }
-        public string connectionType { get { return _connectionType; } set { _connectionType = " -s " + value; } }
-        public string codePage { get { return _codePage; } set { _codePage = " -l " + value; } }
+        public string ConnectionSubtype { get { return _connectionSubtype; } set { _connectionSubtype = " -t " + value; } }
+        public string ConnectionName { get { return _connectionName; } set { _connectionName = " -d " + value; } }
+        public string NewUserName { get { return _newUserName; } set { _newUserName = " -u " + value; } }
+        public string NewPassword { get { return _newPassword; } set { _newPassword = " -p " + value; } }
+        public string NewPasswordEnvVariable { get { return _newPasswordEnvVariable; } set { _newPasswordEnvVariable = " -P " + value; } }
+        public string NewConnectionString { get { return _newConnectionString; } set { _newConnectionString = " -c " + value; } }
+        public string AttributeName { get { return _attributeName; } set { _attributeName = " -a " + value; } }
+        public string NewAttributeValue { get { return _newAttributeValue; } set { _newAttributeValue = " -v " + value; } }
+        public string ConnectionType { get { return _connectionType; } set { _connectionType = " -s " + value; } }
+        public string CodePage { get { return _codePage; } set { _codePage = " -l " + value; } }
 
     }
 }

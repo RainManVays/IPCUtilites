@@ -9,11 +9,11 @@
             private string _dependencyTypes;
             private string _dbdSeparator;
 
-            public string deploymentGroupName { get { return _deploymentGroupName; } set { _deploymentGroupName = " -p " + value; } }
-            public string versionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
-            public string folderName { get { return _folderName; } set { _folderName = " -f " + value; } }
-            public string persistentImputFile { get { return _persistentImputFile; } set { _persistentImputFile = " -i " + value; } }
-            public string dependencyTypes { get { return _dependencyTypes; } set { _dependencyTypes = " -d " + value; } }
-            public string dbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
+            public string DeploymentGroupName { get { return _deploymentGroupName; } set { _deploymentGroupName = " -p " + value; } }
+            public string VersionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
+            public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
+            public string PersistentImputFile { get { return _persistentImputFile; } set { _persistentImputFile = " -i " + value; } }
+            public string DependencyTypes { get { return _dependencyTypes; } set { _dependencyTypes = " -d " + value; } }
+            public string DbdSeparator { get { return _dbdSeparator; } set { _dbdSeparator = " -s " + value; } }
         }
 }

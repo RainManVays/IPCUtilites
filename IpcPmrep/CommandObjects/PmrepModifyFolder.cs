@@ -5,7 +5,7 @@
         private string _newFolderName;
         private string _osProfile;
 
-        public string newFolderName { get { return _newFolderName; } set { _newFolderName = " -r " + value; } }
-        public string osProfile { get { return _osProfile; } set { _osProfile = " -u " + value; } }
+        public string NewFolderName { get { return _newFolderName; } set { _newFolderName = " -r " + value; } }
+        public string OsProfile { get { return _osProfile; } set { _osProfile = " -u " + value; } }
     }
 }

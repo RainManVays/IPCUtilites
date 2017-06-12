@@ -83,8 +83,7 @@
     <Compile Include="IpcPmrep\CommandObjects\PmrepObjectImport.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepValidate.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepUnistallAbapProgram.cs" />
-    <Compile Include="IpcPmrep\CommandObjects\PmrepTargPrefix.cs" />
-    <Compile Include="IpcPmrep\CommandObjects\PmrepSrcPrefix.cs" />
+    <Compile Include="IpcPmrep\CommandObjects\PmrepSrcTargetPrefix.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepSequence.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepUpdateConnection.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepUregisterPlugin.cs" />
