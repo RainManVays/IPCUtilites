@@ -26,7 +26,7 @@ namespace IPCUtilities
             /// <param name="logFile">if you need write work log set full path to logfile</param>
             public Pmrep(string pmrepfile, PmrepConnection parameters, string logFile = null)
             {
-                _pmrepFile = pmrepfile;
+                
 
                 if (!File.Exists(pmrepfile))
                     throw new FileNotFoundException("File not found!", pmrepfile);
@@ -34,7 +34,7 @@ namespace IPCUtilities
                     throw new ArgumentNullException("parameters", "parameters is null");
                 if (logFile != null)
                     LogWriter.SetLogFile(logFile);
-                
+                _pmrepFile = pmrepfile;
 
 
                 var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
@@ -488,10 +488,12 @@ namespace IPCUtilities
             {
                 if (parameters == null)
                     throw new ArgumentNullException("parameters", "parameters is null");
+
                 var otherParams = append ? " -a " : "";
                 otherParams += verbose ? " -b " : "";
                 otherParams += printDBtype ? " -y " : "";
                 otherParams += dontIncludeParentPath ? " -n " : "";
+
                 var command = "executequery " + parameters.QueryName
                                                   + parameters.QueryType
                                                   + parameters.OutputPersistentFileName

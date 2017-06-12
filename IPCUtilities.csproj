@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdConnection.cs" />
+    <Compile Include="IpcPmcmd\PmcmdOutput.cs" />
+    <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoObject.cs" />
@@ -65,7 +68,7 @@
     <Compile Include="Infacmd\Infacmd.cs" />
     <Compile Include="Infasetup\Infasetup.cs" />
     <Compile Include="LogWriter.cs" />
-    <Compile Include="Pmcmd\Pmcmd.cs" />
+    <Compile Include="IpcPmcmd\Pmcmd.cs" />
     <Compile Include="IpcPmrep\ConnectionTypes.cs" />
     <Compile Include="IpcPmrep\DBType.cs" />
     <Compile Include="IpcPmrep\Pmrep.cs" />
