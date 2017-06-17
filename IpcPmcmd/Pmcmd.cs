@@ -16,6 +16,7 @@ namespace IPCUtilities
         {
             private string _pmcmdFile;
             private PmcmdConnection _connectionValue;
+            private string _connectionCommand = "";
             public  Pmcmd(string pmcmdfile, PmcmdConnection parameters, string logFile = null)
             {
                 
@@ -25,6 +26,8 @@ namespace IPCUtilities
                     throw new ArgumentNullException("parameters", "parameters is null");
                 _pmcmdFile = pmcmdfile;
                 _connectionValue = parameters;
+                _connectionCommand = "connect " + parameters.Domain + parameters.Service + parameters.Password + parameters.UserName;
+               // PmcmdWorker.ExecuteCommand(pmcmdfile, command);
 
             }
 
@@ -32,11 +35,7 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool abortworkflow()
-            {
-                return false;
-            }
-            public bool Connect()
+            public bool Abortworkflow()
             {
                 return false;
             }
@@ -48,22 +47,31 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool GetRunningSessionsDetails()
+            public string GetRunningSessionsDetails()
             {
-                return false;
+                var command = "getrunningsessionsdetails";
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                return result;
             }
-            public bool GetServiceDetails()
+            public string GetServiceDetails(WorkflowsStatus type)
             {
-                return false;
+                var command = "getservicedetails "+ type.Value;
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                return result;
+            }
+            public string GetServiceDetailsData(WorkflowsStatus type)
+            {
+                var command = "getservicedetails " + type.Value;
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                return result;
             }
             public string GetServiceProperties()
             {
-                var command= "getserviceproperties -t 60" + _connectionValue.Domain
-                                                     + _connectionValue.Service;
-                var result=PmcmdWorker.ExecuteCommand(_pmcmdFile, command);
-                return result.output;
+                var command = "getserviceproperties";
+                var result=PmcmdWorker.ExecuteCommand(_pmcmdFile,_connectionCommand, command);
+                return result;
             }
-            public bool getsessionstatistics()
+            public bool GetSessionStatistics()
             {
                 return false;
             }
@@ -75,12 +83,14 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool Help()
-            {
-                return false;
-            }
             public bool PingService()
             {
+                var command = "pingservice";
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                if (result.ToLower().Contains("integration service is alive"))
+                {
+                    return true;
+                }
                 return false;
             }
             public bool RecoverWorkflow()
@@ -91,21 +101,11 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool SetFolder()
+            public string ShowSettings()
             {
-                return false;
-            }
-            public bool SetNoWait()
-            {
-                return false;
-            }
-            public bool SetWait()
-            {
-                return false;
-            }
-            public bool ShowSettings()
-            {
-                return false;
+                var command = "showsettings";
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                return result;
             }
             public bool StartTask()
             {
@@ -127,13 +127,11 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool UnsetFolder()
+            public string Version()
             {
-                return false;
-            }
-            public bool Version()
-            {
-                return false;
+                var command = "version";
+                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                return result;
             }
 
             public bool WaitTask()
@@ -144,10 +142,7 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool Using()
-            {
-                return false;
-            }
+
         }
     }
 }

@@ -52,9 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IpcPmcmd\CommandObjects\AbstractTaskParams.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdConnection.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\ServiceDetails.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\TaskDetails.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\WorkfllowsDetails.cs" />
     <Compile Include="IpcPmcmd\PmcmdOutput.cs" />
     <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
+    <Compile Include="IpcPmcmd\WorkflowsStatus.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoObject.cs" />
