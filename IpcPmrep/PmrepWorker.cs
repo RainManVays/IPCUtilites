@@ -81,7 +81,6 @@ namespace IPCUtilities
                             _outputResult.AppendLine(e.Data);
                         if (e.Data.Contains("Invoked at "))
                             _outputResult.Clear();
-                        //Console.WriteLine(e.Data);
                     }
                 else
                 {
@@ -134,36 +133,11 @@ namespace IPCUtilities
                 return resultCollection.ToArray();
             }
 
-            internal static string[] FormattingResult(string result, char separator)
-            {
-                var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                List<string> resultCollection = new List<string>();
-                foreach (var resultRow in resultarray)
-                {
-                    if (!CheckingRowIsNotGarbage(resultRow))
-                        resultCollection.Add(resultRow);
-                }
-                return resultCollection.ToArray();
-            }
-            internal static string[] FormattingResult(string result, string separator)
-            {
-                var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                List<string> resultCollection = new List<string>();
-                foreach (var resultRow in resultarray)
-                {
-                    if (!CheckingRowIsNotGarbage(resultRow))
-                        resultCollection.Add(resultRow);
-                }
-
-                return resultCollection.ToArray();
-            }
-
             internal  bool CheckErrorInResult(string result)
             {
 
                 if (result.Length > 0 || result.ToLower().Contains("failed"))
                 {
-                    LogWriter.Write(result);
                     LogWriter.Write(result);
                     return false;
                 }

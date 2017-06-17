@@ -12,7 +12,7 @@ namespace IPCUtilities
         /// Performs repository administration tasks. Use pmrep to list repository objects, create and edit groups, and 
         /// restore and delete repositories.
         /// </summary>
-        public class Pmrep
+        public class Pmrep: IDisposable
         {
             private string _pmrepFile;
             private string _lastCommandResult;
@@ -72,7 +72,7 @@ namespace IPCUtilities
                                                         + parameters.PersistentImputFile 
                                                         + parameters.VersionNumber;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                
                 return _pmWork.CheckErrorInResult(result);
@@ -98,7 +98,7 @@ namespace IPCUtilities
                                                   + parameters.VersionNumber
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -114,7 +114,7 @@ namespace IPCUtilities
                                                   + parameters.Permission
                                                   + parameters.SecurityDomain;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -122,7 +122,7 @@ namespace IPCUtilities
             {
                 var command = "backup -o " + outputFileName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -137,7 +137,7 @@ namespace IPCUtilities
                 otherParams += skipMxData ? " -q " : "";
                 otherParams += skipTaskStatistic ? " -v " : "";
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -151,7 +151,7 @@ namespace IPCUtilities
                                                    + parameters.NewOwnerName
                                                    + parameters.SecurityDomain;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -164,7 +164,7 @@ namespace IPCUtilities
                                                     + parameters.DbdSeparator
                                                     + parameters.Comments;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -172,7 +172,7 @@ namespace IPCUtilities
             {
                 string command = "cleanup";
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -180,7 +180,7 @@ namespace IPCUtilities
             {
                 string command = "cleardeploymentgroup -f -p "+deploymentGroupName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -196,7 +196,7 @@ namespace IPCUtilities
                                                     + parameters.DomainUserSecurity
                                                     + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -206,7 +206,7 @@ namespace IPCUtilities
                                                     + " -n "+connectionName
                                                     + " -l "+codePage;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -217,7 +217,7 @@ namespace IPCUtilities
                                                     + " -l " + codePage
                                                     + " -c " + connectionString;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -245,7 +245,7 @@ namespace IPCUtilities
                                                     + parameters.UserName
                                                     + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -253,7 +253,7 @@ namespace IPCUtilities
             {
                 var command = "createdeploymentgroup -p " + deploymentGroupName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -267,7 +267,7 @@ namespace IPCUtilities
                                                    + parameters.QueryType
                                                    + parameters.Comments;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -275,7 +275,7 @@ namespace IPCUtilities
             {
                 string command = "createfolder -n " + folderName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -283,7 +283,7 @@ namespace IPCUtilities
             {
                 string command = "createfolder -n " + folderName+ " -p " + permissions;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -299,7 +299,7 @@ namespace IPCUtilities
                                                 parameters.Permissions +
                                                 parameters.SharedFolder;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -307,7 +307,7 @@ namespace IPCUtilities
             {
                 string command = "createlabel -a " + labelName + " -c " + comments;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -315,7 +315,7 @@ namespace IPCUtilities
             {
                 string command = "delete -f  -x " + repositoryPassword;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -330,7 +330,7 @@ namespace IPCUtilities
             {
                 
                 string  command = "deleteconnection -f -n " + connectionName;
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -346,7 +346,7 @@ namespace IPCUtilities
                 string command = "deleteconnection -f -n " + connectionName + " -s " + connectionType.Value;
 
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -354,7 +354,7 @@ namespace IPCUtilities
             {
                 string command = "deletedeploymentgroup -f -p " + groupName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -367,7 +367,7 @@ namespace IPCUtilities
             {
                 string command = "deletefolder -n " + folderName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -380,7 +380,7 @@ namespace IPCUtilities
             {
                 string command = "deletelabel -f -a " + labelName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -397,7 +397,7 @@ namespace IPCUtilities
             {
                 string command = "deleteobject -f " + folderName + " -o " + objectName + " -n " + objectType;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -405,7 +405,7 @@ namespace IPCUtilities
             {
                 string command = "deploydeploymentgroup -p " + deploymentGroupName + " -c " + controlFileName + " -r " + targetRepositoryName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -425,7 +425,7 @@ namespace IPCUtilities
                                                 parameters.TargetPortalPortNumber +
                                                 parameters.LogFileName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -433,7 +433,7 @@ namespace IPCUtilities
             {
                 string command = "deployfolder -f " + folderName + " -c " + controlFileName + " -r " + targetRepositoryName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -453,7 +453,7 @@ namespace IPCUtilities
                                                 parameters.TargetPortalPortNumber +
                                                 parameters.LogFileName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -466,7 +466,7 @@ namespace IPCUtilities
             {
                 string command = "executequery -q " + queryName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -498,7 +498,7 @@ namespace IPCUtilities
                                                   + parameters.DbdSeparator
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -527,7 +527,7 @@ namespace IPCUtilities
                                                   + parameters.DbdSeparator
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
             }
@@ -546,7 +546,7 @@ namespace IPCUtilities
             {
                 string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType.Value;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string GenerateAbapProgramToFile(PmrepGenerateAbapProgramm parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
@@ -572,7 +572,7 @@ namespace IPCUtilities
                                                   + parameters.OverrideName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public bool InstallAbapProgram(PmrepInstallAbapProgram parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
@@ -599,7 +599,7 @@ namespace IPCUtilities
                                                   + parameters.DevelopmentClassName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -623,7 +623,7 @@ namespace IPCUtilities
                         command = "killuserconnection -i " + connectionID;
                 }
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -663,7 +663,7 @@ namespace IPCUtilities
                                                   + parameters.EndOfListingIndicator
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string[] ListObjects(PmrepObject parameters)
@@ -686,7 +686,7 @@ namespace IPCUtilities
             {
                 string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + objectType;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
 
@@ -696,7 +696,7 @@ namespace IPCUtilities
             /// </summary>
             public string[] ListUserConnections()
             {
-                var result = _pmWork.ExecuteCommand( "listuserconnections");
+                var result = _pmWork.ExecuteCommand("listuserconnections");
                 return _pmWork.FormattingResult(result);
             }
             public bool MassUpdate(PmrepMassUpdate parameters)
@@ -744,7 +744,7 @@ namespace IPCUtilities
             {
                 string command = "notify -m \"" + message+"\"";
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -768,7 +768,7 @@ namespace IPCUtilities
                                             otherParams;
                 
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
 
                 SetLastCommandResult(result);
 
@@ -785,7 +785,7 @@ namespace IPCUtilities
   
 
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -808,7 +808,7 @@ namespace IPCUtilities
                                                   +parameters.XnlOutputFileName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -832,7 +832,7 @@ namespace IPCUtilities
                                                   + parameters.DbdSeparator
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
                 return _pmWork.CheckErrorInResult(result);
@@ -841,7 +841,7 @@ namespace IPCUtilities
             {
                 string command = "register -r " + localRepoName + " -n " + localRepoUser + " -x " + localRepoPassw;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
 
                 SetLastCommandResult(result);
 
@@ -861,7 +861,7 @@ namespace IPCUtilities
                                                   + parameters.LocalRepoPortalHostName
                                                   + parameters.LocalRepoPortalPort;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -869,7 +869,7 @@ namespace IPCUtilities
             {
                 string command = "registerplugin -i ";
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -887,7 +887,7 @@ namespace IPCUtilities
                                                   + parameters.NISPasswordEnviVar
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -912,7 +912,7 @@ namespace IPCUtilities
                                                   + parameters.InputFileName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -920,7 +920,7 @@ namespace IPCUtilities
             {
                 string command = "rollbackdeployment -p " + deployGroupName + " -t " + latestDeployRun;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -931,7 +931,7 @@ namespace IPCUtilities
 
                 string command = "rollbackdeployment -p " + deployGroupName + " -t " + latestDeployRun + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -939,7 +939,7 @@ namespace IPCUtilities
             {
                 string command = "run -f " + scriptFileName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -950,7 +950,7 @@ namespace IPCUtilities
                 otherParams += encodeUTF8 ? " -u " : "";
                 string command = "run -f " + scriptFileName + " -o " + outputFileName+ otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -958,7 +958,7 @@ namespace IPCUtilities
             {
                 string command = "switchconnection -o " + oldConnectionName + " -n " + newConnectionName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -966,7 +966,7 @@ namespace IPCUtilities
             {
                 string command = "truncatelog -t " + logsTruncated;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -977,7 +977,7 @@ namespace IPCUtilities
                                                    +" -w "+workflowName;
                                                                         
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -992,7 +992,7 @@ namespace IPCUtilities
                                                    + parameters.ObjectSubType
                                                    + parameters.ObjectType;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1010,7 +1010,7 @@ namespace IPCUtilities
                                                   + parameters.LocalRepoPortalHostName
                                                   + parameters.LocalRepoPortalPort;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1018,7 +1018,7 @@ namespace IPCUtilities
             {
                 string command = "unregisterplugin -v " + vendorId + " -l " + vendorId;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1035,7 +1035,7 @@ namespace IPCUtilities
                                                   + parameters.NewPasswordEnvVariable
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1055,7 +1055,7 @@ namespace IPCUtilities
                                                    + parameters.ConnectionType
                                                    + parameters.CodePage;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1063,7 +1063,7 @@ namespace IPCUtilities
             {
                 string command = "updateemailaddr -d " + folderName + " -s " + sessionName + " -u " + succesEmailAddres + " -f " + failureEmailAddress;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1071,7 +1071,7 @@ namespace IPCUtilities
             {
                 string command = "updateseqgenvals -f " + folderName + " -t " + sequenceName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1087,7 +1087,7 @@ namespace IPCUtilities
                                                    + parameters.IncrementBy
                                                    + parameters.CurrentValue;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1095,7 +1095,7 @@ namespace IPCUtilities
             {
                 string command = "updatesrcprefix -f " + folderName + " -p " + prefixName + " -s " + sessionName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1110,7 +1110,7 @@ namespace IPCUtilities
                                                   + parameters.PrefixName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1118,7 +1118,7 @@ namespace IPCUtilities
             {
                 string command = "updatestatistics";
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
@@ -1126,7 +1126,7 @@ namespace IPCUtilities
             {
                 string command = "updatetargprefix -f " + folderName+" -p "+prefixName+" -s "+sessionName;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string UpdateTargPrefix(PmrepSrcTargetPrefix parameters,bool useTargetInstanceName=false)
@@ -1140,7 +1140,7 @@ namespace IPCUtilities
                                                   + parameters.PrefixName
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string Upgrade(string repositoryPassword)
@@ -1148,7 +1148,7 @@ namespace IPCUtilities
 
                 string command = "upgrade -x " + repositoryPassword;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string UninstallAbapProgram(PmrepUnistallAbapProgram parameters)
@@ -1166,7 +1166,7 @@ namespace IPCUtilities
                                                   + parameters.Language
                                                   + parameters.ProgramMode;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
             public string Validate(PmrepValidate parameters, bool saveUponValid = false, bool checkUponValid = false, bool checkInComment = false, bool append = false, bool verbose = false, bool printDBType = false)
@@ -1190,8 +1190,13 @@ namespace IPCUtilities
                                                   + parameters.EndOfListingIndicator
                                                   + otherParams;
 
-                var result = _pmWork.ExecuteCommand( command);
+                var result = _pmWork.ExecuteCommand(command);
                 return result;
+            }
+
+            public void Dispose()
+            {
+                _pmWork.Dispose();
             }
         }
     }
