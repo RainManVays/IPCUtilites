@@ -14,7 +14,6 @@ namespace IPCUtilities
         /// </summary>
         public class Pmrep: IDisposable
         {
-            private string _pmrepFile;
             private string _lastCommandResult;
             private PmrepWorker _pmWork;
             /// <summary>
@@ -35,19 +34,10 @@ namespace IPCUtilities
                     throw new ArgumentNullException("parameters", "parameters is null");
                 if (logFile != null)
                     LogWriter.SetLogFile(logFile);
-                _pmrepFile = pmrepfile;
-
-
-                    var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
-                    _pmWork = new PmrepWorker(_pmrepFile, command);
+                var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
+                _pmWork = new PmrepWorker(pmrepfile, command);
             }
-            /// <summary>
-            /// Adds objects to a deployment group. Use AddToDeploymentGroup to add source, target, transformation, mapping, 
-            /// session, worklet, workflow, scheduler, session configuration, and task objects
-            /// </summary>
-            /// <param name="parameters"></param>
-            /// <returns></returns>
-            /// 
+           
             private void SetLastCommandResult(string result)
             {
                 _lastCommandResult = result;
@@ -56,7 +46,12 @@ namespace IPCUtilities
             {
                 return _lastCommandResult;
             }
-
+            /// <summary>
+            /// Adds objects to a deployment group. Use AddToDeploymentGroup to add source, target, transformation, mapping, 
+            /// session, worklet, workflow, scheduler, session configuration, and task objects
+            /// </summary>
+            /// <param name="parameters"></param>
+            /// <returns>True or False</returns>
             public bool AddToDeploymentGroup(PmrepAddDeploymentGroup parameters)
             {
                 if (parameters == null)
@@ -605,30 +600,46 @@ namespace IPCUtilities
                 return _pmWork.CheckErrorInResult(result);
             }
             /// <summary>
-            /// Terminates user connections to the repository. You can terminate user connections based on the user name or 
-            /// connection ID. You can also terminate all user connections to the repository.
+            /// Terminates all users connections.
             /// </summary>
-            public bool KillUserConnection(string userName = null, string connectionID = null, bool terminateAll = false)
+            public bool KillUserConnection()
             {
-                string command = string.Empty;
-                if (terminateAll)
-                {
-                    command = "killuserconnection -a";
-                }
-                else
-                {
-                    if (userName != null)
-                        command = "killuserconnection -n " + userName;
-                    else if (connectionID != null)
-                        command = "killuserconnection -i " + connectionID;
-                }
+                string command = "killuserconnection -a";
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
+                return _pmWork.CheckErrorInResult(result);
+            }
+            /// <summary>
+            /// Terminates user connections to the repository. You can terminate user connections based on the user name
+            /// </summary>
+            /// <param name="userName">user name</param>
+            /// <returns>True or False</returns>
+            public bool KillUserConnection(string userName)
+            {
+                if (string.IsNullOrEmpty(userName))
+                    throw new ArgumentNullException("userName", "userName is null");
+                string command = "killuserconnection -n " + userName;
 
+                var result = _pmWork.ExecuteCommand(command);
+                SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
 
             }
+
+            /// <summary>
+            /// Terminates user connections to the repository. You can terminate user connections based on connection ID.
+            /// </summary>
+            /// <param name="connectionID">user connection id</param>
+            /// <returns>True or False</returns>
+            public bool KillUserConnection(int connectionID)
+            {
+                string command =  "killuserconnection -i " + connectionID;
+                var result = _pmWork.ExecuteCommand(command);
+                SetLastCommandResult(result);
+                return _pmWork.CheckErrorInResult(result);
+            }
+
             /// <summary>
             /// List all connection objects in the repository and their respective connection types.
             /// Args:None
@@ -666,6 +677,43 @@ namespace IPCUtilities
                 var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
+            /// <summary>
+            /// Returns a list of objects in the repository.
+            /// </summary>
+            /// <param name="objectType">type object</param>
+            /// <returns>objects array</returns>
+            public string[] ListObjects(string objectType)
+            {
+                if (string.IsNullOrEmpty(objectType))
+                    throw new ArgumentNullException("objectType", "objectType is null of empty");
+
+                var result = _pmWork.ExecuteCommand("listobjects -o " + objectType);
+                return _pmWork.ConvertResultToArray(result);
+            }
+
+            /// <summary>
+            /// Returns a list of objects in the repository.
+            /// </summary>
+            /// <param name="objectType">type object</param>
+            /// <param name="folderName">folder name</param>
+            /// <returns>objects array</returns>
+            public string[] ListObjects(string objectType, string folderName)
+            {
+                if (string.IsNullOrEmpty(objectType))
+                    throw new ArgumentNullException("objectType", "objectType is null of empty");
+                if (string.IsNullOrEmpty(folderName))
+                    throw new ArgumentNullException("folderName", "folderName is null of empty");
+
+                var result = _pmWork.ExecuteCommand("listobjects -o " + objectType+" -f "+folderName);
+
+                return _pmWork.ConvertResultToArray(result);
+            }
+
+            /// <summary>
+            ///  Returns a list of objects in the repository.
+            /// </summary>
+            /// <param name="parameters">options and arguments</param>
+            /// <returns>objects array</returns>
             public string[] ListObjects(PmrepObject parameters)
             {
                 if (parameters == null)
@@ -739,10 +787,26 @@ namespace IPCUtilities
             /// Sends notification messages to users connected to all repositories
             /// </summary>
             /// <param name="message">notify message</param>
-            /// <returns></returns>
+            /// <returns>True or False</returns>
             public bool Notify(string message)
             {
                 string command = "notify -m \"" + message+"\"";
+
+                var result = _pmWork.ExecuteCommand(command);
+                SetLastCommandResult(result);
+
+                return _pmWork.CheckErrorInResult(result);
+            }
+            public bool ObjectImport(string importXml, string importControlFile, string logFileName = null, bool retainPersistentValue = true)
+            {
+                var otherParams = retainPersistentValue ? " -p " : "";
+                otherParams += string.IsNullOrEmpty(logFileName) ? "" : " -l " + logFileName;
+
+                string command = "objectimport " + "- i " + importXml +
+                                                " -c " + importControlFile +
+                                                otherParams;
+
+
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
@@ -774,23 +838,16 @@ namespace IPCUtilities
 
                 return _pmWork.CheckErrorInResult(result);
             }
-            public bool ObjectImport(string importXml,string importControlFile,string logFileName=null, bool retainPersistentValue = true)
-            {
-                var otherParams = retainPersistentValue ? " -p " : "";
-                otherParams += string.IsNullOrEmpty(logFileName) ? "" : " -l " + logFileName;
 
-                string command = "objectimport " + "- i " + importXml +
-                                                " -c "+importControlFile +
-                                                otherParams;
-  
-
-
-                var result = _pmWork.ExecuteCommand(command);
-                SetLastCommandResult(result);
-
-                return _pmWork.CheckErrorInResult(result);
-            }
-
+            /// <summary>
+            /// Exports objects to an XML file defined by the powrmart.dtd file
+            /// </summary>
+            /// <param name="parameters"></param>
+            /// <param name="m">export pk-fk dependency</param>
+            /// <param name="s">export objects referred by shortcut</param>
+            /// <param name="b">export non-reusable dependents</param>
+            /// <param name="r">export reusable dependents</param>
+            /// <returns>True or False</returns>
             public bool ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
             {
                 if (parameters == null)
@@ -1143,9 +1200,15 @@ namespace IPCUtilities
                 var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
+            /// <summary>
+            /// Upgrades repository to the latest version
+            /// </summary>
+            /// <param name="repositoryPassword">administrator password</param>
+            /// <returns>upgrades logs</returns>
             public string Upgrade(string repositoryPassword)
             {
-
+                if (string.IsNullOrEmpty(repositoryPassword))
+                    throw new ArgumentNullException("repositoryPassword", "repositoryPassword is null");
                 string command = "upgrade -x " + repositoryPassword;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1194,6 +1257,9 @@ namespace IPCUtilities
                 return result;
             }
 
+            /// <summary>
+            /// Clear all resources and closing pmrep
+            /// </summary>
             public void Dispose()
             {
                 _pmWork.Dispose();

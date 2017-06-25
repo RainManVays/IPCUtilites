@@ -100,20 +100,6 @@ namespace IPCUtilities
                     }
                 }
             }
-            private bool dispose = false;
-            public void Dispose()
-            {
-                if (!dispose)
-                {
-                    ExecuteCommand("cleanup");
-                    ExecuteCommand("exit");
-                    _pmrep.Close();
-                    _outputResult.Clear();
-                    _imputCommand.Dispose();
-                    dispose = true;
-                }
-
-            }
             private static void CheckConnectionsResult(string row)
             {
                 if(row.Contains("Repository connection failed."))
@@ -158,7 +144,7 @@ namespace IPCUtilities
 
             internal bool CheckErrorInResult(string result)
             {
-                if (result.Length > 0 || result.ToLower().Contains("failed"))
+                if (result.Length == 0 || result.ToLower().Contains("failed"))
                 {
                     LogWriter.Write(result);
                     return false;
@@ -181,6 +167,31 @@ namespace IPCUtilities
                           "</IMPORTPARAMS>\n";
                 File.WriteAllText("importXml.xml", controlFileTemplate);
             }
+
+            #region IDisposable Support
+            private bool disposedValue = false;
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        ExecuteCommand("cleanup");
+                        ExecuteCommand("exit");
+                        _pmrep.Close();
+                        _outputResult.Clear();
+                        _imputCommand.Dispose();
+                    }
+
+                    disposedValue = true;
+                }
+            }
+            public void Dispose()
+            {
+                Dispose(true);
+            }
+            #endregion
 
 
 
