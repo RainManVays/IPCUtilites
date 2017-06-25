@@ -10,14 +10,6 @@ namespace IPCUtilities
 {
     namespace IpcPmrep
     {
-
-        internal class PmrepOutput
-        {
-            internal string output { get; set; }
-            internal string errors { get; set; }
-        }
-
-
         internal class PmrepWorker : IDisposable
         {
             static StringBuilder _outputResult = new StringBuilder();
@@ -192,14 +184,7 @@ namespace IPCUtilities
                 Dispose(true);
             }
             #endregion
-
-
-
-
-
-
         }
 
-        
     }
 }

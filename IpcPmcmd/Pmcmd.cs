@@ -22,10 +22,8 @@ namespace IPCUtilities
                 
                 if (!File.Exists(pmcmdfile))
                     throw new FileNotFoundException("File not found!", pmcmdfile);
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
                 _pmcmdFile = pmcmdfile;
-                _connectionValue = parameters;
+                _connectionValue = parameters ?? throw new ArgumentNullException("parameters", "parameters is null");
                 _connectionCommand = "connect " + parameters.Domain + parameters.Service + parameters.Password + parameters.UserName;
                // PmcmdWorker.ExecuteCommand(pmcmdfile, command);
 

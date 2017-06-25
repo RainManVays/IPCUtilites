@@ -63,6 +63,7 @@
     <Compile Include="IpcPmrep\CommandObjects\PmrepConnection.cs" />
     <Compile Include="Infacmd\Infacmd.cs" />
     <Compile Include="Infasetup\Infasetup.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="IpcPmcmd\Pmcmd.cs" />
     <Compile Include="IpcPmrep\ConnectionTypes.cs" />

@@ -30,8 +30,8 @@ namespace IPCUtilities
 
                 if (!File.Exists(pmrepfile))
                     throw new FileNotFoundException("File not found!", pmrepfile);
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 if (logFile != null)
                     LogWriter.SetLogFile(logFile);
                 var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
@@ -54,8 +54,7 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool AddToDeploymentGroup(PmrepAddDeploymentGroup parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var command = "addtodeploymentgroup " + parameters.DbdSeparator 
                                                         + parameters.DependencyTypes 
@@ -75,8 +74,8 @@ namespace IPCUtilities
             }
             public bool ApplyLabel(PmrepApplyLabel parameters,bool acrossRepositories=false, bool moveLabel=false, bool comments=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 //retest need
                 var otherParams = acrossRepositories ? " -g ":"";
                 otherParams += moveLabel ? " -m " : "";
@@ -99,8 +98,7 @@ namespace IPCUtilities
             }
             public bool AssignPermission(PmrepPermissions parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var command = "AssignPermission " + parameters.ObjectName
                                                   + parameters.ObjectType 
                                                   + parameters.ObjectSubType
@@ -115,6 +113,7 @@ namespace IPCUtilities
             }
             public bool BackUp(string outputFileName)
             {
+                Guard.ThrowIsNull(outputFileName);
                 var command = "backup -o " + outputFileName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -138,8 +137,7 @@ namespace IPCUtilities
             }
             public bool ChangeOwner(PmrepChangeOwner parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var command = "ChangeOwner " + parameters.ObjectName
                                                    + parameters.ObjectType
                                                    + parameters.ObjectSubType
@@ -152,6 +150,8 @@ namespace IPCUtilities
             }
             public string CheckIn(PmrepCheckIn parameters)
             {
+                
+                Guard.ThrowIsNull(parameters);
                 var command = "checkin " + parameters.ObjectName
                                                     + parameters.ObjectType
                                                     + parameters.ObjectSubType
@@ -163,6 +163,10 @@ namespace IPCUtilities
                 SetLastCommandResult(result);
                 return result;
             }
+            /// <summary>
+            /// Cleans up any persistent resource created by pmrep.
+            /// </summary>
+            /// <returns>True or False</returns>
             public bool CleanUp()
             {
                 string command = "cleanup";
@@ -173,6 +177,8 @@ namespace IPCUtilities
             }
             public bool ClearDeploymentGroup(string deploymentGroupName)
             {
+                Guard.ThrowIsNull(deploymentGroupName);
+
                 string command = "cleardeploymentgroup -f -p "+deploymentGroupName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -181,8 +187,8 @@ namespace IPCUtilities
             }
             public string Create(PmrepCreate parameters,bool createGlobalRepo=false,bool enableVersioning=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var otherParams = createGlobalRepo ? " -g " : "";
                 otherParams += enableVersioning ? " -v " : "";
 
@@ -197,6 +203,8 @@ namespace IPCUtilities
             }
             public bool CreateConnection(string connectionType, string connectionName,string codePage)
             {
+                Guard.ThrowIsNull(connectionType, connectionName, codePage);
+
                 var command = "createconnection -s " +connectionType 
                                                     + " -n "+connectionName
                                                     + " -l "+codePage;
@@ -207,6 +215,7 @@ namespace IPCUtilities
             }
             public bool CreateConnection(string connectionType, string connectionName, string codePage, string connectionString)
             {
+                Guard.ThrowIsNull(connectionType, connectionName, codePage, connectionString);
                 var command = "createconnection -s " + connectionType
                                                     + " -n " + connectionName
                                                     + " -l " + codePage
@@ -218,8 +227,8 @@ namespace IPCUtilities
             }
             public bool CreateConnection(PmrepCreateConnection parameters, bool t=false,bool x=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var otherParams = t ? " -t " : "";
                 otherParams += x ? " -x " : "";
 
@@ -246,6 +255,8 @@ namespace IPCUtilities
             }
             public bool CreateDeploymentGroup(string deploymentGroupName)
             {
+                Guard.ThrowIsNull(deploymentGroupName);
+
                 var command = "createdeploymentgroup -p " + deploymentGroupName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -254,8 +265,8 @@ namespace IPCUtilities
             }
             public bool CreateDeploymentGroup(PmrepNewDeploymentGroup parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var command = "createdeploymentgroup " + parameters.DeploymentGroupName
                                                    + parameters.DeploymentGroupType
                                                    + parameters.QueryName
@@ -268,6 +279,7 @@ namespace IPCUtilities
             }
             public bool CreateFolder(string folderName)
             {
+                Guard.ThrowIsNull(folderName);
                 string command = "createfolder -n " + folderName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -276,6 +288,8 @@ namespace IPCUtilities
             }
             public bool CreateFolder(string folderName,string permissions)
             {
+                Guard.ThrowIsNull(folderName, permissions);
+
                 string command = "createfolder -n " + folderName+ " -p " + permissions;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -284,8 +298,9 @@ namespace IPCUtilities
             }
             public bool CreateFolder(PmrepNewFolder parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
+
                 string command = "createfolder " + parameters.FolderName +
                                                 parameters.FolderDescription +
                                                 parameters.FolderStatus +
@@ -298,8 +313,21 @@ namespace IPCUtilities
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
-            public bool CreateLabel(string labelName, string comments = null)
+            public bool CreateLabel(string labelName)
             {
+                Guard.ThrowIsNull(labelName);
+
+                string command = "createlabel -a " + labelName;
+
+                var result = _pmWork.ExecuteCommand(command);
+                SetLastCommandResult(result);
+                return _pmWork.CheckErrorInResult(result);
+            }
+
+            public bool CreateLabel(string labelName, string comments)
+            {
+                Guard.ThrowIsNull(labelName,comments);
+
                 string command = "createlabel -a " + labelName + " -c " + comments;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -308,6 +336,8 @@ namespace IPCUtilities
             }
             public bool Delete(string repositoryPassword)
             {
+                Guard.ThrowIsNull(repositoryPassword);
+
                 string command = "delete -f  -x " + repositoryPassword;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -323,7 +353,8 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool DeleteConnection(string connectionName)
             {
-                
+                Guard.ThrowIsNull(connectionName);
+
                 string  command = "deleteconnection -f -n " + connectionName;
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
@@ -337,9 +368,9 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool DeleteConnection(string connectionName, ConnectionType connectionType )
             {
+                Guard.ThrowIsNull(connectionName);
 
                 string command = "deleteconnection -f -n " + connectionName + " -s " + connectionType.Value;
-
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
@@ -347,6 +378,8 @@ namespace IPCUtilities
             }
             public bool DeleteDeploymentGroup(string groupName)
             {
+                Guard.ThrowIsNull(groupName);
+
                 string command = "deletedeploymentgroup -f -p " + groupName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -360,6 +393,8 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool DeleteFolder(string folderName)
             {
+                Guard.ThrowIsNull(folderName);
+
                 string command = "deletefolder -n " + folderName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -373,6 +408,8 @@ namespace IPCUtilities
             /// <returns>True or False<</returns>
             public bool DeleteLabel(string labelName)
             {
+                Guard.ThrowIsNull(labelName);
+
                 string command = "deletelabel -f -a " + labelName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -390,6 +427,7 @@ namespace IPCUtilities
             /// <returns>True or False<</returns>
             public bool DeleteObject(string folderName, string objectName, string objectType)
             {
+                Guard.ThrowIsNull(folderName,objectName,objectType);
                 string command = "deleteobject -f " + folderName + " -o " + objectName + " -n " + objectType;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -398,6 +436,8 @@ namespace IPCUtilities
             }
             public string DeployDeploymentGroup(string deploymentGroupName,string controlFileName,string targetRepositoryName)
             {
+                Guard.ThrowIsNull(deploymentGroupName,controlFileName,targetRepositoryName);
+
                 string command = "deploydeploymentgroup -p " + deploymentGroupName + " -c " + controlFileName + " -r " + targetRepositoryName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -406,8 +446,8 @@ namespace IPCUtilities
             }
             public string DeployDeploymentGroup(PmrepRunDeploymentGroup parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 string command = "deploydeploymentgroup " + parameters.DeploymentGroupName +
                                                 parameters.ControlFileName +
                                                 parameters.TargetRepositoryName +
@@ -426,6 +466,8 @@ namespace IPCUtilities
             }
             public string DeployFolder(string folderName, string controlFileName, string targetRepositoryName)
             {
+                Guard.ThrowIsNull(folderName, controlFileName, targetRepositoryName);
+
                 string command = "deployfolder -f " + folderName + " -c " + controlFileName + " -r " + targetRepositoryName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -434,8 +476,7 @@ namespace IPCUtilities
             }
             public string DeployFolder(PmrepDeployFolder parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 string command = "deployfolder " + parameters.FolderName +
                                                 parameters.ControlFileName +
                                                 parameters.TargetRepositoryName +
@@ -459,6 +500,8 @@ namespace IPCUtilities
             /// <returns></returns>
             public string ExecuteQuery(string queryName)
             {
+                Guard.ThrowIsNull(queryName);
+
                 string command = "executequery -q " + queryName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -476,8 +519,7 @@ namespace IPCUtilities
             /// <returns></returns>
             public string ExecuteQuery(PmrepQuery parameters, bool append=false,bool verbose = false, bool printDBtype = false, bool dontIncludeParentPath = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = append ? " -a " : "";
                 otherParams += verbose ? " -b " : "";
@@ -508,8 +550,8 @@ namespace IPCUtilities
             }
             public string FindCheckout(PmrepCheckout parameters, bool verbose = false, bool printDBtype = false, bool allUsers = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var otherParams = allUsers ? " -u " : "";
                 otherParams += verbose ? " -b " : "";
                 otherParams += printDBtype ? " -y " : "";
@@ -539,6 +581,7 @@ namespace IPCUtilities
             /// <returns></returns>
             public string GetConnectionDetails(string connectionName, ConnectionType connectionType)
             {
+                Guard.ThrowIsNull(connectionName);
                 string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType.Value;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -546,8 +589,7 @@ namespace IPCUtilities
             }
             public string GenerateAbapProgramToFile(PmrepGenerateAbapProgramm parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = enableOverride ? " -e " : "";
                 otherParams += authorityCheck ? " -a " : "";
@@ -572,8 +614,7 @@ namespace IPCUtilities
             }
             public bool InstallAbapProgram(PmrepInstallAbapProgram parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = enableOverride ? " -e " : "";
                 otherParams += authorityCheck ? " -a " : "";
@@ -599,6 +640,7 @@ namespace IPCUtilities
 
                 return _pmWork.CheckErrorInResult(result);
             }
+
             /// <summary>
             /// Terminates all users connections.
             /// </summary>
@@ -617,8 +659,7 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool KillUserConnection(string userName)
             {
-                if (string.IsNullOrEmpty(userName))
-                    throw new ArgumentNullException("userName", "userName is null");
+                Guard.ThrowIsNull(userName);
                 string command = "killuserconnection -n " + userName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -651,8 +692,7 @@ namespace IPCUtilities
             }
             public string ListObjectDependencies(PmrepObjectDependencies parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = parameters.Append ? " -a " : "";
                 otherParams += parameters.Verbose ? " -b " : "";
@@ -684,8 +724,7 @@ namespace IPCUtilities
             /// <returns>objects array</returns>
             public string[] ListObjects(string objectType)
             {
-                if (string.IsNullOrEmpty(objectType))
-                    throw new ArgumentNullException("objectType", "objectType is null of empty");
+                Guard.ThrowIsNull(objectType);
 
                 var result = _pmWork.ExecuteCommand("listobjects -o " + objectType);
                 return _pmWork.ConvertResultToArray(result);
@@ -699,10 +738,7 @@ namespace IPCUtilities
             /// <returns>objects array</returns>
             public string[] ListObjects(string objectType, string folderName)
             {
-                if (string.IsNullOrEmpty(objectType))
-                    throw new ArgumentNullException("objectType", "objectType is null of empty");
-                if (string.IsNullOrEmpty(folderName))
-                    throw new ArgumentNullException("folderName", "folderName is null of empty");
+                Guard.ThrowIsNull(objectType, folderName);
 
                 var result = _pmWork.ExecuteCommand("listobjects -o " + objectType+" -f "+folderName);
 
@@ -716,8 +752,8 @@ namespace IPCUtilities
             /// <returns>objects array</returns>
             public string[] ListObjects(PmrepObject parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
 
                 var result = _pmWork.ExecuteCommand("listobjects "+parameters.ColumnSeparator
                                                                                   +parameters.DbdSeparator
@@ -732,6 +768,7 @@ namespace IPCUtilities
             }
             public string ListTablesBySess(string folderName, string sessionName, string objectType)
             {
+                Guard.ThrowIsNull(folderName, sessionName, objectType);
                 string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + objectType;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -749,8 +786,8 @@ namespace IPCUtilities
             }
             public bool MassUpdate(PmrepMassUpdate parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var result = _pmWork.ExecuteCommand("massupdate " + parameters.SessionPropertyType
                                                                                   + parameters.SessionPropertyName
                                                                                   + parameters.SessionPropertyValue +
@@ -768,8 +805,7 @@ namespace IPCUtilities
             }
             public bool ModifyFolder(PmrepModifyFolder parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var result = _pmWork.ExecuteCommand("modifyFolder " + parameters.FolderDescription
                                                                                   + parameters.FolderName
                                                                                   + parameters.FolderStatus +
@@ -790,6 +826,7 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool Notify(string message)
             {
+                Guard.ThrowIsNull(message);
                 string command = "notify -m \"" + message+"\"";
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -815,8 +852,7 @@ namespace IPCUtilities
             }
             public bool ObjectImport(PmrepObjectImport parameters,bool retainPersistentValue=true)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = retainPersistentValue ? " -p " : "";
 
@@ -850,8 +886,7 @@ namespace IPCUtilities
             /// <returns>True or False</returns>
             public bool ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = m ? " -m " : "";
                     otherParams += s ? " -s " : "";
@@ -872,8 +907,7 @@ namespace IPCUtilities
             }
             public bool PurgeVersion(PmrepPurgeVersion parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = parameters.PrewPurgedObjOnly ? " -p " : "";
                 otherParams += parameters.Verbose ? " -b " : "";
@@ -896,6 +930,8 @@ namespace IPCUtilities
             }
             public bool Register(string localRepoName, string localRepoUser, string localRepoPassw)
             {
+                Guard.ThrowIsNull(localRepoName, localRepoUser, localRepoPassw);
+
                 string command = "register -r " + localRepoName + " -n " + localRepoUser + " -x " + localRepoPassw;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -906,8 +942,7 @@ namespace IPCUtilities
             }
             public bool Register(PmrepRepoObject parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var command = "register " + parameters.LocalRepoName
                                                   + parameters.LocalRepoUser
@@ -924,7 +959,8 @@ namespace IPCUtilities
             }
             public bool RegisterPlugin(string registrationFile)
             {
-                string command = "registerplugin -i ";
+                Guard.ThrowIsNull(registrationFile);
+                string command = "registerplugin -i "+ registrationFile;
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
@@ -932,8 +968,7 @@ namespace IPCUtilities
             }
             public bool RegisterPlugin(PmrepRegisterPlugin parameters,bool updatePlugin=false,bool checkSecurLib = false,bool isNativePlugin=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = updatePlugin ? " -e " : "";
                 otherParams += checkSecurLib ? " -k " : "";
@@ -950,8 +985,7 @@ namespace IPCUtilities
             }
             public bool Restore(PmrepRestore parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = parameters.CreateGlobalRepository ? " -g " : "";
                 otherParams += parameters.EnableObjVersioning ? " -y " : "";
@@ -975,6 +1009,7 @@ namespace IPCUtilities
             }
             public bool RollbackDeployment(string deployGroupName, string latestDeployRun)
             {
+                Guard.ThrowIsNull(deployGroupName, latestDeployRun);
                 string command = "rollbackdeployment -p " + deployGroupName + " -t " + latestDeployRun;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -983,6 +1018,7 @@ namespace IPCUtilities
             }
             public bool RollbackDeployment(string deployGroupName, string latestDeployRun,string repoName, string latestVersionDeployGroup)
             {
+                Guard.ThrowIsNull(deployGroupName, latestDeployRun, repoName, latestVersionDeployGroup);
                 var otherParams = !string.IsNullOrEmpty(repoName) ? " -r " : "";
                 otherParams += !string.IsNullOrEmpty(latestVersionDeployGroup) ? " -v " : "";
 
@@ -994,6 +1030,7 @@ namespace IPCUtilities
             }
             public bool Run(string scriptFileName)
             {
+                Guard.ThrowIsNull(scriptFileName);
                 string command = "run -f " + scriptFileName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1002,6 +1039,7 @@ namespace IPCUtilities
             }
             public bool Run(string scriptFileName,string outputFileName,bool echoCommand=false,bool stopAtFirstErr=false,bool encodeUTF8=false)
             {
+                Guard.ThrowIsNull(scriptFileName, outputFileName);
                 var otherParams = echoCommand ? " -e " : "";
                 otherParams += stopAtFirstErr ? " -s " : "";
                 otherParams += encodeUTF8 ? " -u " : "";
@@ -1013,6 +1051,7 @@ namespace IPCUtilities
             }
             public bool SwitchConnection(string oldConnectionName, string newConnectionName)
             {
+                Guard.ThrowIsNull(oldConnectionName, newConnectionName);
                 string command = "switchconnection -o " + oldConnectionName + " -n " + newConnectionName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1021,6 +1060,7 @@ namespace IPCUtilities
             }
             public bool TruncateLog(string logsTruncated)
             {
+                Guard.ThrowIsNull(logsTruncated);
                 string command = "truncatelog -t " + logsTruncated;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1029,6 +1069,8 @@ namespace IPCUtilities
             }
             public bool TruncateLog(string logsTruncated,string folderName, string workflowName)
             {
+                Guard.ThrowIsNull(logsTruncated, folderName, workflowName);
+
                 string command = "truncatelog -t " + logsTruncated
                                                    +" -f "+folderName
                                                    +" -w "+workflowName;
@@ -1040,8 +1082,7 @@ namespace IPCUtilities
             }
             public bool UndoCheckout(PmrepUndoCheckout parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var command = "undocheckout " + parameters.DbdSeparator
                                                    + parameters.FolderName
@@ -1055,8 +1096,7 @@ namespace IPCUtilities
             }
             public bool Unregister(PmrepRepoObject parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var command = "unregister " + parameters.LocalRepoName
                                                   + parameters.LocalRepoUser
@@ -1073,6 +1113,8 @@ namespace IPCUtilities
             }
             public bool UnregisterPlugin(string vendorId, string pluginId)
             {
+                Guard.ThrowIsNull(vendorId, pluginId);
+
                 string command = "unregisterplugin -v " + vendorId + " -l " + vendorId;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1081,8 +1123,7 @@ namespace IPCUtilities
             }
             public bool UnregisterPlugin(PmrepUregisterPlugin parameters,bool isSecurityModule=false,bool removeUserNameLogin=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var otherParams = isSecurityModule ? " -s " : "";
                 otherParams += removeUserNameLogin ? " -g " : "";
@@ -1098,8 +1139,7 @@ namespace IPCUtilities
             }
             public bool UpdateConnection(PmrepUpdateConnection parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
 
                 var command = "updateconnection " + parameters.ConnectionSubtype
                                                    + parameters.ConnectionName
@@ -1118,6 +1158,8 @@ namespace IPCUtilities
             }
             public bool UpdateEmailAddr(string folderName, string sessionName, string succesEmailAddres, string failureEmailAddress)
             {
+                Guard.ThrowIsNull(folderName, sessionName, succesEmailAddres, failureEmailAddress);
+
                 string command = "updateemailaddr -d " + folderName + " -s " + sessionName + " -u " + succesEmailAddres + " -f " + failureEmailAddress;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1126,6 +1168,8 @@ namespace IPCUtilities
             }
             public bool UpdateSeqGenVals(string folderName, string sequenceName)
             {
+                Guard.ThrowIsNull(folderName, sequenceName);
+
                 string command = "updateseqgenvals -f " + folderName + " -t " + sequenceName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1134,8 +1178,7 @@ namespace IPCUtilities
             }
             public bool UpdateSeqGenVals(PmrepSequence parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var command = "updateseqgenvals " + parameters.FolderName
                                                    + parameters.MappingName
                                                    + parameters.SequenceGeneratorName
@@ -1150,6 +1193,7 @@ namespace IPCUtilities
             }
             public bool UpdateSrcPrefix(string folderName,string prefixName,string sessionName)
             {
+                Guard.ThrowIsNull(folderName, prefixName, sessionName);
                 string command = "updatesrcprefix -f " + folderName + " -p " + prefixName + " -s " + sessionName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1158,8 +1202,7 @@ namespace IPCUtilities
             }
             public bool UpdateSrcPrefix(PmrepSrcTargetPrefix parameters, bool useTargetInstanceName = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var otherParams = useTargetInstanceName ? " -n " : "";
                 var command = "updatetargprefix " + parameters.FolderName
                                                   + parameters.SessionName
@@ -1171,6 +1214,10 @@ namespace IPCUtilities
                 SetLastCommandResult(result);
                 return _pmWork.CheckErrorInResult(result);
             }
+            /// <summary>
+            /// Updates statistics for repository tables and indexes.
+            /// </summary>
+            /// <returns>True or False</returns>
             public bool UpdateStatistics()
             {
                 string command = "updatestatistics";
@@ -1181,6 +1228,7 @@ namespace IPCUtilities
             }
             public string UpdateTargPrefix(string folderName,string prefixName,string sessionName)
             {
+                Guard.ThrowIsNull(folderName, prefixName, sessionName);
                 string command = "updatetargprefix -f " + folderName+" -p "+prefixName+" -s "+sessionName;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1188,8 +1236,7 @@ namespace IPCUtilities
             }
             public string UpdateTargPrefix(PmrepSrcTargetPrefix parameters,bool useTargetInstanceName=false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var otherParams = useTargetInstanceName ? " -n " : "";
                 var command = "updatetargprefix " + parameters.FolderName
                                                   + parameters.SessionName
@@ -1207,8 +1254,7 @@ namespace IPCUtilities
             /// <returns>upgrades logs</returns>
             public string Upgrade(string repositoryPassword)
             {
-                if (string.IsNullOrEmpty(repositoryPassword))
-                    throw new ArgumentNullException("repositoryPassword", "repositoryPassword is null");
+                Guard.ThrowIsNull(repositoryPassword);
                 string command = "upgrade -x " + repositoryPassword;
 
                 var result = _pmWork.ExecuteCommand(command);
@@ -1216,8 +1262,7 @@ namespace IPCUtilities
             }
             public string UninstallAbapProgram(PmrepUnistallAbapProgram parameters)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                Guard.ThrowIsNull(parameters);
                 var command = "uninstallabapprogram " + parameters.FolderName
                                                   + parameters.MappingName
                                                   + parameters.VersionNumber
@@ -1234,8 +1279,8 @@ namespace IPCUtilities
             }
             public string Validate(PmrepValidate parameters, bool saveUponValid = false, bool checkUponValid = false, bool checkInComment = false, bool append = false, bool verbose = false, bool printDBType = false)
             {
-                if (parameters == null)
-                    throw new ArgumentNullException("parameters", "parameters is null");
+                
+                Guard.ThrowIsNull(parameters);
                 var otherParams = saveUponValid ? " -s " : "";
                 otherParams += checkUponValid ? " -k " : "";
                 otherParams += checkInComment ? " -m " : "";
