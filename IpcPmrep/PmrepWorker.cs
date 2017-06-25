@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -77,7 +78,7 @@ namespace IPCUtilities
                     {
                         
                         if (e.Data.Contains(_applicationName))
-                            _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName) + _applicationName.Length));
+                            _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName,StringComparison.CurrentCulture) + _applicationName.Length));
                         else
                             _outputResult.AppendLine(e.Data);
 
@@ -86,7 +87,7 @@ namespace IPCUtilities
                     else 
                     {
                         if (e.Data.Contains(_applicationName))
-                            _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName) + _applicationName.Length));
+                            _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName, StringComparison.CurrentCulture) + _applicationName.Length));
                         else
                             _outputResult.AppendLine(e.Data);
                     }
@@ -105,7 +106,7 @@ namespace IPCUtilities
             private static bool CheckingRowIsNotGarbage(string row)
             {
                 foreach (var ignoreItem in _ignoreLines)
-                    if (row.ToLower().Contains(ignoreItem.ToLower()))
+                    if (row.ToLower(CultureInfo.CurrentCulture).Contains(ignoreItem.ToLower(CultureInfo.CurrentCulture)))
                         return true;
                 return false;
             }
@@ -136,7 +137,7 @@ namespace IPCUtilities
 
             internal bool CheckErrorInResult(string result)
             {
-                if (result.Length == 0 || result.ToLower().Contains("failed"))
+                if (result.Length == 0 || result.ToLower(CultureInfo.CurrentCulture).Contains("failed"))
                 {
                     LogWriter.Write(result);
                     return false;
@@ -174,6 +175,7 @@ namespace IPCUtilities
                         _pmrep.Close();
                         _outputResult.Clear();
                         _imputCommand.Dispose();
+                        _pmrep.Dispose();
                     }
 
                     disposedValue = true;

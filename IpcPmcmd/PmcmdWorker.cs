@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -50,13 +51,13 @@ namespace IPCUtilities.IpcPmcmd
             {
                 foreach (var ignoreItem in _ignoreLines)
                 {
-                    if (outputData.ToLower().Contains(ignoreItem.ToLower()))
+                    if (outputData.ToLower(CultureInfo.CurrentCulture).Contains(ignoreItem.ToLower(CultureInfo.CurrentCulture)))
                         return "";
                 }
 
                 if (outputData.Contains(_utilName))
                 {
-                    return outputData.Substring(outputData.IndexOf(_utilName) + _utilName.Length);
+                    return outputData.Substring(outputData.IndexOf(_utilName,StringComparison.CurrentCulture) + _utilName.Length);
                 }
             }
             return outputData;

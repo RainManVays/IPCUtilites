@@ -54,6 +54,7 @@
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoObject.cs" />
+    <Compile Include="IpcPmrep\CommandObjects\ConnectedUser.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepInstallAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepApplyLaber.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepAssignPermission.cs" />

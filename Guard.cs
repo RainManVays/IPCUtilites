@@ -7,7 +7,7 @@ namespace IPCUtilities
         internal static void ThrowIsNull(object param)
         {
             if (param==null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(param));
         }
         internal static void ThrowIsNull(string ceroParam)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -85,7 +86,7 @@ namespace IPCUtilities
             {
                 var command = "pingservice";
                 var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
-                if (result.ToLower().Contains("integration service is alive"))
+                if (result.ToLower(CultureInfo.CurrentCulture).Contains("integration service is alive"))
                 {
                     return true;
                 }

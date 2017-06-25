@@ -1,4 +1,4 @@
-﻿namespace IPCUtilities.IpcPmcmd.CommandObjects
+﻿namespace IPCUtilities.IpcPmcmd
 {
     class WorkfllowsDetails
     {

@@ -775,18 +775,40 @@ namespace IPCUtilities
                 return result;
             }
 
+
             /// <summary>
             /// List all connection objects in the repository and their respective connection types.
-            /// Args:None
             /// </summary>
-            public string ListUserConnections()
+            /// <returns>object ConnectedUser contains connection data</returns>
+            public List<ConnectedUser> ListUserConnections()
             {
                 var result = _pmWork.ExecuteCommand("listuserconnections");
-                return _pmWork.RemoveResultHeader(result);
+                SetLastCommandResult(result);
+                result = _pmWork.RemoveResultHeader(result);
+                List<ConnectedUser> userConnections = new List<ConnectedUser>(6);
+                var usersArray = result.Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < usersArray.Length; i += 9)
+                {
+                    var userIdUserName = usersArray[i].Split(':');
+                    userConnections.Add(new ConnectedUser
+                    {
+                        ConnectionID = userIdUserName[0].Trim(),
+                        UserName = userIdUserName[1].Trim(),
+                        Application = usersArray[i + 1].Trim(),
+                        Service = usersArray[i + 2].Trim(),
+                        HostName = usersArray[i + 3].Trim(),
+                        HostAdress = usersArray[i + 4].Trim(),
+                        LoginTime = usersArray[i + 5].Trim(),
+                        LastActivityTime = usersArray[i + 6].Trim(),
+                        ProcessID = usersArray[i + 7].Trim(),
+                        Status = usersArray[i + 8].Trim()
+                    });
+                }
+                return userConnections;
             }
             public bool MassUpdate(PmrepMassUpdate parameters)
             {
-                
                 Guard.ThrowIsNull(parameters);
                 var result = _pmWork.ExecuteCommand("massupdate " + parameters.SessionPropertyType
                                                                                   + parameters.SessionPropertyName
