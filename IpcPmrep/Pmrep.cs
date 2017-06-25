@@ -636,7 +636,7 @@ namespace IPCUtilities
             public string[] ListConnections()
             {
                 var result = _pmWork.ExecuteCommand("listconnections -t");
-                return _pmWork.FormattingResult(result);
+                return _pmWork.ConvertResultToArray(result);
             }
             public string ListObjectDependencies(PmrepObjectDependencies parameters)
             {
@@ -680,7 +680,7 @@ namespace IPCUtilities
                                                                                   parameters.ObjectType+
                                                                                   parameters.PrintDatabaseType+
                                                                                   parameters.Verbose);
-                return _pmWork.FormattingResult(result);
+                return _pmWork.ConvertResultToArray(result);
             }
             public string ListTablesBySess(string folderName, string sessionName, string objectType)
             {
@@ -694,10 +694,10 @@ namespace IPCUtilities
             /// List all connection objects in the repository and their respective connection types.
             /// Args:None
             /// </summary>
-            public string[] ListUserConnections()
+            public string ListUserConnections()
             {
                 var result = _pmWork.ExecuteCommand("listuserconnections");
-                return _pmWork.FormattingResult(result);
+                return _pmWork.RemoveResultHeader(result);
             }
             public bool MassUpdate(PmrepMassUpdate parameters)
             {

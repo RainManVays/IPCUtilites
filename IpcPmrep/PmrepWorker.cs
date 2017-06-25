@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IPCUtilities
@@ -40,66 +41,88 @@ namespace IPCUtilities
                 };
                 _pmrep.OutputDataReceived += _pmrep_OutputDataReceived;
                 _pmrep.Start();
-
                 _imputCommand = _pmrep.StandardInput;
                 _imputCommand.WriteLine(command);
                 _pmrep.BeginOutputReadLine();
+                //WA delay for remove connection header
+                Thread.Sleep(1000);
+                CheckConnectionsResult(_outputResult.ToString());
                 _outputResult.Clear();
             }
 
             private static bool _workFlag = true;
-
-            private static async Task<string> CheckFlag()
+            private bool CommandIsExit(string command)
             {
+                if (command.Contains("exit"))
+                    return false;
+                return true;
+            }
+
+            private async Task<string> WaitForEnd(string command)
+            {
+                _workFlag=CommandIsExit(command);
+                _imputCommand.WriteLine(command);
                 while (_workFlag)
                 {
-                    await Task.Delay(100);
+                   await Task.Delay(300);
                 }
                 return _outputResult.ToString();
             }
-
             internal string ExecuteCommand(string command)
             {
                 _outputResult.Clear();
-                _workFlag = true;
-                _imputCommand.WriteLine(command);
-                return CheckFlag().Result;
+                var result = WaitForEnd(command).Result;
+                _workFlag = false;
+                return result;
             }
 
-            private readonly static string _applicationName = "pmrep>";
-            private static void _pmrep_OutputDataReceived(object sender, DataReceivedEventArgs e)
+            private readonly  string _applicationName = "pmrep>";
+            private  void _pmrep_OutputDataReceived(object sender, DataReceivedEventArgs e)
             {
-                
-                if (!string.IsNullOrEmpty(e.Data))
-                    if (e.Data.Contains(" completed successfully.") || e.Data.Contains("Failed to execute ") || e.Data.Contains("Repository connection failed.") || e.Data.Contains("Connected to repository "))
+                if (!string.IsNullOrEmpty(e.Data) && !e.Data.Contains("connect completed successfully."))
+                {
+                    if (e.Data.Contains(" completed successfully.") || e.Data.Contains("Failed to execute ") || e.Data.Contains("Repository connection failed.") )
+                    {
+                        
+                        if (e.Data.Contains(_applicationName))
+                            _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName) + _applicationName.Length));
+                        else
+                            _outputResult.AppendLine(e.Data);
+
                         _workFlag = false;
-                    else
+                    }
+                    else 
                     {
                         if (e.Data.Contains(_applicationName))
                             _outputResult.AppendLine(e.Data.Substring(e.Data.IndexOf(_applicationName) + _applicationName.Length));
                         else
                             _outputResult.AppendLine(e.Data);
-                        if (e.Data.Contains("Invoked at "))
-                            _outputResult.Clear();
                     }
-                else
+                }
+            }
+            private bool dispose = false;
+            public void Dispose()
+            {
+                if (!dispose)
                 {
-                    _workFlag = false;
+                    ExecuteCommand("cleanup");
+                    ExecuteCommand("exit");
+                    _pmrep.Close();
+                    _outputResult.Clear();
+                    _imputCommand.Dispose();
+                    dispose = true;
                 }
 
             }
-
-            public void Dispose()
+            private static void CheckConnectionsResult(string row)
             {
-                ExecuteCommand("cleanup");
-                ExecuteCommand("exit");
-                _pmrep.Close();
-                _outputResult.Clear();
-                _imputCommand.Dispose();
+                if(row.Contains("Repository connection failed."))
+                {
+                    throw new Exception(row);
+                }
             }
 
-
-            private static string[] _ignoreLines = { "Invoked", "All Rights Reserved", "Informatica(r)", "Copyright (c)", "This Software", "Completed at", "completed successfully" };
+            private static string[] _ignoreLines = { "Invoked", "All Rights Reserved", "Informatica(r)","Connected to repository " ,"Copyright (c)", "This Software", "Completed at", " completed successfully" };
 
             private static bool CheckingRowIsNotGarbage(string row)
             {
@@ -109,7 +132,7 @@ namespace IPCUtilities
                 return false;
             }
 
-            internal static string RemoveResultHeader(string result)
+            internal  string RemoveResultHeader(string result)
             {
                 string outResult = string.Empty;
                 var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -121,7 +144,7 @@ namespace IPCUtilities
                 return outResult;
             }
 
-            internal string[] FormattingResult(string result)
+            internal string[] ConvertResultToArray(string result)
             {
                 var resultarray = result.Trim().Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
                 List<string> resultCollection = new List<string>();
@@ -133,9 +156,8 @@ namespace IPCUtilities
                 return resultCollection.ToArray();
             }
 
-            internal  bool CheckErrorInResult(string result)
+            internal bool CheckErrorInResult(string result)
             {
-
                 if (result.Length > 0 || result.ToLower().Contains("failed"))
                 {
                     LogWriter.Write(result);
