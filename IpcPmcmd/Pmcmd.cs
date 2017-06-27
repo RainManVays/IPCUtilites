@@ -18,15 +18,17 @@ namespace IPCUtilities
             private string _pmcmdFile;
             private PmcmdConnection _connectionValue;
             private string _connectionCommand = "";
-            public  Pmcmd(string pmcmdfile, PmcmdConnection parameters, string logFile = null)
+            PmcmdWorker _pmwork;
+            public Pmcmd(string pmcmdfile, PmcmdConnection parameters, string logFile = null)
             {
-                
+
                 if (!File.Exists(pmcmdfile))
                     throw new FileNotFoundException("File not found!", pmcmdfile);
                 _pmcmdFile = pmcmdfile;
                 _connectionValue = parameters ?? throw new ArgumentNullException("parameters", "parameters is null");
                 _connectionCommand = "connect " + parameters.Domain + parameters.Service + parameters.Password + parameters.UserName;
-               // PmcmdWorker.ExecuteCommand(pmcmdfile, command);
+                _pmwork = new PmcmdWorker(pmcmdfile, _connectionCommand);
+                // PmcmdWorker.ExecuteCommand(pmcmdfile, command);
 
             }
 
@@ -49,25 +51,25 @@ namespace IPCUtilities
             public string GetRunningSessionsDetails()
             {
                 var command = "getrunningsessionsdetails";
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public string GetServiceDetails(WorkflowsStatus type)
             {
-                var command = "getservicedetails "+ type.Value;
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var command = "getservicedetails " + type.Value;
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public string GetServiceDetailsData(WorkflowsStatus type)
             {
                 var command = "getservicedetails " + type.Value;
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public string GetServiceProperties()
             {
                 var command = "getserviceproperties";
-                var result=PmcmdWorker.ExecuteCommand(_pmcmdFile,_connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public bool GetSessionStatistics()
@@ -85,7 +87,7 @@ namespace IPCUtilities
             public bool PingService()
             {
                 var command = "pingservice";
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 if (result.ToLower(CultureInfo.CurrentCulture).Contains("integration service is alive"))
                 {
                     return true;
@@ -103,7 +105,7 @@ namespace IPCUtilities
             public string ShowSettings()
             {
                 var command = "showsettings";
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public bool StartTask()
@@ -129,7 +131,7 @@ namespace IPCUtilities
             public string Version()
             {
                 var command = "version";
-                var result = PmcmdWorker.ExecuteCommand(_pmcmdFile, _connectionCommand, command);
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
 

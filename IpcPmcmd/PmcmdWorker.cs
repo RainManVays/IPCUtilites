@@ -9,41 +9,65 @@ using System.Threading.Tasks;
 
 namespace IPCUtilities.IpcPmcmd
 {
-    internal static class PmcmdWorker
+    internal class PmcmdWorker:IDisposable
     {
 
-        private static StringBuilder pmcmdOutput = null;
-        internal static string ExecuteCommand(string pmcmd,string connectionCmd, string command)
-        {
-            var pmcmdProcess = new Process();
-            pmcmdProcess.StartInfo = new ProcessStartInfo(pmcmd);
-            //pmcmdProcess.StartInfo.Arguments = connectionCmd;
-            pmcmdProcess.StartInfo.CreateNoWindow = true;
-            pmcmdProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            pmcmdProcess.StartInfo.RedirectStandardInput = true;
-            pmcmdProcess.StartInfo.RedirectStandardOutput = true;
-            pmcmdOutput = new StringBuilder("");
-            pmcmdProcess.OutputDataReceived += PmcmdProcess_OutputDataReceived;
+        private StringBuilder _outputResult = null;
+        private Process _pmcmdProcess;
+        private StreamWriter _imputCommand;
 
-            pmcmdProcess.StartInfo.RedirectStandardError = true;
-            pmcmdProcess.StartInfo.UseShellExecute = false;
-            pmcmdProcess.Start();
-            pmcmdProcess.BeginOutputReadLine();
-            using (StreamWriter processWriter = pmcmdProcess.StandardInput)
+        public PmcmdWorker(string pmcmd, string connectionCmd)
+        {
+            _pmcmdProcess = new Process()
             {
-                processWriter.WriteLine(connectionCmd);
-                processWriter.WriteLine(command);
+                StartInfo = new ProcessStartInfo(pmcmd)
+                {
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                }
+            };
+            _outputResult = new StringBuilder("");
+            _pmcmdProcess.OutputDataReceived += PmcmdProcess_OutputDataReceived;
+            _pmcmdProcess.Start();
+            _pmcmdProcess.BeginOutputReadLine();
+            _imputCommand = _pmcmdProcess.StandardInput;
+            _imputCommand.WriteLine(connectionCmd);
+        }
+
+        private static bool _workFlag = true;
+        private bool CommandIsExit(string command)
+        {
+            if (command.Contains("exit"))
+                return false;
+            return true;
+        }
+        private async Task<string> WaitForEnd(string command)
+        {
+            _workFlag = CommandIsExit(command);
+            _imputCommand.WriteLine(command);
+            while (_workFlag)
+            {
+                await Task.Delay(300);
             }
-            //processWriter.Close();
-           // processWriter.Dispose();
-            pmcmdProcess.WaitForExit();
-            pmcmdProcess.Dispose();
-            string result = pmcmdOutput.ToString();
+            return _outputResult.ToString();
+        }
+
+        internal string ExecuteCommand(string command)
+        {
+            // pmcmdProcess.WaitForExit();
+            // pmcmdProcess.Dispose();
+            _outputResult.Clear();
+            var result = WaitForEnd(command).Result;
+            _workFlag = false;
             return result;
 
         }
         private static string _utilName = "pmcmd> ";
-        private static string[] _ignoreLines = {"Connected to Integration service", "Invoked", "All Rights Reserved", "Informatica(r)", "Copyright (c)", "This Software", "Completed at", "completed successfully" };
+        private static string[] _ignoreLines = { "Connected to Integration service", "Invoked", "All Rights Reserved", "Informatica(r)", "Copyright (c)", "This Software", "Completed at", "completed successfully" };
 
         private static string ClearOutputData(string outputData)
         {
@@ -57,40 +81,55 @@ namespace IPCUtilities.IpcPmcmd
 
                 if (outputData.Contains(_utilName))
                 {
-                    return outputData.Substring(outputData.IndexOf(_utilName,StringComparison.CurrentCulture) + _utilName.Length);
+                    _workFlag = false;
+                    return outputData.Substring(outputData.IndexOf(_utilName, StringComparison.CurrentCulture) + _utilName.Length);
                 }
             }
             return outputData;
         }
-        private static void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private  void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             var clearResult = ClearOutputData(e.Data);
-            if(!string.IsNullOrWhiteSpace(clearResult))
-                pmcmdOutput.AppendLine(clearResult);
+           // Console.WriteLine("|"+e.Data);
+            if (!string.IsNullOrWhiteSpace(clearResult))
+                _outputResult.AppendLine(clearResult);
         }
 
-        internal static PmcmdOutput ExecuteCommand(string pmcmd, string command)
+        #region IDisposable Support
+        private bool disposedValue = false; // Для определения избыточных вызовов
+
+        protected virtual void Dispose(bool disposing)
         {
-            var pmcmdProcess = new Process();
-            pmcmdProcess.StartInfo = new ProcessStartInfo(pmcmd);
-            pmcmdProcess.StartInfo.Arguments = command;
-            pmcmdProcess.StartInfo.CreateNoWindow = true;
-            pmcmdProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            pmcmdProcess.StartInfo.RedirectStandardInput = true;
-            pmcmdProcess.StartInfo.RedirectStandardOutput = true;
-            pmcmdProcess.StartInfo.RedirectStandardError = true;
-            pmcmdProcess.StartInfo.UseShellExecute = false;
-           // LogWriter.Write(command);
-            pmcmdProcess.Start();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: освободить управляемое состояние (управляемые объекты).
+                }
 
-            var result = new PmcmdOutput();
+                // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
+                // TODO: задать большим полям значение NULL.
 
-            result.output = pmcmdProcess.StandardOutput.ReadToEnd();
-            result.errors = pmcmdProcess.StandardError.ReadToEnd();
-            pmcmdProcess.WaitForExit();
-            return result;
+                disposedValue = true;
+            }
         }
 
+        // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
+        // ~PmcmdWorker() {
+        //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+        //   Dispose(false);
+        // }
+
+        // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
+        public void Dispose()
+        {
+            // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+            Dispose(true);
+            // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
 
     }
+
 }

@@ -48,7 +48,6 @@
     <Compile Include="IpcPmcmd\CommandObjects\ServiceDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\TaskDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\WorkfllowsDetails.cs" />
-    <Compile Include="IpcPmcmd\PmcmdOutput.cs" />
     <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
     <Compile Include="IpcPmcmd\WorkflowsStatus.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
