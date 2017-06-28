@@ -8,15 +8,15 @@ namespace IPCUtilities.IpcPmcmd
 {
     class ServiceDetails
     {
-        string NodeName { get; set; }
-        string serviceName { get; set; }
-        string serviceStatus { get; set; }
-        string StartupTime { get; set; }
-        string currTime { get; set; }
-        int CountActiveWorkflow { get; set; }
-        int CountActiveSessions { get; set; }
-        int CountWaitingSessions { get; set; }
-        WorkfllowsDetails workflows { get; set; }
+        public string ServiceName { get; set; }
+        public string ServiceStatus { get; set; }
+        public string StartupTime { get; set; }
+        public string CurrTime { get; set; }
+        public int NumScheduledWorkflows { get; set; }
+        public int NumActiveWorkflows { get; set; }
+        public int NumActiveSessions { get; set; }
+        public int NumWaitingSessions { get; set; }
+        public WorkfllowsDetails Workflows { get; set; }
 
     }
 }

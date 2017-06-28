@@ -43,12 +43,25 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IpcPmcmd\CommandObjects\AbstractFolderRunParam.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\AbstractTaskParams.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortTask.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdConnection.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdGetSessionStatistics.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdGetTaskDetails.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdRecoverWorkflow.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdStartTask.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdStopTask.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdStopWorkflow.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdWaitTask.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdWaitWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\ServiceDetails.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdStartWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\TaskDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\WorkfllowsDetails.cs" />
     <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
+    <Compile Include="IpcPmcmd\ServiceDetailAdapter.cs" />
     <Compile Include="IpcPmcmd\WorkflowsStatus.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
@@ -97,6 +110,7 @@
     <Compile Include="IpcPmrep\CommandObjects\PmrepPurgeVersion.cs" />
     <Compile Include="IpcPmrep\PmrepWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultTreatment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LDFCorp.snk" />

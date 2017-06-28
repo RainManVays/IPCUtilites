@@ -13,7 +13,7 @@ namespace IPCUtilities
         /// <summary>
         /// Manage workflows. Use pmcmd to start, stop, schedule, and monitor workflows.
         /// </summary>
-        public class Pmcmd
+        public class Pmcmd:IDisposable
         {
             private string _pmcmdFile;
             private PmcmdConnection _connectionValue;
@@ -58,14 +58,13 @@ namespace IPCUtilities
             {
                 var command = "getservicedetails " + type.Value;
                 var result = _pmwork.ExecuteCommand(command);
+                ServiceDetailAdapter sdAdapter = new ServiceDetailAdapter();
+
+                Console.WriteLine(sdAdapter.SetServiceDetailsData(result).ServiceStatus);
+                Console.WriteLine(sdAdapter.SetServiceDetailsData(result).NumScheduledWorkflows);
                 return result;
             }
-            public string GetServiceDetailsData(WorkflowsStatus type)
-            {
-                var command = "getservicedetails " + type.Value;
-                var result = _pmwork.ExecuteCommand(command);
-                return result;
-            }
+           
             public string GetServiceProperties()
             {
                 var command = "getserviceproperties";
@@ -98,14 +97,15 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool ScheduleWorkflow()
+            public string ScheduleWorkflow(string folder, string workflow)
             {
-                return false;
+                var command = "scheduleworkflow -folder " + folder + " " + workflow;
+                var result = _pmwork.ExecuteCommand(command);
+                return result;
             }
             public string ShowSettings()
             {
-                var command = "showsettings";
-                var result = _pmwork.ExecuteCommand(command);
+                var result = _pmwork.ExecuteCommand("showsettings");
                 return result;
             }
             public bool StartTask()
@@ -124,14 +124,15 @@ namespace IPCUtilities
             {
                 return false;
             }
-            public bool UnscheduleWorkflow()
+            public string UnscheduleWorkflow(string folder, string workflow)
             {
-                return false;
+                var command = "unscheduleworkflow -folder "+folder+" "+workflow;
+                var result = _pmwork.ExecuteCommand(command);
+                return result;
             }
             public string Version()
             {
-                var command = "version";
-                var result = _pmwork.ExecuteCommand(command);
+                var result = _pmwork.ExecuteCommand("version");
                 return result;
             }
 
@@ -143,6 +144,41 @@ namespace IPCUtilities
             {
                 return false;
             }
+
+            #region IDisposable Support
+            private bool disposedValue = false; // Для определения избыточных вызовов
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        // TODO: освободить управляемое состояние (управляемые объекты).
+                    }
+
+                    // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
+                    // TODO: задать большим полям значение NULL.
+
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
+            // ~Pmcmd() {
+            //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+            //   Dispose(false);
+            // }
+
+            // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
+            public void Dispose()
+            {
+                // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+                Dispose(true);
+                // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.
+                // GC.SuppressFinalize(this);
+            }
+            #endregion
 
         }
     }
