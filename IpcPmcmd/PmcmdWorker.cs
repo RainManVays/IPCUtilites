@@ -52,6 +52,7 @@ namespace IPCUtilities.IpcPmcmd
             while (_workFlag)
             {
                 await Task.Delay(300);
+                Console.WriteLine("s");
             }
             return _outputResult.ToString();
         }
@@ -85,10 +86,15 @@ namespace IPCUtilities.IpcPmcmd
                     return outputData.Substring(outputData.IndexOf(_utilName, StringComparison.CurrentCulture) + _utilName.Length);
                 }
             }
+            else
+            {
+                Console.WriteLine(" 123"+outputData);
+            }
             return outputData;
         }
         private  void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
+            
             var clearResult = ClearOutputData(e.Data);
             if (!string.IsNullOrWhiteSpace(clearResult))
                 _outputResult.AppendLine(clearResult);

@@ -1,6 +1,9 @@
 ﻿namespace IPCUtilities.IpcPmcmd
 {
-    class PmcmdWaitTask
+    public class PmcmdWaitTask: PmcmdGetTaskDetails
     {
+        private string _workflowRunId;
+
+        public string WorkflowRunId { get { return _workflowRunId; } set { _workflowRunId = " -wfrunid " + value; } }
     }
 }

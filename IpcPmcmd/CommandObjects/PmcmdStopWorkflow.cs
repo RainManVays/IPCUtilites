@@ -1,6 +1,6 @@
 ﻿namespace IPCUtilities.IpcPmcmd
 {
-    class PmcmdStopWorkflow
+    public class PmcmdStopWorkflow:PmcmdAbortWorkflow
     {
     }
 }

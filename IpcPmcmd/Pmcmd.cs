@@ -15,38 +15,57 @@ namespace IPCUtilities
         /// </summary>
         public class Pmcmd:IDisposable
         {
-            private string _pmcmdFile;
-            private PmcmdConnection _connectionValue;
-            private string _connectionCommand = "";
             PmcmdWorker _pmwork;
             public Pmcmd(string pmcmdfile, PmcmdConnection parameters, string logFile = null)
             {
 
                 if (!File.Exists(pmcmdfile))
                     throw new FileNotFoundException("File not found!", pmcmdfile);
-                _pmcmdFile = pmcmdfile;
-                _connectionValue = parameters ?? throw new ArgumentNullException("parameters", "parameters is null");
-                _connectionCommand = "connect " + parameters.Domain + parameters.Service + parameters.Password + parameters.UserName;
-                _pmwork = new PmcmdWorker(pmcmdfile, _connectionCommand);
-                // PmcmdWorker.ExecuteCommand(pmcmdfile, command);
-
+                var connectionValue = parameters ?? throw new ArgumentNullException("parameters", "parameters is null");
+                var connectionCommand = "connect " + parameters.Domain + parameters.Service + parameters.Password + parameters.UserName;
+                _pmwork = new PmcmdWorker(pmcmdfile, connectionCommand);
             }
 
-            public bool AbortTask()
+            public string AbortTask(PmcmdAbortTask parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+
+                var command = "aborttask " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + parameters.Workflow
+                                                  + otherParams
+                                                  +parameters.TaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool Abortworkflow()
+            public string Abortworkflow(PmcmdAbortWorkflow parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+
+                var command = "abortworkflow " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + otherParams
+                                                  + parameters.Workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool Disconnect()
+            public void Disconnect()
             {
-                return false;
+                _pmwork.ExecuteCommand("disconnect");
             }
-            public bool Exit()
+            public void Exit()
             {
-                return false;
+                _pmwork.ExecuteCommand("exit");
             }
             public string GetRunningSessionsDetails()
             {
@@ -71,17 +90,42 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
-            public bool GetSessionStatistics()
+            public string GetSessionStatistics(PmcmdGetSessionStatistics parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var command = "getsessionstatistics " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + parameters.Workflow
+                                                  + parameters.WorkflowTaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool GetTaskDetails()
+            public string  GetTaskDetails(PmcmdGetTaskDetails parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var command = "gettaskdetails " + parameters.Folder
+                                                  + parameters.RunInsName
+                                                  + parameters.Workflow
+                                                  + parameters.TaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool GetWorkflowDetails()
+            public string GetWorkflowDetails(PmcmdGetWorkflowDetails parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var command = "getworkflowdetails " + parameters.Folder
+                                                  + parameters.RunInsName
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.Workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
             public bool PingService()
             {
@@ -93,9 +137,16 @@ namespace IPCUtilities
                 }
                 return false;
             }
-            public bool RecoverWorkflow()
+            public string RecoverWorkflow(PmcmdRecoverWorkflow parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var command = "recoverworkflow " + parameters.Folder
+                                                  + parameters.ParamFile
+                                                  + parameters.LocalParamFile;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
             public string ScheduleWorkflow(string folder, string workflow)
             {
@@ -108,21 +159,72 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand("showsettings");
                 return result;
             }
-            public bool StartTask()
+            public string StartTask(PmcmdStartTask parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+                otherParams = parameters.Recovery ? " -recovery " : " -norecovery ";
+                var command = "starttask " + parameters.Folder
+                                                  + parameters.RunInsName
+                                                  + parameters.ParamFile
+                                                  + parameters.Workflow
+                                                  + otherParams
+                                                  + parameters.TaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool StartWorkflow()
+            public string StartWorkflow(PmcmdStartWorkflow parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+                otherParams = parameters.Recovery ? " -recovery " : " -norecovery ";
+                var command = "startworkflow " + parameters.Folder
+                                                  + parameters.RunInsName
+                                                  + parameters.ParamFile
+                                                  + parameters.LocalParamFile
+                                                  + parameters.StartFrom
+                                                  + parameters.Osprofile
+                                                  + otherParams
+                                                  + parameters.Workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool StopTask()
+            public string StopTask(PmcmdStopTask parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+
+                var command = "stoptask " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + otherParams
+                                                  + parameters.Workflow
+                                                  + parameters.TaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool StopWorkflow()
+            public string StopWorkflow(PmcmdStopWorkflow parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+
+                var otherParams = parameters.Wait ? " -wait " : " -nowait ";
+
+                var command = "stopworkflow " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + otherParams
+                                                  + parameters.Workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
             public string UnscheduleWorkflow(string folder, string workflow)
             {
@@ -136,13 +238,32 @@ namespace IPCUtilities
                 return result;
             }
 
-            public bool WaitTask()
+            public string WaitTask(PmcmdWaitTask parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+
+
+                var command = "waittask " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + parameters.Workflow
+                                                  + parameters.TaskInstancePath;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
-            public bool WaitWorkflow()
+            public string WaitWorkflow(PmcmdWaitWorkflow parameters)
             {
-                return false;
+                Guard.ThrowIsNull(parameters);
+                var command = "waitworkflow " + parameters.Folder
+                                                  + parameters.WorkflowRunId
+                                                  + parameters.RunInsName
+                                                  + parameters.Workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return result;
             }
 
             #region IDisposable Support

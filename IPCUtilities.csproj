@@ -50,6 +50,7 @@
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdConnection.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdGetSessionStatistics.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdGetTaskDetails.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\PmcmdGetWorkflowDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdRecoverWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdStartTask.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdStopTask.cs" />
