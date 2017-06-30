@@ -1,5 +1,4 @@
-﻿using System;
-namespace IPCUtilities.IpcPmcmd
+﻿namespace IPCUtilities.IpcPmcmd
 {
    static class WorkflowDetailsAdapter
     {
@@ -22,7 +21,7 @@ namespace IPCUtilities.IpcPmcmd
                     var baseResult = row.Substring(row.IndexOf('['));
                     var completeResult = baseResult.Split(']')[0];
                     workflowDetails.WorkflowName = completeResult.Trim(trimChars);
-                    workflowDetails.Version = Convert.ToInt32(ResultTreatment.GetRowValue(row, "version", trimChars).TrimEnd(new char[] { ']', '.' }));
+                    workflowDetails.Version = ResultTreatment.ResultToInt32(ResultTreatment.GetRowValue(row, "version", trimChars));
 
                     continue;
                 }
@@ -33,12 +32,13 @@ namespace IPCUtilities.IpcPmcmd
                 }
                 if (row.Contains("Workflow run error code"))
                 {
-                    workflowDetails.ErrorCode = Convert.ToInt32(ResultTreatment.GetRowValue(row, ":", trimChars));
+
+                    workflowDetails.ErrorCode = ResultTreatment.ResultToInt32(row);
                     continue;
                 }
                 if (row.Contains("Workflow run id"))
                 {
-                    workflowDetails.WorkflowRunId = Convert.ToInt32(ResultTreatment.GetRowValue(row, "Workflow run id ", trimChars).TrimEnd(new char[] { ']', '.' }));
+                    workflowDetails.WorkflowRunId = ResultTreatment.ResultToInt32(row);
                     continue;
                 }
                 if (row.Contains("Start time:"))

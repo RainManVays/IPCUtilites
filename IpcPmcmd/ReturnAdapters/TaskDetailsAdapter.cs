@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IPCUtilities.IpcPmcmd
+﻿namespace IPCUtilities.IpcPmcmd
 {
     class TaskDetailsAdapter
     {
@@ -22,7 +20,7 @@ namespace IPCUtilities.IpcPmcmd
                     var baseResult = row.Substring(row.IndexOf('['));
                     var completeResult = baseResult.Split(']')[0];
                     taskDetails.WorkflowName = completeResult.Trim(trimChars);
-                    taskDetails.WorkflowVersion = Convert.ToInt32(ResultTreatment.GetRowValue(row, "version", trimChars).TrimEnd(new char[] { ']', '.' }));
+                    taskDetails.WorkflowVersion = ResultTreatment.ResultToInt32(ResultTreatment.GetRowValue(row, "version", trimChars));
 
                     continue;
                 }
@@ -31,7 +29,7 @@ namespace IPCUtilities.IpcPmcmd
                     var baseResult = row.Substring(row.IndexOf('['));
                     var completeResult = baseResult.Split(']')[0];
                     taskDetails.SessionName = completeResult.Trim(trimChars);
-                    taskDetails.SessionVersion = Convert.ToInt32(ResultTreatment.GetRowValue(row, "version", trimChars).TrimEnd(new char[] { ']', '.' }));
+                    taskDetails.SessionVersion = ResultTreatment.ResultToInt32(ResultTreatment.GetRowValue(row, "version", trimChars));
 
                     continue;
                 }
@@ -57,7 +55,7 @@ namespace IPCUtilities.IpcPmcmd
                 }
                 if (row.Contains("Task run error code"))
                 {
-                    taskDetails.ErrorCode = Convert.ToInt32(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.ErrorCode = ResultTreatment.ResultToInt32(row);
                     continue;
                 }
                 if (row.Contains("Intergration Service Process:"))
@@ -87,7 +85,7 @@ namespace IPCUtilities.IpcPmcmd
                 }
                 if (row.Contains("First error code"))
                 {
-                    taskDetails.FirstErrorCode = Convert.ToInt32(ResultTreatment.GetRowValue(row, "[", trimChars));
+                    taskDetails.FirstErrorCode = ResultTreatment.ResultToInt32(row);
                     continue;
                 }
                 if (row.Contains("First error message"))
@@ -97,27 +95,27 @@ namespace IPCUtilities.IpcPmcmd
                 }
                 if (row.Contains("Source success rows"))
                 {
-                    taskDetails.SourceSuccesRows = Convert.ToInt64(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.SourceSuccesRows = ResultTreatment.ResultToInt64(row);
                     continue;
                 }
                 if (row.Contains("Source failed rows"))
                 {
-                    taskDetails.SourceFailedRows = Convert.ToInt64(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.SourceFailedRows = ResultTreatment.ResultToInt64(row);
                     continue;
                 }
                 if (row.Contains("Target success rows"))
                 {
-                    taskDetails.TargetSuccesRows = Convert.ToInt64(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.TargetSuccesRows = ResultTreatment.ResultToInt64(row);
                     continue;
                 }
                 if (row.Contains("Target failed rows"))
                 {
-                    taskDetails.TargetFailedRows = Convert.ToInt64(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.TargetFailedRows = ResultTreatment.ResultToInt64(row);
                     continue;
                 }
                 if (row.Contains("Number of transformation errors"))
                 {
-                    taskDetails.NumberTransformError = Convert.ToInt32(ResultTreatment.GetRowValue(row, ":", trimChars));
+                    taskDetails.NumberTransformError = ResultTreatment.ResultToInt32(row);
                     continue;
                 }
 

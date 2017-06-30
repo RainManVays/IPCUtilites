@@ -44,44 +44,48 @@ namespace IPCUtilities.IpcPmcmd
         private void _pmcmdProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine("err " + e.Data);
-            _workFlag = false;
+            _workLock = false;
             
         }
 
-        private static bool _workFlag = true;
+        private static bool _workLock = true;
         private bool CommandIsExit(string command)
         {
-            if (command.Contains("disconnect"))
+            if (command.Contains("exit"))
                 return false;
             return true;
         }
         int _counter = 0;
         private async Task<string> WaitForEnd(string command)
         {
-            _workFlag = CommandIsExit(command);
+            _counter = 0;
+            _workLock = CommandIsExit(command);
             _imputCommand.WriteLine(command);
-            while (_workFlag)
+            while (_workLock)
             {
-                await Task.Delay(PmcmdSettings._countDelay);
-                if (_counter > 60)
-                {
+                //spike
+                await Task.Delay(PmcmdSettings._delayInterval);
+                if (_counter > PmcmdSettings._countDelay)
                     ExecuteCommand("exit");
-                }
                 else
-                {
                     _counter++;
-                }
             }
             return _outputResult.ToString();
         }
-
+        private void ThrowWorkError()
+        {
+            var outputResult = _outputResult.ToString();
+            if (outputResult.Contains("ERROR") || outputResult.Contains("DOM_10033") || outputResult.Contains("PCSF_46007"))
+            {
+                throw new Exception(outputResult);
+            }
+        }
         internal string ExecuteCommand(string command)
         {
-            // pmcmdProcess.WaitForExit();
-            // pmcmdProcess.Dispose();
             _outputResult.Clear();
             var result = WaitForEnd(command).Result;
-            _workFlag = false;
+            _workLock = false;
+            ThrowWorkError();
             return result;
 
         }
@@ -92,16 +96,13 @@ namespace IPCUtilities.IpcPmcmd
         {
             if (!string.IsNullOrEmpty(outputData))
             {
-                
                 foreach (var ignoreItem in _ignoreLines)
-                {
                     if (outputData.ToLower(CultureInfo.CurrentCulture).Contains(ignoreItem.ToLower(CultureInfo.CurrentCulture)))
                         return "";
-                }
 
                 if (outputData.Contains(_utilName))
                 {
-                    _workFlag = false;
+                    _workLock = false;
                     return outputData.Substring(outputData.IndexOf(_utilName, StringComparison.CurrentCulture) + _utilName.Length);
                 }
             }
@@ -109,7 +110,6 @@ namespace IPCUtilities.IpcPmcmd
         }
         private  void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-           // Console.WriteLine(" 456" + e.Data);
             var clearResult = ClearOutputData(e.Data);
             if (!string.IsNullOrWhiteSpace(clearResult))
                 _outputResult.AppendLine(clearResult);
@@ -125,8 +125,12 @@ namespace IPCUtilities.IpcPmcmd
                 if (disposing)
                 {
                     // TODO: освободить управляемое состояние (управляемые объекты).
+                    _outputResult.Clear();
+                    _outputResult = null;
+                    _imputCommand.Dispose();
                 }
 
+                _pmcmdProcess.Dispose();
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
                 // TODO: задать большим полям значение NULL.
 

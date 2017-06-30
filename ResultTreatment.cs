@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IPCUtilities
 {
     internal static class ResultTreatment
     {
+        private static Regex _numberOnly = new Regex(@"[^\d]");
         internal static string[] ResultToArray(string result)
         {
             if (!string.IsNullOrEmpty(result))
@@ -31,6 +33,14 @@ namespace IPCUtilities
             }
 
             return null;
+        }
+        internal static int ResultToInt32(string result)
+        {
+            return Convert.ToInt32(_numberOnly.Replace(result, ""));
+        }
+        internal static Int64 ResultToInt64(string result)
+        {
+            return Convert.ToInt64(_numberOnly.Replace(result, ""));
         }
 
     }

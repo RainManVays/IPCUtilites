@@ -78,9 +78,6 @@ namespace IPCUtilities
                 var command = "getservicedetails " + type.Value;
                 var result = _pmwork.ExecuteCommand(command);
                 ServiceDetailsAdapter sdAdapter = new ServiceDetailsAdapter();
-
-                Console.WriteLine(sdAdapter.SetServiceDetailsData(result).ServiceStatus);
-                Console.WriteLine(sdAdapter.SetServiceDetailsData(result).NumScheduledWorkflows);
                 return result;
             }
            
@@ -102,6 +99,16 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 //SetLastCommandResult(result);
                 return result;
+            }
+            public TaskDetails GetTaskDetails(string folder, string workflow, string taskName)
+            {
+                Guard.ThrowIsNull(folder, workflow, taskName);
+                var command = "gettaskdetails -folder " + folder
+                                                  +" -workflow "+ workflow+" "+ taskName;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
             public TaskDetails  GetTaskDetails(PmcmdGetTaskDetails parameters)
             {
