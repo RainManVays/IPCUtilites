@@ -32,27 +32,45 @@ namespace IPCUtilities.IpcPmcmd
             };
             _outputResult = new StringBuilder("");
             _pmcmdProcess.OutputDataReceived += PmcmdProcess_OutputDataReceived;
+            _pmcmdProcess.ErrorDataReceived += _pmcmdProcess_ErrorDataReceived;
             _pmcmdProcess.Start();
+            _pmcmdProcess.BeginErrorReadLine();
             _pmcmdProcess.BeginOutputReadLine();
+            
             _imputCommand = _pmcmdProcess.StandardInput;
             _imputCommand.WriteLine(connectionCmd);
+        }
+
+        private void _pmcmdProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            Console.WriteLine("err " + e.Data);
+            _workFlag = false;
+            
         }
 
         private static bool _workFlag = true;
         private bool CommandIsExit(string command)
         {
-            if (command.Contains("exit"))
+            if (command.Contains("disconnect"))
                 return false;
             return true;
         }
+        int _counter = 0;
         private async Task<string> WaitForEnd(string command)
         {
             _workFlag = CommandIsExit(command);
             _imputCommand.WriteLine(command);
             while (_workFlag)
             {
-                await Task.Delay(300);
-                Console.WriteLine("s");
+                await Task.Delay(PmcmdSettings._countDelay);
+                if (_counter > 60)
+                {
+                    ExecuteCommand("exit");
+                }
+                else
+                {
+                    _counter++;
+                }
             }
             return _outputResult.ToString();
         }
@@ -74,6 +92,7 @@ namespace IPCUtilities.IpcPmcmd
         {
             if (!string.IsNullOrEmpty(outputData))
             {
+                
                 foreach (var ignoreItem in _ignoreLines)
                 {
                     if (outputData.ToLower(CultureInfo.CurrentCulture).Contains(ignoreItem.ToLower(CultureInfo.CurrentCulture)))
@@ -86,15 +105,11 @@ namespace IPCUtilities.IpcPmcmd
                     return outputData.Substring(outputData.IndexOf(_utilName, StringComparison.CurrentCulture) + _utilName.Length);
                 }
             }
-            else
-            {
-                Console.WriteLine(" 123"+outputData);
-            }
             return outputData;
         }
         private  void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            
+           // Console.WriteLine(" 456" + e.Data);
             var clearResult = ClearOutputData(e.Data);
             if (!string.IsNullOrWhiteSpace(clearResult))
                 _outputResult.AppendLine(clearResult);

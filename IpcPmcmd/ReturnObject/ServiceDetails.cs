@@ -16,7 +16,7 @@ namespace IPCUtilities.IpcPmcmd
         public int NumActiveWorkflows { get; set; }
         public int NumActiveSessions { get; set; }
         public int NumWaitingSessions { get; set; }
-        public WorkfllowsDetails Workflows { get; set; }
+       // public WorkfllowsDetails Workflows { get; set; }
 
     }
 }

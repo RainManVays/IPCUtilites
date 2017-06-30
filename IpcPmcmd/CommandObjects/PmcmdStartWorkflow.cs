@@ -3,11 +3,9 @@
    public class PmcmdStartWorkflow:AbstractFolderRunParam
     {
         private string _startFrom;
-        private string _recovery;
         private string _paramFile;
         private string _localParamFile;
         private string _osprofile;
-        private string _runinsname;
         private string _workflow;
 
         public string StartFrom { get { return _startFrom; } set { _startFrom = " -startfrom " + value; } }

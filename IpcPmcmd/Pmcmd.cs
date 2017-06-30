@@ -77,7 +77,7 @@ namespace IPCUtilities
             {
                 var command = "getservicedetails " + type.Value;
                 var result = _pmwork.ExecuteCommand(command);
-                ServiceDetailAdapter sdAdapter = new ServiceDetailAdapter();
+                ServiceDetailsAdapter sdAdapter = new ServiceDetailsAdapter();
 
                 Console.WriteLine(sdAdapter.SetServiceDetailsData(result).ServiceStatus);
                 Console.WriteLine(sdAdapter.SetServiceDetailsData(result).NumScheduledWorkflows);
@@ -103,7 +103,7 @@ namespace IPCUtilities
                 //SetLastCommandResult(result);
                 return result;
             }
-            public string  GetTaskDetails(PmcmdGetTaskDetails parameters)
+            public TaskDetails  GetTaskDetails(PmcmdGetTaskDetails parameters)
             {
                 Guard.ThrowIsNull(parameters);
                 var command = "gettaskdetails " + parameters.Folder
@@ -113,9 +113,20 @@ namespace IPCUtilities
 
                 var result = _pmwork.ExecuteCommand(command);
                 //SetLastCommandResult(result);
-                return result;
+                return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
-            public string GetWorkflowDetails(PmcmdGetWorkflowDetails parameters)
+            public WorkflowDetails GetWorkflowDetails(string folder, string workflow)
+            {
+                Guard.ThrowIsNull(folder,workflow);
+
+                var command = "getworkflowdetails -folder " + folder+" "+workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
+                //SetLastCommandResult(result);
+                return WorkflowDetailsAdapter.GetConvertResultToWfDetails(result);
+            }
+
+            public WorkflowDetails GetWorkflowDetails(PmcmdGetWorkflowDetails parameters)
             {
                 Guard.ThrowIsNull(parameters);
                 var command = "getworkflowdetails " + parameters.Folder
@@ -125,7 +136,7 @@ namespace IPCUtilities
 
                 var result = _pmwork.ExecuteCommand(command);
                 //SetLastCommandResult(result);
-                return result;
+                return WorkflowDetailsAdapter.GetConvertResultToWfDetails(result);
             }
             public bool PingService()
             {

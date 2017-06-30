@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="IpcPmcmd\CommandObjects\AbstractFolderRunParam.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\AbstractTaskParams.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\ServiceDetailsAdapter.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\TaskDetailsAdapter.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\IntegrationService.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortTask.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdConnection.cs" />
@@ -57,13 +60,15 @@
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdStopWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdWaitTask.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdWaitWorkflow.cs" />
-    <Compile Include="IpcPmcmd\CommandObjects\ServiceDetails.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\ServiceDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdStartWorkflow.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\TaskDetails.cs" />
-    <Compile Include="IpcPmcmd\CommandObjects\WorkfllowsDetails.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\WorkflowDetails.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\IntegrationServiceAdapter.cs" />
+    <Compile Include="IpcPmcmd\PmcmdSettings.cs" />
     <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
-    <Compile Include="IpcPmcmd\ServiceDetailAdapter.cs" />
-    <Compile Include="IpcPmcmd\WorkflowsStatus.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\WorkflowDetailsAdapter.cs" />
+    <Compile Include="IpcPmcmd\CommandObjects\WorkflowsStatus.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoObject.cs" />
@@ -116,6 +121,7 @@
   <ItemGroup>
     <None Include="LDFCorp.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
