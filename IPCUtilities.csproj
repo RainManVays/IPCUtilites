@@ -46,7 +46,9 @@
     <Compile Include="IpcPmcmd\CommandObjects\AbstractFolderRunParam.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\AbstractTaskParams.cs" />
     <Compile Include="IpcPmcmd\ReturnAdapters\ServiceDetailsAdapter.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\SessionStatisticAdapter.cs" />
     <Compile Include="IpcPmcmd\ReturnAdapters\TaskDetailsAdapter.cs" />
+    <Compile Include="IpcPmcmd\ReturnAdapters\TransformationStatAdapter.cs" />
     <Compile Include="IpcPmcmd\ReturnObject\IntegrationService.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortTask.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdAbortWorkflow.cs" />
@@ -62,13 +64,15 @@
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdWaitWorkflow.cs" />
     <Compile Include="IpcPmcmd\ReturnObject\ServiceDetails.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\PmcmdStartWorkflow.cs" />
-    <Compile Include="IpcPmcmd\CommandObjects\TaskDetails.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\TaskDetails.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\SessionStatistic.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\Transformation.cs" />
     <Compile Include="IpcPmcmd\ReturnObject\WorkflowDetails.cs" />
     <Compile Include="IpcPmcmd\ReturnAdapters\IntegrationServiceAdapter.cs" />
     <Compile Include="IpcPmcmd\PmcmdSettings.cs" />
     <Compile Include="IpcPmcmd\PmcmdWorker.cs" />
     <Compile Include="IpcPmcmd\ReturnAdapters\WorkflowDetailsAdapter.cs" />
-    <Compile Include="IpcPmcmd\CommandObjects\WorkflowsStatus.cs" />
+    <Compile Include="IpcPmcmd\ReturnObject\WorkflowsStatus.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoFolder.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractAbapProgram.cs" />
     <Compile Include="IpcPmrep\CommandObjects\AbstractRepoObject.cs" />

@@ -109,6 +109,7 @@ namespace IPCUtilities.IpcPmcmd
         }
         private void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
+           // Console.WriteLine(e.Data);
             var clearResult = ClearOutputData(e.Data);
             if (!string.IsNullOrWhiteSpace(clearResult))
                 _outputResult.AppendLine(clearResult);

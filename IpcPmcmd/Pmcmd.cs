@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -39,7 +38,12 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
-            public string Abortworkflow(PmcmdAbortWorkflow parameters)
+            /// <summary>
+            /// Aborts a workflow
+            /// </summary>
+            /// <param name="parameters">command parameters</param>
+            /// <returns></returns>
+            public void Abortworkflow(PmcmdAbortWorkflow parameters)
             {
                 Guard.ThrowIsNull(parameters);
 
@@ -51,17 +55,21 @@ namespace IPCUtilities
                                                   + otherParams
                                                   + parameters.Workflow;
 
-                var result = _pmwork.ExecuteCommand(command);
-                return result;
+                _pmwork.ExecuteCommand(command);
             }
 
-            public string Abortworkflow(string folder, string workflow)
+            /// <summary>
+            /// Aborts a workflow
+            /// </summary>
+            /// <param name="folder">Name of the folder containing the workflow</param>
+            /// <param name="workflow">Name of the workflow</param>
+            /// <returns></returns>
+            public void Abortworkflow(string folder, string workflow)
             {
                 Guard.ThrowIsNull(folder, workflow);
                 var command = "abortworkflow -folder " + folder + " " + workflow;
 
-                var result = _pmwork.ExecuteCommand(command);
-                return result;
+               _pmwork.ExecuteCommand(command);
             }
             public void Disconnect()
             {
@@ -91,7 +99,27 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
-            public string GetSessionStatistics(PmcmdGetSessionStatistics parameters)
+            /// <summary>
+            /// Information about a session
+            /// </summary>
+            /// <param name="folder">folder contains a workflow</param>
+            /// <param name="workflow">workflow name contains a session</param>
+            /// <param name="sessionName">session name</param>
+            /// <returns>object session statistic</returns>
+            public SessionStatistic GetSessionStatistics(string folder, string workflow, string sessionName)
+            {
+                Guard.ThrowIsNull(folder, workflow, sessionName);
+                var command = "getsessionstatistics -folder " + folder
+                                                  + " -workflow " + workflow + " " + sessionName;
+                var result = _pmwork.ExecuteCommand(command);
+                return SessionStatisticAdapter.GetConvertsResultToTaskDetails(result);
+            }
+            /// <summary>
+            /// Information about a session
+            /// </summary>
+            /// <param name="parameters">command parameters</param>
+            /// <returns>object session statistic</returns>
+            public SessionStatistic GetSessionStatistics(PmcmdGetSessionStatistics parameters)
             {
                 Guard.ThrowIsNull(parameters);
                 var command = "getsessionstatistics " + parameters.Folder
@@ -101,8 +129,15 @@ namespace IPCUtilities
                                                   + parameters.WorkflowTaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                return result;
+                return SessionStatisticAdapter.GetConvertsResultToTaskDetails(result);
             }
+            /// <summary>
+            /// Information about a task
+            /// </summary>
+            /// <param name="folder">folder contains a workflow</param>
+            /// <param name="workflow">workflow name contains a task</param>
+            /// <param name="taskName">task\session name</param>
+            /// <returns>object task details</returns>
             public TaskDetails GetTaskDetails(string folder, string workflow, string taskName)
             {
                 Guard.ThrowIsNull(folder, workflow, taskName);
@@ -112,6 +147,11 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
+            /// <summary>
+            /// Information about a task
+            /// </summary>
+            /// <param name="parameters">command parameters</param>
+            /// <returns>object task details</returns>
             public TaskDetails GetTaskDetails(PmcmdGetTaskDetails parameters)
             {
                 Guard.ThrowIsNull(parameters);
@@ -123,17 +163,27 @@ namespace IPCUtilities
                 var result = _pmwork.ExecuteCommand(command);
                 return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
+            /// <summary>
+            /// Information about a workflow
+            /// </summary>
+            /// <param name="folder">folder contains a workflow</param>
+            /// <param name="workflow">workflow name</param>
+            /// <returns>object workflow details</returns>
             public WorkflowDetails GetWorkflowDetails(string folder, string workflow)
             {
                 Guard.ThrowIsNull(folder,workflow);
 
                 var command = "getworkflowdetails -folder " + folder+" "+workflow;
-
                 var result = _pmwork.ExecuteCommand(command);
 
                 return WorkflowDetailsAdapter.GetConvertResultToWfDetails(result);
             }
 
+            /// <summary>
+            /// Information about a workflow
+            /// </summary>
+            /// <param name="parameters">command parameters</param>
+            /// <returns>object workflow details</returns>
             public WorkflowDetails GetWorkflowDetails(PmcmdGetWorkflowDetails parameters)
             {
                 Guard.ThrowIsNull(parameters);
@@ -177,11 +227,11 @@ namespace IPCUtilities
                 return result;
             }
             /// <summary>
-            /// 
+            /// Schedule a workflow. Use this command to reschedule a workflow that has been removed from the schedule.
             /// </summary>
             /// <param name="folder"></param>
             /// <param name="workflow"></param>
-            /// <returns></returns>
+            /// <returns>scheduling result row</returns>
             public string ScheduleWorkflow(string folder, string workflow)
             {
                 var command = "scheduleworkflow -folder " + folder + " " + workflow;
@@ -273,6 +323,12 @@ namespace IPCUtilities
 
                 return result;
             }
+            /// <summary>
+            /// Removes workflow from schedule.
+            /// </summary>
+            /// <param name="folder"></param>
+            /// <param name="workflow"></param>
+            /// <returns>unscheduling result row</returns>
             public string UnscheduleWorkflow(string folder, string workflow)
             {
                 Guard.ThrowIsNull(folder, workflow);
