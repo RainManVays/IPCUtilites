@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,9 +48,9 @@ namespace IPCUtilities.IpcPmcmd
         }
 
         private static bool _workLock = true;
-        private bool CommandIsExit(string command)
+        private bool IsNotReturnResult(string command)
         {
-            if (command.Contains("exit"))
+            if (command.Contains("exit")|| command.Contains("abortworkflow")|| command.Contains("startworkflow"))
                 return false;
             return true;
         }
@@ -59,7 +58,7 @@ namespace IPCUtilities.IpcPmcmd
         private async Task<string> WaitForEnd(string command)
         {
             _counter = 0;
-            _workLock = CommandIsExit(command);
+            _workLock = IsNotReturnResult(command);
             _imputCommand.WriteLine(command);
             while (_workLock)
             {
@@ -108,7 +107,7 @@ namespace IPCUtilities.IpcPmcmd
             }
             return outputData;
         }
-        private  void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void PmcmdProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             var clearResult = ClearOutputData(e.Data);
             if (!string.IsNullOrWhiteSpace(clearResult))

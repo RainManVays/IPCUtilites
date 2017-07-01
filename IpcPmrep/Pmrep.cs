@@ -370,7 +370,7 @@ namespace IPCUtilities
             {
                 Guard.ThrowIsNull(connectionName);
 
-                string command = "deleteconnection -f -n " + connectionName + " -s " + connectionType.Value;
+                string command = "deleteconnection -f -n " + connectionName + " -s " + connectionType;
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
@@ -579,13 +579,13 @@ namespace IPCUtilities
             /// Queue
             /// Relational</param>
             /// <returns></returns>
-            public string GetConnectionDetails(string connectionName, ConnectionType connectionType)
+            public ConnectionDetails GetConnectionDetails(string connectionName, ConnectionType connectionType)
             {
                 Guard.ThrowIsNull(connectionName);
-                string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType.Value;
+                string command = "getconnectiondetails -n " + connectionName + " -t " + connectionType;
 
                 var result = _pmWork.ExecuteCommand(command);
-                return result;
+                return ConnectionDetailsAdapter.ConvertResultToConnectDetails(result);
             }
             public string GenerateAbapProgramToFile(PmrepGenerateAbapProgramm parameters, bool enableOverride = false, bool authorityCheck = false, bool useNamespace = false)
             {
@@ -681,10 +681,11 @@ namespace IPCUtilities
                 return _pmWork.CheckErrorInResult(result);
             }
 
+
             /// <summary>
             /// List all connection objects in the repository and their respective connection types.
-            /// Args:None
             /// </summary>
+            /// <returns>Connections Array</returns>
             public string[] ListConnections()
             {
                 var result = _pmWork.ExecuteCommand("listconnections -t");
@@ -717,15 +718,61 @@ namespace IPCUtilities
                 var result = _pmWork.ExecuteCommand(command);
                 return result;
             }
+
+            /// <summary>
+            /// Get repository folder List
+            /// </summary>
+            /// <returns></returns>
+            public string[] ListFolders()
+            {
+                var result = _pmWork.ExecuteCommand("listobjects -o folder");
+                return _pmWork.ConvertResultToArray(result);
+            }
+            private string _workflowSubstring = "workflow ";
+            /// <summary>
+            /// Get folder workflows list
+            /// </summary>
+            /// <param name="folderName">name repository folder</param>
+            /// <returns>workflows</returns>
+            public string[] ListWorkflows(string folderName)
+            {
+                Guard.ThrowIsNull(folderName);
+                var result = _pmWork.ExecuteCommand("listobjects -o workflow -f "+ folderName);
+                var arrResult = _pmWork.ConvertResultToArray(result);
+                string[] arrWorkflows = new string[arrResult.Length];
+
+                for(int wfItem = 0; wfItem<arrResult.Length;wfItem++)
+                    if(arrResult[wfItem].Contains(_workflowSubstring))
+                        arrWorkflows[wfItem] 
+                            = arrResult[wfItem].Substring(arrResult[wfItem].IndexOf(_workflowSubstring) + _workflowSubstring.Length);
+
+                return arrWorkflows;
+            }
+            /// <summary>
+            /// Get list session in workflow
+            /// </summary>
+            /// <param name="folderName">name repository folder</param>
+            /// <param name="workflow">name workflow in folder</param>
+            /// <returns>sessions </returns>
+            public string[] ListWorkflowSessions(string folderName, string workflow)
+            {
+                Guard.ThrowIsNull(folderName,workflow);
+                var result = _pmWork.ExecuteCommand("listobjects -o session -f " + folderName);
+                var arrResult = _pmWork.ConvertResultToArray(result);
+                List<string> sessions = new List<string>();
+                foreach(var session in arrResult)
+                    if (session.Contains(workflow))
+                        sessions.Add(session.Substring(session.IndexOf('.') + 1));
+
+                return sessions.ToArray();
+            }
             /// <summary>
             /// Returns a list of objects in the repository.
             /// </summary>
             /// <param name="objectType">type object</param>
             /// <returns>objects array</returns>
-            public string[] ListObjects(string objectType)
+            public string[] ListObjects(IpcObjectsTypes objectType)
             {
-                Guard.ThrowIsNull(objectType);
-
                 var result = _pmWork.ExecuteCommand("listobjects -o " + objectType);
                 return _pmWork.ConvertResultToArray(result);
             }
@@ -736,9 +783,9 @@ namespace IPCUtilities
             /// <param name="objectType">type object</param>
             /// <param name="folderName">folder name</param>
             /// <returns>objects array</returns>
-            public string[] ListObjects(string objectType, string folderName)
+            public string[] ListObjects(IpcObjectsTypes objectType, string folderName)
             {
-                Guard.ThrowIsNull(objectType, folderName);
+                Guard.ThrowIsNull(folderName);
 
                 var result = _pmWork.ExecuteCommand("listobjects -o " + objectType+" -f "+folderName);
 
@@ -766,10 +813,10 @@ namespace IPCUtilities
                                                                                   parameters.Verbose);
                 return _pmWork.ConvertResultToArray(result);
             }
-            public string ListTablesBySess(string folderName, string sessionName, string objectType)
+            public string ListTablesBySess(string folderName, string sessionName, SessObjType sessobj)
             {
-                Guard.ThrowIsNull(folderName, sessionName, objectType);
-                string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + objectType;
+                Guard.ThrowIsNull(folderName, sessionName);
+                string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + sessobj;
 
                 var result = _pmWork.ExecuteCommand(command);
                 return result;
@@ -787,7 +834,7 @@ namespace IPCUtilities
                 result = _pmWork.RemoveResultHeader(result);
                 List<ConnectedUser> userConnections = new List<ConnectedUser>(6);
                 var usersArray = result.Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
+                //slow.. change..
                 for (int i = 0; i < usersArray.Length; i += 9)
                 {
                     var userIdUserName = usersArray[i].Split(':');

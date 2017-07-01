@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IPCUtilities
 {
@@ -40,7 +37,6 @@ namespace IPCUtilities
                                                   +parameters.TaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
                 return result;
             }
             public string Abortworkflow(PmcmdAbortWorkflow parameters)
@@ -56,7 +52,15 @@ namespace IPCUtilities
                                                   + parameters.Workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+                return result;
+            }
+
+            public string Abortworkflow(string folder, string workflow)
+            {
+                Guard.ThrowIsNull(folder, workflow);
+                var command = "abortworkflow -folder " + folder + " " + workflow;
+
+                var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
             public void Disconnect()
@@ -97,7 +101,6 @@ namespace IPCUtilities
                                                   + parameters.WorkflowTaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
                 return result;
             }
             public TaskDetails GetTaskDetails(string folder, string workflow, string taskName)
@@ -107,10 +110,9 @@ namespace IPCUtilities
                                                   +" -workflow "+ workflow+" "+ taskName;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
                 return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
-            public TaskDetails  GetTaskDetails(PmcmdGetTaskDetails parameters)
+            public TaskDetails GetTaskDetails(PmcmdGetTaskDetails parameters)
             {
                 Guard.ThrowIsNull(parameters);
                 var command = "gettaskdetails " + parameters.Folder
@@ -119,7 +121,6 @@ namespace IPCUtilities
                                                   + parameters.TaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
                 return TaskDetailsAdapter.GetConvertsResultToTaskDetails(result);
             }
             public WorkflowDetails GetWorkflowDetails(string folder, string workflow)
@@ -129,7 +130,7 @@ namespace IPCUtilities
                 var command = "getworkflowdetails -folder " + folder+" "+workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return WorkflowDetailsAdapter.GetConvertResultToWfDetails(result);
             }
 
@@ -142,9 +143,13 @@ namespace IPCUtilities
                                                   + parameters.Workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return WorkflowDetailsAdapter.GetConvertResultToWfDetails(result);
             }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
             public bool PingService()
             {
                 var command = "pingservice";
@@ -155,6 +160,11 @@ namespace IPCUtilities
                 }
                 return false;
             }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="parameters"></param>
+            /// <returns></returns>
             public string RecoverWorkflow(PmcmdRecoverWorkflow parameters)
             {
                 Guard.ThrowIsNull(parameters);
@@ -163,15 +173,25 @@ namespace IPCUtilities
                                                   + parameters.LocalParamFile;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="folder"></param>
+            /// <param name="workflow"></param>
+            /// <returns></returns>
             public string ScheduleWorkflow(string folder, string workflow)
             {
                 var command = "scheduleworkflow -folder " + folder + " " + workflow;
                 var result = _pmwork.ExecuteCommand(command);
                 return result;
             }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
             public string ShowSettings()
             {
                 var result = _pmwork.ExecuteCommand("showsettings");
@@ -190,7 +210,7 @@ namespace IPCUtilities
                                                   + parameters.TaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
             public string StartWorkflow(PmcmdStartWorkflow parameters)
@@ -208,7 +228,16 @@ namespace IPCUtilities
                                                   + parameters.Workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
+                return result;
+            }
+            public string StartWorkflow(string folder, string workflow)
+            {
+                Guard.ThrowIsNull(folder, workflow);
+
+                var command = "startworkflow -folder " + folder + " " + workflow;
+                var result = _pmwork.ExecuteCommand(command);
+
                 return result;
             }
             public string StopTask(PmcmdStopTask parameters)
@@ -225,7 +254,7 @@ namespace IPCUtilities
                                                   + parameters.TaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
             public string StopWorkflow(PmcmdStopWorkflow parameters)
@@ -241,11 +270,12 @@ namespace IPCUtilities
                                                   + parameters.Workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
             public string UnscheduleWorkflow(string folder, string workflow)
             {
+                Guard.ThrowIsNull(folder, workflow);
                 var command = "unscheduleworkflow -folder "+folder+" "+workflow;
                 var result = _pmwork.ExecuteCommand(command);
                 return result;
@@ -268,7 +298,7 @@ namespace IPCUtilities
                                                   + parameters.TaskInstancePath;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
             public string WaitWorkflow(PmcmdWaitWorkflow parameters)
@@ -280,12 +310,12 @@ namespace IPCUtilities
                                                   + parameters.Workflow;
 
                 var result = _pmwork.ExecuteCommand(command);
-                //SetLastCommandResult(result);
+
                 return result;
             }
 
             #region IDisposable Support
-            private bool disposedValue = false; // Для определения избыточных вызовов
+            private bool disposedValue = false;
 
             protected virtual void Dispose(bool disposing)
             {
@@ -293,11 +323,7 @@ namespace IPCUtilities
                 {
                     if (disposing)
                     {
-                        // TODO: освободить управляемое состояние (управляемые объекты).
                     }
-
-                    // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
-                    // TODO: задать большим полям значение NULL.
 
                     disposedValue = true;
                 }
@@ -312,10 +338,7 @@ namespace IPCUtilities
             // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
             public void Dispose()
             {
-                // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
                 Dispose(true);
-                // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.
-                // GC.SuppressFinalize(this);
             }
             #endregion
 

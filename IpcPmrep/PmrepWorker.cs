@@ -61,11 +61,20 @@ namespace IPCUtilities
                 }
                 return _outputResult.ToString();
             }
+            private void ThrowWorkError()
+            {
+                var outputResult = _outputResult.ToString();
+                if (outputResult.Contains("Failed to execute "))
+                {
+                    throw new Exception(outputResult);
+                }
+            }
             internal string ExecuteCommand(string command)
             {
                 _outputResult.Clear();
                 var result = WaitForEnd(command).Result;
                 _workFlag = false;
+                ThrowWorkError();
                 return result;
             }
 

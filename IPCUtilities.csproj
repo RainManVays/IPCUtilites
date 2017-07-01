@@ -83,9 +83,13 @@
     <Compile Include="Infacmd\Infacmd.cs" />
     <Compile Include="Infasetup\Infasetup.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="IpcPmrep\ConnectionType.cs" />
+    <Compile Include="IpcPmrep\IpcObjectsTypes.cs" />
+    <Compile Include="IpcPmrep\ReturnAdapters\ConnectionDetailsAdapter.cs" />
+    <Compile Include="IpcPmrep\ReturnObject\ConnectionDetails.cs" />
+    <Compile Include="IpcPmrep\SessObjType.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="IpcPmcmd\Pmcmd.cs" />
-    <Compile Include="IpcPmrep\ConnectionTypes.cs" />
     <Compile Include="IpcPmrep\DBType.cs" />
     <Compile Include="IpcPmrep\Pmrep.cs" />
     <Compile Include="IpcPmrep\CommandObjects\PmrepCreate.cs" />
