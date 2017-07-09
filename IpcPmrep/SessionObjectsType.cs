@@ -1,6 +1,6 @@
 ﻿namespace IPCUtilities.IpcPmrep
 {
-    public enum SessObjType
+    public enum SessionObjectsType
     {
         source,
         target

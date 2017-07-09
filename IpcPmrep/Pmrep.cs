@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Threading.Tasks;
 
 [assembly:CLSCompliant(true)]
 
@@ -8,14 +9,16 @@ namespace IPCUtilities
 {
     namespace IpcPmrep
     {
+
         /// <summary>
         /// Performs repository administration tasks. Use pmrep to list repository objects, create and edit groups, and 
         /// restore and delete repositories.
         /// </summary>
-        public class Pmrep: IDisposable
+        public partial class Pmrep: IDisposable
         {
             private string _lastCommandResult;
             private PmrepWorker _pmWork;
+            private PmrepConnection _currentConnect;
             /// <summary>
             /// Connects to a repository. The first time you use pmrep in either command line or interactive mode, you must 
             /// use the Connect command. All commands require a connection to the repository except for the following 
@@ -34,6 +37,7 @@ namespace IPCUtilities
                 Guard.ThrowIsNull(parameters);
                 if (logFile != null)
                     LogWriter.SetLogFile(logFile);
+                _currentConnect = parameters;
                 var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
                 _pmWork = new PmrepWorker(pmrepfile, command);
             }
@@ -46,6 +50,7 @@ namespace IPCUtilities
             {
                 return _lastCommandResult;
             }
+
             /// <summary>
             /// Adds objects to a deployment group. Use AddToDeploymentGroup to add source, target, transformation, mapping, 
             /// session, worklet, workflow, scheduler, session configuration, and task objects
@@ -477,6 +482,14 @@ namespace IPCUtilities
             public string DeployFolder(PmrepDeployFolder parameters)
             {
                 Guard.ThrowIsNull(parameters);
+
+                         _pmWork.CreateControlImportFile(sourceFolder: "HADOOP",
+                                                        sourceRepo: "infa_rep_melchior",
+                                                        targetFolder: "HADOOP",
+                                                        targetRepo: "infa_rep_test",
+                                                        dtdFile: "impcntl.dtd",
+                                                        encoding:null);
+
                 string command = "deployfolder " + parameters.FolderName +
                                                 parameters.ControlFileName +
                                                 parameters.TargetRepositoryName +
@@ -494,16 +507,15 @@ namespace IPCUtilities
                 return result;
             }
             /// <summary>
-            /// Runs a query and return result
+            /// Runs a query and return result with verbpse and dbtype
             /// </summary>
             /// <param name="queryName">Name of the query to run</param>
+            /// /// <param name="verbose">Displays more than the minimum information about the objects</param>
             /// <returns></returns>
             public string ExecuteQuery(string queryName)
             {
                 Guard.ThrowIsNull(queryName);
-
-                string command = "executequery -q " + queryName;
-
+                string command = "executequery -q " + queryName+" -b -y";
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
@@ -534,7 +546,6 @@ namespace IPCUtilities
                                                   + parameters.EndOfListingIndicator
                                                   + parameters.DbdSeparator
                                                   + otherParams;
-
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
                 return result;
@@ -723,18 +734,22 @@ namespace IPCUtilities
             /// Get repository folder List
             /// </summary>
             /// <returns></returns>
-            public string[] ListFolders()
+            public IList<string> ListFolders()
             {
                 var result = _pmWork.ExecuteCommand("listobjects -o folder");
                 return _pmWork.ConvertResultToArray(result);
             }
+
+
+
+
             private string _workflowSubstring = "workflow ";
             /// <summary>
             /// Get folder workflows list
             /// </summary>
             /// <param name="folderName">name repository folder</param>
             /// <returns>workflows</returns>
-            public string[] ListWorkflows(string folderName)
+            public IList<string> ListWorkflows(string folderName)
             {
                 Guard.ThrowIsNull(folderName);
                 var result = _pmWork.ExecuteCommand("listobjects -o workflow -f "+ folderName);
@@ -754,24 +769,24 @@ namespace IPCUtilities
             /// <param name="folderName">name repository folder</param>
             /// <param name="workflow">name workflow in folder</param>
             /// <returns>sessions </returns>
-            public string[] ListWorkflowSessions(string folderName, string workflow)
+            public IList<string> ListWorkflowSessions(string folderName, string workflow)
             {
                 Guard.ThrowIsNull(folderName,workflow);
                 var result = _pmWork.ExecuteCommand("listobjects -o session -f " + folderName);
                 var arrResult = _pmWork.ConvertResultToArray(result);
-                List<string> sessions = new List<string>();
-                foreach(var session in arrResult)
+                IList<string> sessions = new List<string>();
+                foreach (var session in arrResult)
                     if (session.Contains(workflow))
                         sessions.Add(session.Substring(session.IndexOf('.') + 1));
 
-                return sessions.ToArray();
+                return sessions;
             }
             /// <summary>
             /// Returns a list of objects in the repository.
             /// </summary>
             /// <param name="objectType">type object</param>
             /// <returns>objects array</returns>
-            public string[] ListObjects(IpcObjectsTypes objectType)
+            public IList<string> ListObjects(IpcObjectsTypes objectType)
             {
                 var result = _pmWork.ExecuteCommand("listobjects -o " + objectType);
                 return _pmWork.ConvertResultToArray(result);
@@ -813,7 +828,7 @@ namespace IPCUtilities
                                                                                   parameters.Verbose);
                 return _pmWork.ConvertResultToArray(result);
             }
-            public string ListTablesBySess(string folderName, string sessionName, SessObjType sessobj)
+            public string ListTablesBySess(string folderName, string sessionName, SessionObjectsType sessobj)
             {
                 Guard.ThrowIsNull(folderName, sessionName);
                 string command = "listtablesbysess -f " + folderName + " -s "+ sessionName + " -t " + sessobj;
@@ -953,7 +968,7 @@ namespace IPCUtilities
             /// <param name="b">export non-reusable dependents</param>
             /// <param name="r">export reusable dependents</param>
             /// <returns>True or False</returns>
-            public bool ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
+            public string ObjectExport(PmrepObjectExport parameters,bool m=false,bool s = false, bool b = false, bool r = false)
             {
                 Guard.ThrowIsNull(parameters);
 
@@ -972,7 +987,7 @@ namespace IPCUtilities
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);
 
-                return _pmWork.CheckErrorInResult(result);
+                return result;
             }
             public bool PurgeVersion(PmrepPurgeVersion parameters)
             {

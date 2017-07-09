@@ -390,8 +390,6 @@ namespace IPCUtilities
             //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
             //   Dispose(false);
             // }
-
-            // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
             public void Dispose()
             {
                 Dispose(true);

@@ -77,10 +77,18 @@ namespace IPCUtilities
                 ThrowWorkError();
                 return result;
             }
-
+            internal async Task<string> ExecuteCommandAsync(string command)
+            {
+                _outputResult.Clear();
+                var result = await WaitForEnd(command);
+                _workFlag = false;
+                ThrowWorkError();
+                return result;
+            }
             private readonly  string _applicationName = "pmrep>";
             private  void _pmrep_OutputDataReceived(object sender, DataReceivedEventArgs e)
             {
+                LogWriter.Write(e.Data);
                 if (!string.IsNullOrEmpty(e.Data) && !e.Data.Contains("connect completed successfully."))
                 {
                     if (e.Data.Contains(" completed successfully.") || e.Data.Contains("Failed to execute ") || e.Data.Contains("Repository connection failed.") )
@@ -179,7 +187,6 @@ namespace IPCUtilities
                 {
                     if (disposing)
                     {
-                        ExecuteCommand("cleanup");
                         ExecuteCommand("exit");
                         _pmrep.Close();
                         _outputResult.Clear();
