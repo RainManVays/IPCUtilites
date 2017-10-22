@@ -1,11 +1,7 @@
-﻿
-namespace IPCUtilities
+﻿namespace IPCUtilities.IpcPmrep.CommandObjects
 {
-    namespace IpcPmrep
+    public class PmrepNewFolder:AbstractRepoFolder
     {
-        public class PmrepNewFolder:AbstractRepoFolder
-        {
 
-        }
     }
 }

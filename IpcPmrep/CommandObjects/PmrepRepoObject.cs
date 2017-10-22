@@ -1,4 +1,4 @@
-﻿namespace IPCUtilities.IpcPmrep
+﻿namespace IPCUtilities.IpcPmrep.CommandObjects
 {
     public class PmrepRepoObject
     {

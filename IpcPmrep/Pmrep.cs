@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System;
+using IPCUtilities.IpcPmrep.CommandObjects;
 
 [assembly:CLSCompliant(true)]
 
-namespace IPCUtilities
+namespace IPCUtilities.IpcPmrep
 {
-    namespace IpcPmrep
-    {
-
         /// <summary>
         /// Performs repository administration tasks. Use pmrep to list repository objects, create and edit groups, and 
         /// restore and delete repositories.
@@ -28,8 +26,6 @@ namespace IPCUtilities
             /// <param name="logFile">if you need write work log set full path to logfile</param>
             public Pmrep(string pmrepfile, PmrepConnection parameters, string logFile = null)
             {
-                
-
                 if (!File.Exists(pmrepfile))
                     throw new FileNotFoundException("Pmrep file not found!", pmrepfile);
                 
@@ -166,7 +162,6 @@ namespace IPCUtilities
             }
             public string CheckIn(PmrepCheckIn parameters)
             {
-                
                 Guard.ThrowIsNull(parameters);
                 var command = "checkin " + parameters.ObjectName
                                                     + parameters.ObjectType
@@ -1407,5 +1402,4 @@ namespace IPCUtilities
                 _pmWork.Dispose();
             }
         }
-    }
-}
+ }

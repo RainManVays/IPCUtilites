@@ -1,11 +1,10 @@
-﻿using System;
+﻿using IPCUtilities.IpcPmcmd.CommandObjects;
+using System;
 using System.Globalization;
 using System.IO;
 
-namespace IPCUtilities
+namespace IPCUtilities.IpcPmcmd
 {
-    namespace IpcPmcmd
-    {
         /// <summary>
         /// Manage workflows. Use pmcmd to start, stop, schedule, and monitor workflows.
         /// </summary>
@@ -397,5 +396,4 @@ namespace IPCUtilities
             #endregion
 
         }
-    }
-}
+ }

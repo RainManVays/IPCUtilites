@@ -7,10 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IPCUtilities
+namespace IPCUtilities.IpcPmrep
 {
-    namespace IpcPmrep
-    {
         internal class PmrepWorker : IDisposable
         {
             static StringBuilder _outputResult = new StringBuilder();
@@ -208,5 +206,4 @@ namespace IPCUtilities
             #endregion
         }
 
-    }
 }

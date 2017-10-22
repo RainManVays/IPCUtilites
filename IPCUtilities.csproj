@@ -93,7 +93,7 @@
     <Compile Include="IpcPmrep\PmrepAsync.cs" />
     <Compile Include="IpcPmrep\ReturnAdapters\ConnectionDetailsAdapter.cs" />
     <Compile Include="IpcPmrep\ReturnObject\ConnectionDetails.cs" />
-    <Compile Include="IpcPmrep\SessionObjectsType.cs" />
+    <Compile Include="IpcPmrep\CommandObjects\SessionObjectsType.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="IpcPmcmd\Pmcmd.cs" />
     <Compile Include="IpcPmrep\DBType.cs" />

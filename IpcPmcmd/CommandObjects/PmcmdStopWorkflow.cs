@@ -1,4 +1,4 @@
-﻿namespace IPCUtilities.IpcPmcmd
+﻿namespace IPCUtilities.IpcPmcmd.CommandObjects
 {
     public class PmcmdStopWorkflow:PmcmdAbortWorkflow
     {
