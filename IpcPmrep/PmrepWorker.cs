@@ -110,10 +110,11 @@ namespace IPCUtilities
                     }
                 }
             }
-            private static void CheckConnectionsResult(string row)
+            private void CheckConnectionsResult(string row)
             {
                 if(row.Contains("Repository connection failed."))
                 {
+                    Dispose();
                     throw new Exception(row);
                 }
             }
@@ -162,16 +163,19 @@ namespace IPCUtilities
                 return true;
             }
 
-            internal void CreateControlImportFile(string sourceRepo, string sourceFolder, string targetFolder, string targetRepo, string dtdFile, string encoding)
+            internal void CreateControlImportFile(string sourceRepo, string[] folders, string targetRepo, string dtdFile, string encoding)
             {
                 encoding = string.IsNullOrEmpty(encoding) ? "windows-1251" : encoding;
 
                 string controlFileTemplate = "<?xml version='1.0' encoding='" + encoding + "'?>" +
 
                 "<!DOCTYPE IMPORTPARAMS SYSTEM '" + dtdFile + "'>\n" +
-                "<IMPORTPARAMS CHECKIN_AFTER_IMPORT='NO'>\n" +
-                "<FOLDERMAP SOURCEFOLDERNAME='" + sourceFolder + "' SOURCEREPOSITORYNAME='" + sourceRepo + "' TARGETFOLDERNAME='" + targetFolder + "' TARGETREPOSITORYNAME='" + targetRepo + "' />\n" +
-                         "<RESOLVECONFLICT>\n" +
+                "<IMPORTPARAMS CHECKIN_AFTER_IMPORT='NO'>\n";
+                foreach(var folder in folders)
+                {
+                    controlFileTemplate += "<FOLDERMAP SOURCEFOLDERNAME='" + folder + "' SOURCEREPOSITORYNAME='" + sourceRepo + "' TARGETFOLDERNAME='" + folder + "' TARGETREPOSITORYNAME='" + targetRepo + "' />\n";
+                }
+                controlFileTemplate+=   "<RESOLVECONFLICT>\n" +
                          "<TYPEOBJECT OBJECTTYPENAME='ALL' RESOLUTION='REPLACE'/>\n" +
                           "</RESOLVECONFLICT >\n" +
                           "</IMPORTPARAMS>\n";

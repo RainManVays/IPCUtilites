@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System;
-using System.Threading.Tasks;
 
 [assembly:CLSCompliant(true)]
 
@@ -32,16 +31,28 @@ namespace IPCUtilities
                 
 
                 if (!File.Exists(pmrepfile))
-                    throw new FileNotFoundException("File not found!", pmrepfile);
+                    throw new FileNotFoundException("Pmrep file not found!", pmrepfile);
                 
                 Guard.ThrowIsNull(parameters);
-                if (logFile != null)
+                if (!string.IsNullOrEmpty(logFile))
                     LogWriter.SetLogFile(logFile);
                 _currentConnect = parameters;
                 var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
                 _pmWork = new PmrepWorker(pmrepfile, command);
             }
-           
+            public Pmrep(string pmrepfile, PmrepConnection parameters,string infaDomainPathEnv, string logFile = null)
+            {
+                if (!File.Exists(pmrepfile))
+                    throw new FileNotFoundException("Pmrep file not found!", pmrepfile);
+                Guard.ThrowIsNull(parameters);
+                if(!string.IsNullOrEmpty(infaDomainPathEnv))
+                    Environment.SetEnvironmentVariable("INFA_DOMAINS_FILE", infaDomainPathEnv);
+                if (!string.IsNullOrEmpty(logFile))
+                    LogWriter.SetLogFile(logFile);
+                _currentConnect = parameters;
+                var command = "connect " + parameters.Domain + parameters.HostName + parameters.Password + parameters.Port + parameters.Repository + parameters.UserName + parameters.Timeout;
+                _pmWork = new PmrepWorker(pmrepfile, command);
+            }
             private void SetLastCommandResult(string result)
             {
                 _lastCommandResult = result;
@@ -483,12 +494,12 @@ namespace IPCUtilities
             {
                 Guard.ThrowIsNull(parameters);
 
-                         _pmWork.CreateControlImportFile(sourceFolder: "HADOOP",
+                     /*    _pmWork.CreateControlImportFile(sourceFolder: "HADOOP",
                                                         sourceRepo: "infa_rep_melchior",
                                                         targetFolder: "HADOOP",
                                                         targetRepo: "infa_rep_test",
                                                         dtdFile: "impcntl.dtd",
-                                                        encoding:null);
+                                                        encoding:null);*/
 
                 string command = "deployfolder " + parameters.FolderName +
                                                 parameters.ControlFileName +
@@ -923,7 +934,7 @@ namespace IPCUtilities
                 var otherParams = retainPersistentValue ? " -p " : "";
                 otherParams += string.IsNullOrEmpty(logFileName) ? "" : " -l " + logFileName;
 
-                string command = "objectimport " + "- i " + importXml +
+                string command = "objectimport " + "-i " + importXml +
                                                 " -c " + importControlFile +
                                                 otherParams;
 
@@ -940,9 +951,8 @@ namespace IPCUtilities
 
                 var otherParams = retainPersistentValue ? " -p " : "";
 
-              _pmWork.CreateControlImportFile(sourceFolder: parameters.SourceFolder,
+              _pmWork.CreateControlImportFile(folders: parameters.SourceFolder,
                                                         sourceRepo: parameters.SourceRepo,
-                                                        targetFolder: parameters.TargetFolder,
                                                         targetRepo: parameters.TargetRepo,
                                                         dtdFile: parameters.ImportDtdFile,
                                                         encoding: parameters.ControlFileEncoding);
@@ -977,11 +987,14 @@ namespace IPCUtilities
                     otherParams += b ? " -b " : "";
                     otherParams += r ? " -r " : "";
                 var command = "objectexport " + parameters.FolderName
+                                                  + parameters.ObjectName
+                                                  + parameters.ObjectType
+                                                  + parameters.ObjectSubType
                                                   + parameters.LogFileName
                                                   + parameters.DbdSeparator
                                                   + parameters.PersistentInputFile
                                                   + parameters.VersionNumber
-                                                  +parameters.XnlOutputFileName
+                                                  + parameters.XnlOutputFileName
                                                   + otherParams;
 
                 var result = _pmWork.ExecuteCommand(command);
