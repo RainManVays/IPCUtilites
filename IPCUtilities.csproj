@@ -88,6 +88,7 @@
     <Compile Include="Infacmd\Infacmd.cs" />
     <Compile Include="Infasetup\Infasetup.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="IpcPmrep\CommandObjects\RepoObject.cs" />
     <Compile Include="IpcPmrep\ConnectionType.cs" />
     <Compile Include="IpcPmrep\IpcObjectsTypes.cs" />
     <Compile Include="IpcPmrep\PmrepAsync.cs" />

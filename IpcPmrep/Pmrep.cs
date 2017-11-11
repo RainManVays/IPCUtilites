@@ -72,9 +72,9 @@ namespace IPCUtilities.IpcPmrep
                                                         + parameters.DependencyTypes 
                                                         + parameters.DeploymentGroupName 
                                                         + parameters.FolderName 
-                                                        + parameters.ObjectName 
-                                                        + parameters.ObjectSubType 
-                                                        + parameters.ObjectType 
+                                                        + parameters.ObjectName+
+                                                         (" -t " + parameters.ObjectSubtype) +
+                                                         (" -o " + parameters.ObjectType)
                                                         + parameters.PersistentImputFile 
                                                         + parameters.VersionNumber;
 
@@ -92,9 +92,9 @@ namespace IPCUtilities.IpcPmrep
                 var otherParams = acrossRepositories ? " -g ":"";
                 otherParams += moveLabel ? " -m " : "";
                 otherParams += comments ? " -c " : "";
-                var command = "applylabel " + parameters.ObjectName
-                                                  + parameters.ObjectType
-                                                  + parameters.ObjectSubType
+                var command = "applylabel " + parameters.ObjectName +
+                                                (" -t " + parameters.ObjectSubtype) +
+                                                (" -o " + parameters.ObjectType)
                                                   + parameters.FolderName
                                                   + parameters.LabelName
                                                   + parameters.DbdSeparator
@@ -111,9 +111,9 @@ namespace IPCUtilities.IpcPmrep
             public bool AssignPermission(PmrepPermissions parameters)
             {
                 Guard.ThrowIsNull(parameters);
-                var command = "AssignPermission " + parameters.ObjectName
-                                                  + parameters.ObjectType 
-                                                  + parameters.ObjectSubType
+                var command = "AssignPermission " + parameters.ObjectName+
+                                                     (" -t " + parameters.ObjectSubtype) +
+                                                     (" -o " + parameters.ObjectType)
                                                   + parameters.UserName
                                                   + parameters.GroupName
                                                   + parameters.Permission
@@ -150,9 +150,9 @@ namespace IPCUtilities.IpcPmrep
             public bool ChangeOwner(PmrepChangeOwner parameters)
             {
                 Guard.ThrowIsNull(parameters);
-                var command = "ChangeOwner " + parameters.ObjectName
-                                                   + parameters.ObjectType
-                                                   + parameters.ObjectSubType
+                var command = "ChangeOwner " + parameters.ObjectName +
+                                                     (" -t " + parameters.ObjectSubtype) +
+                                                     (" -o " + parameters.ObjectType)
                                                    + parameters.NewOwnerName
                                                    + parameters.SecurityDomain;
 
@@ -163,9 +163,9 @@ namespace IPCUtilities.IpcPmrep
             public string CheckIn(PmrepCheckIn parameters)
             {
                 Guard.ThrowIsNull(parameters);
-                var command = "checkin " + parameters.ObjectName
-                                                    + parameters.ObjectType
-                                                    + parameters.ObjectSubType
+                var command = "checkin " + parameters.ObjectName+
+                                                     (" -t " + parameters.ObjectSubtype) +
+                                                     (" -o " + parameters.ObjectType) 
                                                     + parameters.FolderName
                                                     + parameters.DbdSeparator
                                                     + parameters.Comments;
@@ -717,10 +717,10 @@ namespace IPCUtilities.IpcPmrep
                 otherParams += parameters.PrintDBtype ? " -y " : "";
                 otherParams += parameters.AcrossRepositories ? " -g " : "";
                 otherParams += parameters.IncludeFkPkDependency ? " -s " : "";
-                var command = "listobjectdependencies " + parameters.ObjectName
-                                                  + parameters.ObjectType
-                                                  + parameters.ObjectSubType
-                                                  + parameters.FolderName
+                var command = "listobjectdependencies " + parameters.ObjectName+
+                                                   (" -t " + parameters.ObjectSubtype) +
+                                                   (" -o " + parameters.ObjectType) +
+                                                   parameters.FolderName
                                                   + parameters.VersionNumber
                                                   + parameters.PersistentInputFile
                                                   + parameters.DependencyObjectTypes
@@ -828,8 +828,8 @@ namespace IPCUtilities.IpcPmrep
                                                                                   +parameters.EndOfListingIndicator+
                                                                                   parameters.EndOfRecordIndicator+
                                                                                   parameters.FolderName+
-                                                                                  parameters.ObjectSubtype+
-                                                                                  parameters.ObjectType+
+                                                                                 ( " -t "+ parameters.ObjectSubtype)+
+                                                                                  (" -o " + parameters.ObjectType)+
                                                                                   parameters.PrintDatabaseType+
                                                                                   parameters.Verbose);
                 return _pmWork.ConvertResultToArray(result);
@@ -982,9 +982,9 @@ namespace IPCUtilities.IpcPmrep
                     otherParams += b ? " -b " : "";
                     otherParams += r ? " -r " : "";
                 var command = "objectexport " + parameters.FolderName
-                                                  + parameters.ObjectName
-                                                  + parameters.ObjectType
-                                                  + parameters.ObjectSubType
+                                                  + parameters.ObjectName+
+                                                   (" -t " + parameters.ObjectSubtype) +
+                                                   (" -o " + parameters.ObjectType) 
                                                   + parameters.LogFileName
                                                   + parameters.DbdSeparator
                                                   + parameters.PersistentInputFile
@@ -1176,11 +1176,11 @@ namespace IPCUtilities.IpcPmrep
             {
                 Guard.ThrowIsNull(parameters);
 
-                var command = "undocheckout " + parameters.DbdSeparator
-                                                   + parameters.FolderName
-                                                   + parameters.ObjectName
-                                                   + parameters.ObjectSubType
-                                                   + parameters.ObjectType;
+            var command = "undocheckout " + parameters.DbdSeparator
+                                               + parameters.FolderName
+                                               + parameters.ObjectName +
+                                                (" -t " + parameters.ObjectSubtype) +
+                                                (" -o " + parameters.ObjectType);
 
                 var result = _pmWork.ExecuteCommand(command);
                 SetLastCommandResult(result);

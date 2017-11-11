@@ -1,8 +1,6 @@
 ﻿using IPCUtilities.IpcPmrep.CommandObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IPCUtilities.IpcPmrep
@@ -55,9 +53,9 @@ namespace IPCUtilities.IpcPmrep
             otherParams += b ? " -b " : "";
             otherParams += r ? " -r " : "";
             var command = "objectexport " + parameters.FolderName
-                                              + parameters.ObjectName
-                                              + parameters.ObjectType
-                                              + parameters.ObjectSubType
+                                              + parameters.ObjectName+
+                                            (" -t " + parameters.ObjectSubtype) +
+                                            (" -o " + parameters.ObjectType)
                                               + parameters.LogFileName
                                               + parameters.DbdSeparator
                                               + parameters.PersistentInputFile
