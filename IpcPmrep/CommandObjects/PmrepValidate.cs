@@ -3,7 +3,7 @@
     public class PmrepValidate
     {
         private string _objectName;
-        private string _objectType;
+        public ValidateObject ObjectType { get; set; }
         private string _versionNumber;
         private string _folderName;
         private string _persistentInputFile;
@@ -13,7 +13,6 @@
         private string _endOfListingIndicator;
 
         public string ObjectName { get { return _objectName; } set { _objectName = " -n " + value; } }
-        public string ObjectType { get { return _objectType; } set { _objectType = " -o " + value; } }
         public string VersionNumber { get { return _versionNumber; } set { _versionNumber = " -v " + value; } }
         public string FolderName { get { return _folderName; } set { _folderName = " -f " + value; } }
         public string OutputOptionTypes { get { return _outputOptionTypes; } set { _outputOptionTypes = " -p " + value; } }

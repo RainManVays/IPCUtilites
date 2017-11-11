@@ -2,8 +2,8 @@
 {
     public class PmrepUpdateConnection
     {
-        private string _connectionSubtype;
         private string _connectionName;
+        private string _connectionSubtype;
         private string _newUserName;
         private string _newPassword;
         private string _newPasswordEnvVariable;
