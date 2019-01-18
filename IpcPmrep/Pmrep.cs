@@ -26,7 +26,7 @@ namespace IPCUtilities.IpcPmrep
         /// <param name="logFile">if you need write work log set full path to logfile</param>
         public Pmrep(string pmrepfile, PmrepConnection parameters, string logFile = null)
         {
-            if (!File.Exists(pmrepfile))
+            if (string.IsNullOrEmpty(pmrepfile))
                 throw new FileNotFoundException("Pmrep file not found!", pmrepfile);
 
             Guard.ThrowIsNull(parameters);
@@ -38,7 +38,9 @@ namespace IPCUtilities.IpcPmrep
         }
         public Pmrep(string pmrepfile, PmrepConnection parameters, string infaDomainPathEnv, string logFile = null)
         {
-            if (!File.Exists(pmrepfile))
+            pmrepfile = CheckExists.CheckAndModifyPath(pmrepfile, "pmrep.exe");
+            infaDomainPathEnv = CheckExists.CheckAndModifyPath(infaDomainPathEnv, "domain.infa");
+            if (string.IsNullOrEmpty(pmrepfile))
                 throw new FileNotFoundException("Pmrep file not found!", pmrepfile);
             Guard.ThrowIsNull(parameters);
             if (!string.IsNullOrEmpty(infaDomainPathEnv))

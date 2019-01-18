@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckExists.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\AbstractFolderRunParam.cs" />
     <Compile Include="IpcPmcmd\CommandObjects\AbstractTaskParams.cs" />
     <Compile Include="IpcPmcmd\ReturnAdapters\ServiceDetailsAdapter.cs" />
